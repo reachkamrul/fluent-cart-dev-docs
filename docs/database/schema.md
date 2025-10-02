@@ -786,7 +786,30 @@ Indexes:
 
 
 
-<!-- Email notifications table migration file not found. Section removed for accuracy. -->
+
+### fct_email_notifications Table
+
+This table stores email notification templates and settings (Pro feature)
+
+| Column     | Type                | Comment |
+|------------|---------------------|---------|
+| id         | BIGINT UNSIGNED AUTO_INCREMENT | Primary key |
+| title      | VARCHAR(200)        | Notification title |
+| events     | JSON NULL           | Trigger events |
+| to         | JSON NULL           | Recipient configuration |
+| from       | VARCHAR(255)        | Sender email |
+| cc         | VARCHAR(255) NULL   | CC recipients |
+| subject    | VARCHAR(255)        | Email subject |
+| enabled    | VARCHAR(3)          | yes, no (default: no) |
+| content    | TEXT                | Email content |
+| path       | VARCHAR(200)        | Template path |
+| created_at | TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP | Created at |
+| updated_at | TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP | Updated at |
+| to_email   | LONGTEXT            | Email recipients |
+
+Indexes:
+- PRIMARY (id)
+- from
 
 
 ## fct_label Table
@@ -1021,54 +1044,64 @@ This table stores licensed sites (Pro feature)
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-### fct\_license\_meta Table
+
+### fct_license_meta Table
 
 This table stores license metadata (Pro feature)
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| license_id | bigint unsigned | Reference to license |
-| meta_key | varchar(192) | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|-------------|---------------------------------------|---------|
+| id          | BIGINT UNSIGNED AUTO_INCREMENT, PRIMARY KEY | |
+| object_id   | BIGINT UNSIGNED                      | Reference to object (license or related) |
+| object_type | VARCHAR(192)                         | Object type |
+| meta_key    | VARCHAR(192)                         | Meta key |
+| meta_value  | LONGTEXT                             | Meta value (JSON or string) |
+| created_at  | DATETIME NULL                        | |
+| updated_at  | DATETIME NULL                        | |
 
-### fct\_order\_promotions Table
+
+### fct_order_promotions Table
 
 This table stores order promotion data (Pro feature)
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint(20) unsigned _Auto Increment_ | |
-| hash | varchar(100) | Unique promotion hash |
-| parent_id | bigint(20) unsigned _NULL_ | Parent promotion ID |
-| type | varchar(50) | Promotion type |
-| status | varchar(50) | Promotion status (default: draft) |
-| src_object_id | bigint(20) unsigned _NULL_ | Source object ID |
-| src_object_type | varchar(50) _NULL_ | Source object type |
-| title | varchar(194) _NULL_ | Promotion title |
-| description | text _NULL_ | Promotion description |
-| conditions | json _NULL_ | Promotion conditions |
-| config | json _NULL_ | Promotion configuration |
-| priority | int | Promotion priority (default: 1) |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column          | Type                       | Comment |
+|-----------------|---------------------------|---------|
+| id              | BIGINT(20) UNSIGNED AUTO_INCREMENT, PRIMARY KEY | |
+| hash            | VARCHAR(100) NOT NULL     | |
+| parent_id       | BIGINT(20) UNSIGNED NULL  | |
+| type            | VARCHAR(50) NOT NULL      | |
+| status          | VARCHAR(50) NOT NULL DEFAULT 'draft' | |
+| src_object_id   | BIGINT(20) UNSIGNED NULL  | |
+| src_object_type | VARCHAR(50) DEFAULT NULL  | |
+| title           | VARCHAR(194) DEFAULT NULL | |
+| description     | TEXT DEFAULT NULL         | |
+| conditions      | JSON DEFAULT NULL         | |
+| config          | JSON DEFAULT NULL         | |
+| priority        | INT NOT NULL DEFAULT 1    | |
+| created_at      | DATETIME NULL             | |
+| updated_at      | DATETIME NULL             | |
 
-### fct\_order\_promotion\_stats Table
+Indexes:
+- (type, status, src_object_id, src_object_type)
+
+
+### fct_order_promotion_stats Table
 
 This table stores promotion statistics (Pro feature)
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint(20) unsigned _Auto Increment_ | |
-| promotion_id | bigint(20) unsigned | Reference to promotion |
-| order_id | bigint(20) unsigned | Reference to order |
-| object_id | bigint(20) unsigned | Related object ID |
-| amount | bigint | Amount in cents (default: 0) |
-| status | varchar(50) | Stat status (default: offered) |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column        | Type                       | Comment |
+|---------------|---------------------------|---------|
+| id            | BIGINT(20) UNSIGNED AUTO_INCREMENT, PRIMARY KEY | |
+| promotion_id  | BIGINT(20) UNSIGNED NOT NULL | |
+| order_id      | BIGINT(20) UNSIGNED NOT NULL | |
+| object_id     | BIGINT(20) UNSIGNED NOT NULL | |
+| amount        | BIGINT NOT NULL DEFAULT '0' | |
+| status        | VARCHAR(50) NOT NULL DEFAULT 'offered' | |
+| created_at    | DATETIME NULL             | |
+| updated_at    | DATETIME NULL             | |
+
+Indexes:
+- (promotion_id, object_id, order_id)
 
 ---
 
