@@ -21,12 +21,14 @@ description: FluentCart AppliedCoupon model documentation with attributes, scope
 | coupon_id          | Integer   | Reference to coupon |
 | code               | String    | Coupon code |
 | amount             | Decimal   | Discount amount applied |
-| settings           | JSON      | Coupon settings |
-| other_info         | JSON      | Additional coupon information |
-| categories         | JSON      | Product categories |
-| products           | JSON      | Product IDs |
+| settings           | JSON      | (Dynamic/Meta) Coupon settings, may not be a physical DB column |
+| other_info         | JSON      | (Dynamic/Meta) Additional coupon information, may not be a physical DB column |
+| categories         | JSON      | (Dynamic/Meta) Product categories, may not be a physical DB column |
+| products           | JSON      | (Dynamic/Meta) Product IDs, may not be a physical DB column |
 | created_at         | Date Time | Creation timestamp |
 | updated_at         | Date Time | Last update timestamp |
+
+> **Note:** Some fields above (settings, other_info, categories, products) are handled as dynamic/meta properties in the model and may not exist as physical columns in the database schema. They are available via accessors/mutators for developer convenience.
 
 ## Usage
 

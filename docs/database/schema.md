@@ -98,9 +98,9 @@ This table stores the basic information of an order
 
 | Column | Type | Comment |
 |--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| status | varchar(20) | draft, pending, on-hold, processing, completed, failed, refunded, partial-refund |
-| parent_id | bigint unsigned _NULL_ | |
+| idx | bigint unsigned _Auto Increment_ | |
+| statusx | varchar(20) | draft, pending, on-hold, processing, completed, failed, refunded, partial-refund |
+| parent_idx | bigint unsigned _NULL_ | |
 | receipt_number | bigint unsigned _NULL_ | |
 | invoice_no | varchar(192) _NULL_ | |
 | fulfillment_type | varchar(20) _NULL_ | physical, digital, service, mixed |
@@ -705,25 +705,6 @@ This table stores generic metadata for various objects
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-## fct\_activity Table
-
-This table stores system activity and audit logs
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| status | varchar(20) | success, warning, failed, info |
-| log_type | varchar(20) | activity, api |
-| module_type | varchar(100) | Full Model Path |
-| module_id | bigint | Related object ID |
-| module_name | varchar(192) | order, product, user, coupon, subscription, payment, refund, shipment, activity |
-| user_id | bigint unsigned | User who performed action |
-| title | varchar(100) | Activity title |
-| content | longtext _NULL_ | Activity description |
-| read_status | varchar(20) | read, unread |
-| created_by | varchar(100) | FCT-BOT, username |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
 ## fct\_email\_notifications Table
 
@@ -769,37 +750,6 @@ This table stores order metadata
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-## fct\_product\_variations Table
-
-This table stores product variations with pricing and inventory
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| post_id | bigint unsigned | WordPress post ID |
-| media_id | bigint unsigned _NULL_ | Media attachment ID |
-| serial_index | int _NULL_ | Variation order |
-| sold_individually | tinyint unsigned _NULL_ | Sold individually flag |
-| variation_title | varchar(255) | Variation title |
-| variation_identifier | varchar(100) _NULL_ | SKU or identifier |
-| manage_stock | tinyint(1) _NULL_ | Stock management enabled |
-| payment_type | varchar(50) _NULL_ | onetime, subscription |
-| stock_status | varchar(30) _NULL_ | in-stock, out-of-stock, backorder |
-| backorders | tinyint unsigned _NULL_ | Backorders allowed |
-| total_stock | int _NULL_ | Total stock quantity |
-| on_hold | int _NULL_ | Stock on hold |
-| committed | int _NULL_ | Committed stock |
-| available | int _NULL_ | Available stock |
-| fulfilment_type | varchar(100) _NULL_ | physical, digital, service |
-| item_status | varchar(30) _NULL_ | active, inactive |
-| manage_cost | varchar(30) _NULL_ | Cost management enabled |
-| item_price | double | Variation price |
-| item_cost | double | Variation cost |
-| compare_price | double _NULL_ | Compare at price |
-| other_info | longtext _NULL_ | Additional variation data |
-| downloadable | varchar(30) _NULL_ | Downloadable flag |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
 ## fct\_order\_tax\_rate Table
 
@@ -848,65 +798,9 @@ This table stores background job scheduling and execution
 | updated_at | datetime _NULL_ | |
 | response_note | longtext _NULL_ | Response or error message |
 
-## fct\_shipping\_zones Table
 
-This table stores shipping zones configuration
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| name | varchar(192) | Zone name |
-| regions | longtext _NULL_ | Zone regions (JSON) |
-| order | int unsigned | Display order |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
-## fct\_shipping\_methods Table
-
-This table stores shipping methods within zones
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| zone_id | bigint unsigned | Reference to shipping zone |
-| title | varchar(192) | Method title |
-| type | varchar(50) | Method type |
-| settings | longtext _NULL_ | Method settings |
-| is_enabled | tinyint(1) | Enabled flag |
-| amount | bigint unsigned _NULL_ | Shipping amount |
-| order | int unsigned | Display order |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-
-## fct\_shipping\_classes Table
-
-This table stores shipping classes
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| name | varchar(192) | Class name |
-| cost | decimal(10,2) | Shipping cost |
-| per_item | tinyint(1) | Per item flag |
-| type | varchar(20) | Class type |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| scheduled_at | datetime _NULL_ | When to run the action |
-| action | varchar(192) _NULL_ | Action to perform |
-| status | varchar(20) _NULL_ | pending, processing, completed, failed |
-| group | varchar(100) _NULL_ | order, subscription |
-| object_id | bigint unsigned _NULL_ | Related object ID |
-| object_type | varchar(100) _NULL_ | Object type |
-| completed_at | timestamp _NULL_ | When action was completed |
-| retry_count | int unsigned | Number of retries |
-| data | json _NULL_ | Action data |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-| response_note | longtext _NULL_ | Response or error message |
 
 ## fct\_atts\_groups Table
 
@@ -951,16 +845,6 @@ This table stores relationships between attributes and objects
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-## fct\_label Table
-
-This table stores labels for tagging objects
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| value | varchar(192) | Label value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
 ## fct\_label\_relationships Table
 
