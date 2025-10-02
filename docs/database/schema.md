@@ -92,265 +92,305 @@ The FluentCart database schema is built around these core concepts:
 
 ## Database Tables
 
-## \_fct\_orders Table
+
+
+## fct_orders Table
 
 This table stores the basic information of an order
 
-| Column | Type | Comment |
-|--------|------|---------|
-| idx | bigint unsigned _Auto Increment_ | |
-| statusx | varchar(20) | draft, pending, on-hold, processing, completed, failed, refunded, partial-refund |
-| parent_idx | bigint unsigned _NULL_ | |
-| receipt_number | bigint unsigned _NULL_ | |
-| invoice_no | varchar(192) _NULL_ | |
-| fulfillment_type | varchar(20) _NULL_ | physical, digital, service, mixed |
-| type | varchar(20) | payment, renewal, refund |
-| mode | enum | live, test |
-| shipping_status | varchar(20) | unshipped, shipped, delivered, unshippable |
-| customer_id | bigint unsigned _NULL_ | |
-| payment_method | varchar(100) | |
-| payment_status | varchar(20) | |
-| payment_method_title | varchar(100) | |
-| currency | varchar(10) | |
-| subtotal | bigint | Amount in cents |
-| discount_tax | bigint | Amount in cents |
-| manual_discount_total | bigint | Amount in cents |
-| coupon_discount_total | bigint | Amount in cents |
-| shipping_tax | bigint | Amount in cents |
-| shipping_total | bigint | Amount in cents |
-| tax_total | bigint | Amount in cents |
-| total_amount | bigint | Amount in cents |
-| total_paid | bigint | Amount in cents |
-| total_refund | bigint | Amount in cents |
-| rate | decimal(12,4) | Exchange rate |
-| note | text _NULL_ | |
-| ip_address | text _NULL_ | |
-| completed_at | datetime _NULL_ | |
-| refunded_at | datetime _NULL_ | |
-| uuid | varchar(100) | |
-| config | json _NULL_ | |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column              | Type                | Comment |
+|---------------------|---------------------|---------|
+| id                  | BIGINT UNSIGNED _Auto Increment_ | Primary key |
+| status              | VARCHAR(20) NOT NULL DEFAULT 'draft' | draft / pending / on-hold / processing / completed / failed / refunded / partial-refund |
+| parent_id           | BIGINT UNSIGNED NULL | Parent order |
+| receipt_number      | BIGINT UNSIGNED NULL | |
+| invoice_no          | VARCHAR(192) NULL DEFAULT '' | |
+| fulfillment_type    | VARCHAR(20) NULL DEFAULT 'physical' | physical, digital, service, mixed |
+| type                | VARCHAR(20) NOT NULL DEFAULT 'payment' | payment, renewal, refund |
+| mode                | ENUM('live', 'test') NOT NULL DEFAULT 'live' | live / test |
+| shipping_status     | VARCHAR(20) NOT NULL DEFAULT '' | unshipped / shipped / delivered / unshippable |
+| customer_id         | BIGINT UNSIGNED NULL | |
+| payment_method      | VARCHAR(100) NOT NULL | |
+| payment_status      | VARCHAR(20) NOT NULL DEFAULT '' | |
+| payment_method_title| VARCHAR(100) NOT NULL | |
+| currency            | VARCHAR(10) NOT NULL | |
+| subtotal            | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| discount_tax        | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| manual_discount_total | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| coupon_discount_total | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| shipping_tax        | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| shipping_total      | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| tax_total           | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| total_amount        | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| total_paid          | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| total_refund        | BIGINT NOT NULL DEFAULT '0' | Amount in cents |
+| rate                | DECIMAL(12,4) NOT NULL DEFAULT '1.0000' | Exchange rate |
+| tax_behavior        | TINYINT(1) NOT NULL DEFAULT 0 | 0 => no_tax, 1 => exclusive, 2 => inclusive |
+| note                | TEXT NOT NULL DEFAULT '' | |
+| ip_address          | TEXT NOT NULL DEFAULT '' | |
+| completed_at        | DATETIME NULL DEFAULT NULL | |
+| refunded_at         | DATETIME NULL DEFAULT NULL | |
+| uuid                | VARCHAR(100) NOT NULL | |
+| config              | JSON DEFAULT NULL | |
+| created_at          | DATETIME NULL | |
+| updated_at          | DATETIME NULL | |
 
-## fct\_customers Table
+Indexes:
+- invoice_no (191)
+- type
+- customer_id
+- created_at, completed_at
 
-This table stores the basic information of a customer
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| user_id | bigint unsigned _NULL_ | |
-| contact_id | bigint unsigned | |
-| email | varchar(192) | |
-| first_name | varchar(192) | |
-| last_name | varchar(192) | |
-| status | varchar(45) _NULL_ | active, archived |
-| purchase_value | json _NULL_ | |
-| purchase_count | bigint unsigned | |
-| ltv | bigint | Lifetime value in cents |
-| first_purchase_date | datetime _NULL_ | |
-| last_purchase_date | datetime _NULL_ | |
-| aov | decimal(18,2) _NULL_ | Average order value |
-| notes | longtext | |
-| uuid | varchar(100) _NULL_ | |
-| country | varchar(45) _NULL_ | |
-| city | varchar(45) _NULL_ | |
-| state | varchar(45) _NULL_ | |
-| postcode | varchar(45) _NULL_ | |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
-## fct\_order\_items Table
+## fct_coupons Table
+
+This table stores coupon definitions and rules
+
+| Column           | Type                                  | Comment |
+|------------------|---------------------------------------|---------|
+| id               | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| title            | VARCHAR(200) NOT NULL                 | Coupon title |
+| code             | VARCHAR(50) NOT NULL UNIQUE           | Coupon code (unique) |
+| priority         | INT DEFAULT NULL                      | Coupon priority |
+| type             | VARCHAR(20) NOT NULL                  | Coupon type |
+| conditions       | JSON NULL                             | Coupon conditions |
+| amount           | double NOT NULL                       | Discount amount |
+| use_count        | INT DEFAULT 0                         | Usage count |
+| status           | VARCHAR(20) NOT NULL                  | Coupon status |
+| notes            | LONGTEXT NOT NULL                     | Coupon notes |
+| stackable        | VARCHAR(3) NOT NULL DEFAULT 'no'      | Stackable flag (yes/no) |
+| show_on_checkout | VARCHAR(3) NOT NULL DEFAULT 'yes'     | Show on checkout (yes/no) |
+| start_date       | TIMESTAMP NULL                        | Start date |
+| end_date         | TIMESTAMP NULL                        | End date |
+| created_at       | DATETIME NULL                         | |
+| updated_at       | DATETIME NULL                         | |
+
+Indexes:
+- code
+- status
+
+
+## fct_order_items Table
 
 This table stores individual items within orders
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | |
-| post_id | bigint unsigned | WordPress post ID (product) |
-| fulfillment_type | varchar(20) | physical, digital, service |
-| payment_type | varchar(20) | onetime, subscription, signup_fee |
-| post_title | text | Product title |
-| title | text | Item title (variation) |
-| object_id | bigint unsigned _NULL_ | Variation ID |
-| cart_index | bigint unsigned | Position in cart |
-| quantity | int | Item quantity |
-| unit_price | bigint | Price per unit in cents |
-| cost | bigint | Cost in cents |
-| subtotal | bigint | Line subtotal |
-| tax_amount | bigint | Tax amount for this line |
-| shipping_charge | bigint | Shipping charge |
-| discount_total | bigint | Discount amount |
-| line_total | bigint | Total line amount |
-| refund_total | bigint | Refunded amount |
-| rate | bigint | Exchange rate |
-| other_info | json _NULL_ | Additional item data |
-| line_meta | json _NULL_ | Line-specific metadata |
-| fulfilled_quantity | int | Quantity fulfilled |
-| referrer | text _NULL_ | Referral information |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column            | Type                                  | Comment |
+|-------------------|---------------------------------------|---------|
+| id                | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| order_id          | BIGINT UNSIGNED NOT NULL DEFAULT '0'   | Reference to order |
+| post_id           | BIGINT UNSIGNED NOT NULL DEFAULT '0'   | WordPress post ID (product) |
+| fulfillment_type  | VARCHAR(20) NOT NULL DEFAULT 'physical'| physical, digital, service |
+| payment_type      | VARCHAR(20) NOT NULL DEFAULT 'onetime' | onetime, subscription, signup_fee |
+| post_title        | TEXT NOT NULL                          | Product title |
+| title             | TEXT NOT NULL                          | Item title (variation) |
+| object_id         | BIGINT UNSIGNED NULL DEFAULT NULL       | Variation ID |
+| cart_index        | BIGINT UNSIGNED NOT NULL DEFAULT '0'    | Position in cart |
+| quantity          | INT NOT NULL DEFAULT '1'                | Item quantity |
+| unit_price        | BIGINT NOT NULL DEFAULT '0'             | Price per unit in cents |
+| cost              | BIGINT NOT NULL DEFAULT '0'             | Cost in cents |
+| subtotal          | BIGINT NOT NULL DEFAULT '0'             | Line subtotal |
+| tax_amount        | BIGINT NOT NULL DEFAULT '0'             | Tax amount for this line |
+| shipping_charge   | BIGINT NOT NULL DEFAULT '0'             | Shipping charge |
+| discount_total    | BIGINT NOT NULL DEFAULT '0'             | Discount amount |
+| line_total        | BIGINT NOT NULL DEFAULT '0'             | Total line amount |
+| refund_total      | BIGINT NOT NULL DEFAULT '0'             | Refunded amount |
+| rate              | BIGINT NOT NULL DEFAULT '1'             | Exchange rate |
+| other_info        | JSON NULL                               | Additional item data |
+| line_meta         | JSON NULL                               | Line-specific metadata |
+| fulfilled_quantity| INT NOT NULL DEFAULT '0'                | Quantity fulfilled |
+| referrer          | TEXT NULL                               | Referral information |
+| created_at        | DATETIME NULL                           | |
+| updated_at        | DATETIME NULL                           | |
 
-## fct\_order\_transactions Table
+Indexes:
+- order_id, object_id
+- post_id
+
+
+## fct_order_transactions Table
 
 This table stores payment transactions for orders
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | |
-| order_type | varchar(100) | |
-| transaction_type | varchar(192) | charge, refund, etc. |
-| subscription_id | int _NULL_ | Reference to subscription |
-| card_last_4 | int(4) _NULL_ | Last 4 digits of card |
-| card_brand | varchar(100) _NULL_ | Card brand |
-| vendor_charge_id | varchar(192) | Payment gateway transaction ID |
-| payment_method | varchar(100) | |
-| payment_mode | varchar(100) | live, test |
-| payment_method_type | varchar(100) | card, bank, etc. |
-| status | varchar(20) | Transaction status |
-| currency | varchar(10) | Transaction currency |
-| total | bigint | Transaction amount in cents |
-| rate | bigint | Exchange rate |
-| uuid | varchar(100) _NULL_ | |
-| meta | json _NULL_ | Transaction metadata |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column              | Type                                  | Comment |
+|---------------------|---------------------------------------|---------|
+| id                  | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| order_id            | BIGINT UNSIGNED NOT NULL DEFAULT '0'   | Reference to order |
+| order_type          | VARCHAR(100) NOT NULL DEFAULT ''       | |
+| transaction_type    | VARCHAR(192) DEFAULT 'charge'          | charge, refund, etc. |
+| subscription_id     | INT(11) NULL                           | Reference to subscription |
+| card_last_4         | INT(4)                                 | Last 4 digits of card |
+| card_brand          | VARCHAR(100)                           | Card brand |
+| vendor_charge_id    | VARCHAR(192) NOT NULL DEFAULT ''       | Payment gateway transaction ID |
+| payment_method      | VARCHAR(100) NOT NULL DEFAULT ''       | |
+| payment_mode        | VARCHAR(100) NOT NULL DEFAULT ''       | live, test |
+| payment_method_type | VARCHAR(100) NOT NULL DEFAULT ''       | card, bank, etc. |
+| status              | VARCHAR(20) NOT NULL DEFAULT ''        | Transaction status |
+| currency            | VARCHAR(10) NOT NULL DEFAULT ''        | Transaction currency |
+| total               | BIGINT NOT NULL DEFAULT '0'            | Transaction amount in cents |
+| rate                | BIGINT NOT NULL DEFAULT '1'            | Exchange rate |
+| uuid                | VARCHAR(100) NULL DEFAULT ''           | |
+| meta                | JSON DEFAULT NULL                      | Transaction metadata |
+| created_at          | DATETIME NULL                          | |
+| updated_at          | DATETIME NULL                          | |
 
-## fct\_order\_addresses Table
+Indexes:
+- vendor_charge_id (64)
+- payment_method
+- status
+- order_id
+
+
+## fct_order_addresses Table
 
 This table stores order shipping and billing addresses
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | Reference to order |
-| type | varchar(20) | billing, shipping |
-| name | varchar(192) _NULL_ | Address name |
-| address_1 | varchar(192) _NULL_ | Address line 1 |
-| address_2 | varchar(192) _NULL_ | Address line 2 |
-| city | varchar(192) _NULL_ | City |
-| state | varchar(192) _NULL_ | State |
-| postcode | varchar(50) _NULL_ | Postal code |
-| country | varchar(100) _NULL_ | Country |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| order_id   | BIGINT UNSIGNED NOT NULL              | Reference to order |
+| type       | VARCHAR(20) NOT NULL DEFAULT 'billing'| billing, shipping |
+| name       | VARCHAR(192) NULL                     | Address name |
+| address_1  | VARCHAR(192) NULL                     | Address line 1 |
+| address_2  | VARCHAR(192) NULL                     | Address line 2 |
+| city       | VARCHAR(192) NULL                     | City |
+| state      | VARCHAR(192) NULL                     | State |
+| postcode   | VARCHAR(50) NULL                      | Postal code |
+| country    | VARCHAR(100) NULL                     | Country |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_order\_operations Table
+
+
+## fct_order_operations Table
 
 This table stores order operation logs and analytics
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | Reference to order |
-| created_via | varchar(45) _NULL_ | How the order was created |
-| emails_sent | tinyint(1) _NULL_ | Emails sent flag |
-| sales_recorded | tinyint(1) _NULL_ | Sales recorded flag |
-| utm_campaign | varchar(192) _NULL_ | UTM campaign tracking |
-| utm_term | varchar(192) _NULL_ | UTM term tracking |
-| utm_source | varchar(192) _NULL_ | UTM source tracking |
-| utm_medium | varchar(192) _NULL_ | UTM medium tracking |
-| utm_content | varchar(192) _NULL_ | UTM content tracking |
-| utm_id | varchar(192) _NULL_ | UTM ID tracking |
-| cart_hash | varchar(192) _NULL_ | Cart hash identifier |
-| refer_url | varchar(192) _NULL_ | Referral URL |
-| meta | json _NULL_ | Additional operation metadata |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column         | Type                                  | Comment |
+|---------------|---------------------------------------|---------|
+| id            | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| order_id      | BIGINT(20) UNSIGNED NOT NULL          | Reference to order |
+| created_via   | VARCHAR(45) NULL                      | How the order was created |
+| emails_sent   | TINYINT(1) NULL DEFAULT 0             | Emails sent flag |
+| sales_recorded| TINYINT(1) NULL DEFAULT 0             | Sales recorded flag |
+| utm_campaign  | VARCHAR(192) NULL DEFAULT ''          | UTM campaign tracking |
+| utm_term      | VARCHAR(192) NULL DEFAULT ''           | UTM term tracking |
+| utm_source    | VARCHAR(192) NULL DEFAULT ''           | UTM source tracking |
+| utm_medium    | VARCHAR(192) NULL DEFAULT ''           | UTM medium tracking |
+| utm_content   | VARCHAR(192) NULL DEFAULT ''           | UTM content tracking |
+| utm_id        | VARCHAR(192) NULL DEFAULT ''           | UTM ID tracking |
+| cart_hash     | VARCHAR(192) NULL DEFAULT ''           | Cart hash identifier |
+| refer_url     | VARCHAR(192) NULL DEFAULT ''           | Referral URL |
+| meta          | JSON DEFAULT NULL                      | Additional operation metadata |
+| created_at    | DATETIME NULL                          | |
+| updated_at    | DATETIME NULL                          | |
 
-## fct\_order\_download\_permissions Table
+Indexes:
+- order_id
+
+
+
+## fct_order_download_permissions Table
 
 This table stores download permissions for orders
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | Reference to order |
-| variation_id | bigint unsigned | Reference to product variation |
-| download_id | bigint unsigned | Reference to download |
-| download_count | int _NULL_ | Number of downloads |
-| download_limit | int _NULL_ | Download limit |
-| access_expires | datetime _NULL_ | Access expiration date |
-| customer_id | bigint unsigned | Reference to customer |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column          | Type                                  | Comment |
+|-----------------|---------------------------------------|---------|
+| id              | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| order_id        | BIGINT(20) UNSIGNED NOT NULL          | Reference to order |
+| variation_id    | BIGINT(20) UNSIGNED NOT NULL          | Reference to product variation |
+| download_id     | BIGINT(20) UNSIGNED NOT NULL          | Reference to download |
+| download_count  | INT(11) NULL                          | Number of downloads |
+| download_limit  | INT(11) NULL                          | Download limit |
+| access_expires  | DATETIME NULL                         | Access expiration date |
+| customer_id     | BIGINT(20) UNSIGNED NOT NULL          | Reference to customer |
+| created_at      | DATETIME NULL                         | |
+| updated_at      | DATETIME NULL                         | |
 
-## fct\_order\_details\_meta Table
+Indexes:
+- order_id
+- download_id
+- variation_id
+
+
+
+## fct_order_details_meta Table
 
 This table stores order details metadata
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| object_id | bigint unsigned _NULL_ | Related object ID |
-| object_type | varchar(100) _NULL_ | Object type |
-| meta_key | varchar(192) _NULL_ | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| object_id  | BIGINT UNSIGNED NULL DEFAULT NULL     | Related object ID |
+| object_type| VARCHAR(100) NULL DEFAULT NULL        | Object type |
+| meta_key   | VARCHAR(192) NULL DEFAULT NULL        | Meta key |
+| meta_value | LONGTEXT NULL DEFAULT NULL            | Meta value |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_subscriptions Table
+Indexes:
+- meta_key
+- object_id
 
-This table stores subscription information
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| uuid | varchar(100) | |
-| customer_id | bigint unsigned | |
-| parent_order_id | bigint unsigned | |
-| product_id | bigint unsigned | WordPress post ID |
-| item_name | text | Item name |
-| quantity | int | Subscription quantity |
-| variation_id | bigint unsigned | Variation ID |
-| billing_interval | varchar(45) _NULL_ | Billing interval |
-| signup_fee | bigint unsigned | Signup fee in cents |
-| initial_tax_total | bigint unsigned | Initial tax total |
-| recurring_amount | bigint unsigned | Recurring amount |
-| recurring_tax_total | bigint unsigned | Recurring tax total |
-| recurring_total | bigint unsigned | Total recurring amount |
-| bill_times | bigint unsigned | Number of billing cycles |
-| bill_count | int unsigned | Current bill count |
-| expire_at | datetime _NULL_ | Expiration date |
-| trial_ends_at | datetime _NULL_ | Trial end date |
-| canceled_at | datetime _NULL_ | Cancellation date |
-| restored_at | datetime _NULL_ | Restoration date |
-| collection_method | enum | automatic, manual, system |
-| next_billing_date | datetime _NULL_ | Next billing date |
-| trial_days | int unsigned | Trial period in days |
-| vendor_customer_id | varchar(45) _NULL_ | Payment gateway customer ID |
-| vendor_plan_id | varchar(45) _NULL_ | Payment gateway plan ID |
-| vendor_subscription_id | varchar(45) _NULL_ | Payment gateway subscription ID |
-| status | varchar(45) _NULL_ | Subscription status |
-| original_plan | longtext _NULL_ | Original plan data |
-| vendor_response | longtext _NULL_ | Payment gateway response |
-| current_payment_method | varchar(45) _NULL_ | Current payment method |
-| config | json _NULL_ | Subscription configuration |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
-## fct\_product\_details Table
 
-This table stores product configuration and details
+## fct_product_variations Table
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| post_id | bigint unsigned | WordPress post ID |
-| fulfillment_type | varchar(100) _NULL_ | physical, digital, service, mixed |
-| min_price | double | Minimum price |
-| max_price | double | Maximum price |
-| default_variation_id | bigint unsigned _NULL_ | Default variation ID |
-| default_media | json _NULL_ | Default media configuration |
-| manage_stock | tinyint(1) _NULL_ | Stock management enabled |
-| stock_availability | varchar(100) _NULL_ | in-stock, out-of-stock, backorder |
-| variation_type | varchar(30) _NULL_ | simple, simple_variation, advance_variation |
-| manage_downloadable | tinyint(1) _NULL_ | Download management enabled |
-| other_info | json _NULL_ | Additional product information |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+This table stores product variations with pricing and inventory
+
+| Column              | Type                                  | Comment |
+|---------------------|---------------------------------------|---------|
+| id                  | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| post_id             | BIGINT(20) UNSIGNED NOT NULL          | WordPress post ID |
+| media_id            | BIGINT(20) UNSIGNED NULL              | Media attachment ID |
+| serial_index        | INT(5) NULL                           | Variation order |
+| sold_individually   | TINYINT(1) UNSIGNED NULL DEFAULT 0    | Sold individually flag |
+| variation_title     | VARCHAR(192) NOT NULL                 | Variation title |
+| variation_identifier| VARCHAR(100) NULL                     | SKU or identifier |
+| manage_stock        | TINYINT(1) NULL DEFAULT 0             | Stock management enabled |
+| payment_type        | VARCHAR(50) NULL                      | onetime, subscription |
+| stock_status        | VARCHAR(30) NULL DEFAULT 'out-of-stock'| in-stock, out-of-stock, backorder |
+| backorders          | TINYINT(1) UNSIGNED NULL DEFAULT 0    | Backorders allowed |
+| total_stock         | INT(11) NULL DEFAULT 0                | Total stock quantity |
+| on_hold             | INT(11) NULL DEFAULT 0                | Stock on hold |
+| committed           | INT(11) NULL DEFAULT 0                | Committed stock |
+| available           | INT(11) NULL DEFAULT 0                | Available stock |
+| fulfillment_type    | VARCHAR(100) NULL DEFAULT 'physical'  | physical, digital, service, mixed |
+| item_status         | VARCHAR(30) NULL DEFAULT 'active'     | active, inactive |
+| manage_cost         | VARCHAR(30) NULL DEFAULT 'false'      | Cost management enabled |
+| item_price          | double DEFAULT 0 NOT NULL             | Variation price |
+| item_cost           | double DEFAULT 0 NOT NULL             | Variation cost |
+| compare_price       | double DEFAULT 0 NULL                 | Compare at price |
+| shipping_class      | BIGINT(20) NULL                       | Shipping class ID |
+| other_info          | longtext NULL                         | Additional variation data |
+| downloadable        | VARCHAR(30) NULL DEFAULT 'false'      | Downloadable flag |
+| created_at          | DATETIME NULL                         | |
+| updated_at          | DATETIME NULL                         | |
+
+Indexes:
+- post_id
+- stock_status
+
+
+
+
+## fct_product_meta Table
+
+This table stores product metadata
+
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| object_id  | BIGINT UNSIGNED NOT NULL              | Reference to product |
+| object_type| VARCHAR(192) NULL                     | Object type |
+| meta_key   | VARCHAR(192) NOT NULL                 | Meta key |
+| meta_value | LONGTEXT NULL DEFAULT NULL            | Meta value |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
+
+Indexes:
+- meta_key
 
 ## fct\_product\_variations Table
 
@@ -408,83 +448,102 @@ This table stores coupon definitions and rules
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-## fct\_applied\_coupons Table
+
+
+## fct_applied_coupons Table
 
 This table stores applied coupons to orders
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | Reference to order |
-| coupon_id | bigint unsigned _NULL_ | Reference to coupon |
-| customer_id | bigint unsigned _NULL_ | Reference to customer |
-| code | varchar(100) | Coupon code |
-| amount | double | Discount amount |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| order_id     | BIGINT UNSIGNED NOT NULL              | Reference to order |
+| coupon_id    | BIGINT UNSIGNED NULL                  | Reference to coupon |
+| customer_id  | BIGINT UNSIGNED NULL                  | Reference to customer |
+| code         | VARCHAR(100) NOT NULL                 | Coupon code |
+| amount       | double NOT NULL                       | Discount amount |
+| created_at   | DATETIME NULL                         | |
+| updated_at   | DATETIME NULL                         | |
 
-## fct\_customer\_addresses Table
+Indexes:
+- code
+
+
+
+## fct_customer_addresses Table
 
 This table stores customer shipping and billing addresses
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| customer_id | bigint unsigned | Reference to customer |
-| is_primary | tinyint(1) | Primary address flag |
-| type | varchar(20) | billing, shipping |
-| status | varchar(20) | active, inactive |
-| label | varchar(50) | Address label |
-| name | varchar(192) _NULL_ | Address name |
-| address_1 | varchar(192) _NULL_ | Address line 1 |
-| address_2 | varchar(192) _NULL_ | Address line 2 |
-| city | varchar(192) _NULL_ | City |
-| state | varchar(192) _NULL_ | State |
-| phone | varchar(192) _NULL_ | Phone number |
-| email | varchar(192) _NULL_ | Email address |
-| postcode | varchar(32) _NULL_ | Postal code |
-| country | varchar(100) _NULL_ | Country |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| customer_id| BIGINT UNSIGNED NOT NULL              | Reference to customer |
+| is_primary | TINYINT(1) NOT NULL DEFAULT 0         | Primary address flag |
+| type       | VARCHAR(20) NOT NULL DEFAULT 'billing'| billing, shipping |
+| status     | VARCHAR(20) NOT NULL DEFAULT 'active' | active, inactive |
+| label      | VARCHAR(50) NOT NULL DEFAULT ''       | Address label |
+| name       | VARCHAR(192) NULL                     | Address name |
+| address_1  | VARCHAR(192) NULL                     | Address line 1 |
+| address_2  | VARCHAR(192) NULL                     | Address line 2 |
+| city       | VARCHAR(192) NULL                     | City |
+| state      | VARCHAR(192) NULL                     | State |
+| phone      | VARCHAR(192) NULL                     | Phone number |
+| email      | VARCHAR(192) NULL                     | Email address |
+| postcode   | VARCHAR(32) NULL                      | Postal code |
+| country    | VARCHAR(100) NULL                     | Country |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_customer\_meta Table
+Indexes:
+- customer_id, is_primary
+- type
+- status
+
+
+
+## fct_customer_meta Table
 
 This table stores customer metadata
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| customer_id | bigint unsigned _NULL_ | Reference to customer |
-| meta_key | varchar(192) _NULL_ | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| customer_id| BIGINT UNSIGNED NULL DEFAULT NULL     | Reference to customer |
+| meta_key   | VARCHAR(192) NULL DEFAULT NULL        | Meta key |
+| meta_value | LONGTEXT NULL DEFAULT NULL            | Meta value |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_carts Table
+Indexes:
+- meta_key
+- customer_id
+
+
+## fct_carts Table
 
 This table stores shopping cart data
 
-| Column | Type | Comment |
-|--------|------|---------|
-| customer_id | bigint unsigned _NULL_ | Reference to customer |
-| user_id | bigint unsigned _NULL_ | Reference to WordPress user |
-| order_id | bigint unsigned _NULL_ | Reference to order |
-| cart_hash | varchar(192) | Unique cart identifier |
-| checkout_data | longtext _NULL_ | Checkout form data |
-| cart_data | longtext _NULL_ | Cart contents |
-| utm_data | longtext _NULL_ | UTM tracking data |
-| coupons | longtext _NULL_ | Applied coupons |
-| first_name | varchar(192) _NULL_ | Customer first name |
-| last_name | varchar(192) _NULL_ | Customer last name |
-| email | varchar(192) _NULL_ | Customer email |
-| stage | varchar(30) _NULL_ | draft, pending, in-complete, completed |
-| cart_group | varchar(30) _NULL_ | Cart group |
-| user_agent | varchar(192) _NULL_ | User agent string |
-| ip_address | varchar(50) _NULL_ | IP address |
-| completed_at | timestamp _NULL_ | Completion timestamp |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-| deleted_at | timestamp _NULL_ | Soft delete timestamp |
+| Column         | Type                                  | Comment |
+|---------------|---------------------------------------|---------|
+| customer_id   | BIGINT(20) UNSIGNED NULL              | Reference to customer |
+| user_id       | BIGINT(20) UNSIGNED NULL              | Reference to WordPress user |
+| order_id      | BIGINT(20) UNSIGNED NULL              | Reference to order |
+| cart_hash     | VARCHAR(192) NOT NULL UNIQUE          | Unique cart identifier |
+| checkout_data | LONGTEXT NULL                         | Checkout form data |
+| cart_data     | LONGTEXT NULL                         | Cart contents |
+| utm_data      | LONGTEXT NULL                         | UTM tracking data |
+| coupons       | LONGTEXT NULL                         | Applied coupons |
+| first_name    | VARCHAR(192) NULL                     | Customer first name |
+| last_name     | VARCHAR(192) NULL                     | Customer last name |
+| email         | VARCHAR(192) NULL                     | Customer email |
+| stage         | VARCHAR(30) NULL DEFAULT 'draft'      | draft, pending, in-complete, completed |
+| cart_group    | VARCHAR(30) NULL DEFAULT 'global'     | Cart group |
+| user_agent    | VARCHAR(192) NULL                     | User agent string |
+| ip_address    | VARCHAR(50) NULL                      | IP address |
+| completed_at  | TIMESTAMP NULL                        | Completion timestamp |
+| created_at    | DATETIME NULL                         | |
+| updated_at    | DATETIME NULL                         | |
+| deleted_at    | TIMESTAMP NULL                        | Soft delete timestamp |
 
 ## fct\_product\_meta Table
 
@@ -500,60 +559,70 @@ This table stores product metadata
 | created_at | datetime _NULL_ | |
 | updated_at | datetime _NULL_ | |
 
-## fct\_product\_downloads Table
+
+## fct_product_downloads Table
 
 This table stores downloadable product files
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| post_id | bigint unsigned | WordPress post ID |
-| product_variation_id | longtext | Product variation ID |
-| download_identifier | varchar(100) | Unique download identifier |
-| title | varchar(192) _NULL_ | Download title |
-| type | varchar(100) _NULL_ | Download type |
-| driver | varchar(100) _NULL_ | Storage driver |
-| file_name | varchar(192) _NULL_ | File name |
-| file_path | text _NULL_ | File path |
-| file_url | text _NULL_ | File URL |
-| file_size | text _NULL_ | File size |
-| settings | text _NULL_ | Download settings |
-| serial | int _NULL_ | Serial number |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column               | Type                                  | Comment |
+|----------------------|---------------------------------------|---------|
+| id                   | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| post_id              | BIGINT(20) UNSIGNED NOT NULL          | WordPress post ID |
+| product_variation_id | longtext NOT NULL                     | Product variation ID |
+| download_identifier  | VARCHAR(100) NOT NULL UNIQUE          | Unique download identifier |
+| title                | VARCHAR(192) NULL                     | Download title |
+| type                 | VARCHAR(100) NULL                     | Download type |
+| driver               | VARCHAR(100) NULL DEFAULT 'local'     | Storage driver |
+| file_name            | VARCHAR(192) NULL                     | File name |
+| file_path            | TEXT NULL                             | File path |
+| file_url             | TEXT NULL                             | File URL |
+| file_size            | TEXT NULL                             | File size |
+| settings             | TEXT NULL                             | Download settings |
+| serial               | INT NULL                              | Serial number |
+| created_at           | DATETIME NULL                         | |
+| updated_at           | DATETIME NULL                         | |
 
-## fct\_subscription\_meta Table
+
+## fct_subscription_meta Table
 
 This table stores subscription metadata
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| subscription_id | bigint unsigned _NULL_ | Reference to subscription |
-| meta_key | varchar(192) _NULL_ | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column            | Type                                  | Comment |
+|-------------------|---------------------------------------|---------|
+| id                | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| subscription_id   | BIGINT UNSIGNED NULL DEFAULT NULL     | Reference to subscription |
+| meta_key          | VARCHAR(192) NULL DEFAULT NULL        | Meta key |
+| meta_value        | LONGTEXT NULL DEFAULT NULL            | Meta value |
+| created_at        | DATETIME NULL                         | |
+| updated_at        | DATETIME NULL                         | |
 
-## fct\_activity Table
+Indexes:
+- subscription_id
+- meta_key
+
+
+## fct_activity Table
 
 This table stores system activity and audit logs
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| status | varchar(20) | success, warning, failed, info |
-| log_type | varchar(20) | activity, api |
-| module_type | varchar(100) | Full model path |
-| module_id | bigint _NULL_ | Related record ID |
-| module_name | varchar(192) | order, product, user, coupon, subscription, payment, refund, shipment, activity |
-| user_id | bigint unsigned _NULL_ | User who performed action |
-| title | varchar(192) _NULL_ | Activity title |
-| content | longtext _NULL_ | Activity description |
-| read_status | varchar(20) | read, unread |
-| created_by | varchar(100) | Creator identifier |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| status       | VARCHAR(20) NOT NULL DEFAULT 'info'   | success / warning / failed / info |
+| log_type     | VARCHAR(20) NOT NULL DEFAULT 'activity'| activity, api |
+| module_type  | VARCHAR(100) NOT NULL DEFAULT 'order' | Full model path |
+| module_id    | BIGINT NULL                           | Related record ID |
+| module_name  | VARCHAR(192) NOT NULL DEFAULT 'order' | order, product, user, coupon, subscription, payment, refund, shipment, activity |
+| user_id      | BIGINT UNSIGNED NULL                  | User who performed action |
+| title        | VARCHAR(192) NULL                     | Activity title |
+| content      | LONGTEXT NULL                         | Activity description |
+| read_status  | VARCHAR(20) NOT NULL DEFAULT 'unread' | read, unread |
+| created_by   | VARCHAR(100) NOT NULL DEFAULT 'FCT-BOT'| Creator identifier |
+| created_at   | DATETIME NULL                         | |
+| updated_at   | DATETIME NULL                         | |
+
+Indexes:
+- module_id
 
 ## fct\_licenses Table (Pro Plugin)
 
@@ -613,251 +682,276 @@ This table stores license site management
 | created_at | timestamp _NULL_ | |
 | updated_at | timestamp _NULL_ | |
 
-## fct\_shipping\_zones Table
+
+## fct_shipping_zones Table
 
 This table stores shipping zones configuration
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| name | varchar(192) | Zone name |
-| regions | longtext _NULL_ | Zone regions (JSON) |
-| order | int unsigned | Display order |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| name       | VARCHAR(192) NOT NULL                 | Zone name |
+| regions    | LONGTEXT NULL                         | Zone regions (JSON) |
+| order      | INT UNSIGNED NOT NULL DEFAULT 0       | Display order |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_shipping\_methods Table
+Indexes:
+- order
+
+
+## fct_shipping_methods Table
 
 This table stores shipping methods within zones
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| zone_id | bigint unsigned | Reference to shipping zone |
-| title | varchar(192) | Method title |
-| type | varchar(50) | Method type |
-| settings | longtext _NULL_ | Method settings |
-| is_enabled | tinyint(1) | Enabled flag |
-| amount | bigint unsigned _NULL_ | Shipping amount |
-| order | int unsigned | Display order |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| zone_id    | BIGINT UNSIGNED NOT NULL              | Reference to shipping zone |
+| title      | VARCHAR(192) NOT NULL                 | Method title |
+| type       | VARCHAR(50) NOT NULL                  | Method type |
+| settings   | LONGTEXT NULL                         | Method settings |
+| is_enabled | TINYINT(1) NOT NULL DEFAULT 1         | Enabled flag |
+| amount     | BIGINT UNSIGNED NULL DEFAULT 0        | Shipping amount |
+| order      | INT UNSIGNED NOT NULL DEFAULT 0       | Display order |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_shipping\_classes Table
+Indexes:
+- zone_id
+- order
+
+
+## fct_shipping_classes Table
 
 This table stores shipping classes
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| name | varchar(192) | Class name |
-| cost | decimal(10,2) | Shipping cost |
-| per_item | tinyint(1) | Per item flag |
-| type | varchar(20) | Class type |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| name       | VARCHAR(192) NOT NULL                 | Class name |
+| cost       | DECIMAL(10,2) NOT NULL DEFAULT 0.00   | Shipping cost |
+| per_item   | TINYINT(1) NOT NULL DEFAULT 0         | Per item flag |
+| type       | VARCHAR(20) NOT NULL DEFAULT 'fixed'  | Class type |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_tax\_classes Table
+Indexes:
+- name
 
-This table stores tax classes
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| title | varchar(192) _NULL_ | Class title |
-| slug | varchar(100) _NULL_ | Class slug |
-| description | longtext _NULL_ | Class description |
-| meta | json _NULL_ | Class metadata |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
-## fct\_tax\_rates Table
+## fct_tax_rates Table
 
 This table stores tax rate configurations
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| class_id | bigint unsigned | Tax class ID |
-| country | varchar(45) _NULL_ | Country code |
-| state | varchar(45) _NULL_ | State code |
-| postcode | text _NULL_ | Postal code (supports ranges) |
-| city | varchar(45) _NULL_ | City |
-| rate | varchar(45) _NULL_ | Tax rate |
-| name | varchar(45) _NULL_ | Tax name |
-| group | varchar(45) _NULL_ | Tax group |
-| priority | int unsigned _NULL_ | Priority |
-| is_compound | tinyint unsigned _NULL_ | Compound tax flag |
-| for_shipping | tinyint unsigned _NULL_ | Apply to shipping |
-| for_order | tinyint unsigned _NULL_ | Apply to order |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| class_id     | BIGINT UNSIGNED NOT NULL              | Tax class ID |
+| country      | VARCHAR(45) NULL                      | Country code |
+| state        | VARCHAR(45) NULL                      | State code |
+| postcode     | TEXT NULL                             | Postal code (supports ranges) |
+| city         | VARCHAR(45) NULL                      | City |
+| rate         | VARCHAR(45) NULL                      | Tax rate |
+| name         | VARCHAR(45) NULL                      | Tax name |
+| group        | VARCHAR(45) NULL                      | Tax group |
+| priority     | INT UNSIGNED NULL DEFAULT 1           | Priority |
+| is_compound  | TINYINT UNSIGNED NULL DEFAULT 0       | Compound tax flag |
+| for_shipping | TINYINT UNSIGNED NULL DEFAULT 0       | Apply to shipping |
+| for_order    | TINYINT UNSIGNED NULL DEFAULT 0       | Apply to order |
 
-## fct\_meta Table
+Indexes:
+- class_id
+- priority
+
+
+## fct_meta Table
 
 This table stores generic metadata for various objects
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| object_type | varchar(50) | Object type |
-| object_id | bigint _NULL_ | Object ID |
-| meta_key | varchar(192) | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| object_type  | VARCHAR(50) NOT NULL                  | Object type |
+| object_id    | BIGINT NULL                           | Object ID |
+| meta_key     | VARCHAR(192) NOT NULL                 | Meta key |
+| meta_value   | LONGTEXT NULL                         | Meta value |
+| created_at   | DATETIME NULL                         | |
+| updated_at   | DATETIME NULL                         | |
+
+Indexes:
+- object_type
+- object_id
 
 
-## fct\_email\_notifications Table
 
-This table stores email notification templates and settings
+<!-- Email notifications table migration file not found. Section removed for accuracy. -->
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| title | varchar(200) | Notification title |
-| events | json _NULL_ | Trigger events |
-| to | json _NULL_ | Recipient configuration |
-| from | varchar(255) | Sender email |
-| cc | varchar(255) _NULL_ | CC recipients |
-| subject | varchar(255) | Email subject |
-| enabled | varchar(3) | yes, no |
-| content | text | Email content |
-| path | varchar(200) | Template path |
-| to_email | longtext | Email recipients |
-| created_at | timestamp _NULL_ | |
-| updated_at | timestamp _NULL_ | |
 
-## fct\_label Table
+## fct_label Table
 
 This table stores labels for tagging objects
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| value | varchar(192) | Label value (unique) |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| value      | VARCHAR(192) NOT NULL UNIQUE          | Label value (unique) |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_order\_meta Table
+
+## fct_order_meta Table
 
 This table stores order metadata
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint _NULL_ | Reference to order |
-| key | varchar(192) | Meta key |
-| value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| order_id   | BIGINT(20) NULL                       | Reference to order |
+| meta_key   | VARCHAR(192) NOT NULL                 | Meta key |
+| meta_value | LONGTEXT NULL                         | Meta value |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
+
+Indexes:
+- order_id
 
 
-## fct\_order\_tax\_rate Table
+
+## fct_order_tax_rate Table
 
 This table stores order tax rate information
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| order_id | bigint unsigned | Reference to order |
-| tax_rate_id | bigint unsigned | Reference to tax rate |
-| tax_amount | bigint | Tax amount in cents |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| order_id     | BIGINT(20) UNSIGNED NOT NULL          | Reference to order |
+| tax_rate_id  | BIGINT(20) UNSIGNED NOT NULL          | Reference to tax rate |
+| shipping_tax | BIGINT NULL                           | Shipping tax amount |
+| order_tax    | BIGINT NULL                           | Order tax amount |
+| total_tax    | BIGINT NULL                           | Total tax amount |
+| meta         | JSON DEFAULT NULL                     | Tax meta data |
+| filed_at     | DATETIME NULL                         | Filed at |
+| created_at   | DATETIME NULL                         | |
+| updated_at   | DATETIME NULL                         | |
 
-## fct\_webhook\_logger Table
+
+## fct_webhook_logger Table
 
 This table stores webhook delivery logs and status
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| source | varchar(20) | Webhook source |
-| event_type | varchar(100) | Event type |
-| payload | longtext _NULL_ | Webhook payload |
-| status | varchar(20) | pending, sent, failed |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| source     | VARCHAR(20) NOT NULL                  | Webhook source |
+| event_type | VARCHAR(100) NOT NULL                 | Event type |
+| payload    | LONGTEXT NULL                         | Webhook payload |
+| status     | VARCHAR(20) NOT NULL DEFAULT 'pending'| pending, sent, failed |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_scheduled\_actions Table
+
+## fct_scheduled_actions Table
 
 This table stores background job scheduling and execution
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| scheduled_at | datetime _NULL_ | When to run the action |
-| action | varchar(192) _NULL_ | Action to perform |
-| status | varchar(20) _NULL_ | pending, processing, completed, failed |
-| group | varchar(100) _NULL_ | order, subscription |
-| object_id | bigint unsigned _NULL_ | Related object ID |
-| object_type | varchar(100) _NULL_ | Object type |
-| completed_at | timestamp _NULL_ | When action was completed |
-| retry_count | int unsigned | Number of retries |
-| data | json _NULL_ | Action data |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-| response_note | longtext _NULL_ | Response or error message |
+| Column        | Type                                  | Comment |
+|--------------|---------------------------------------|---------|
+| id           | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| scheduled_at | DATETIME NULL                         | When to run the action |
+| action       | VARCHAR(192) NULL                     | Action to perform |
+| status       | VARCHAR(20) NULL                      | pending, processing, completed, failed |
+| group        | VARCHAR(100) NULL                     | order, subscription |
+| object_id    | BIGINT UNSIGNED NULL DEFAULT NULL     | Related object ID |
+| object_type  | VARCHAR(100) NULL DEFAULT NULL        | Object type |
+| completed_at | TIMESTAMP NULL                        | When action was completed |
+| retry_count  | INT UNSIGNED DEFAULT 0                | Number of retries |
+| data         | JSON NULL                             | Action data |
+| created_at   | DATETIME NULL                         | |
+| updated_at   | DATETIME NULL                         | |
+| response_note| LONGTEXT NULL                         | Response or error message |
+
+Indexes:
+- scheduled_at
+- status
 
 
 
 
 
-## fct\_atts\_groups Table
+
+## fct_atts_groups Table
 
 This table stores attribute groups for product attributes
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| title | varchar(192) | Group title |
-| slug | varchar(192) | Group slug |
-| description | longtext _NULL_ | Group description |
-| settings | longtext _NULL_ | Group settings |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| title      | VARCHAR(192) NOT NULL UNIQUE           | Group title |
+| slug       | VARCHAR(192) NOT NULL UNIQUE           | Group slug |
+| description| LONGTEXT NULL                          | Group description |
+| settings   | LONGTEXT NULL                          | Group settings |
+| created_at | DATETIME NULL                          | |
+| updated_at | DATETIME NULL                          | |
 
-## fct\_atts\_terms Table
+
+## fct_atts_terms Table
 
 This table stores attribute terms within groups
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| group_id | bigint unsigned | Reference to attribute group |
-| serial | int unsigned | Term order |
-| title | varchar(192) | Term title |
-| slug | varchar(192) | Term slug |
-| description | longtext _NULL_ | Term description |
-| settings | longtext _NULL_ | Term settings |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| group_id   | BIGINT(20) UNSIGNED                   | Reference to attribute group |
+| serial     | INT(11) UNSIGNED                      | Term order |
+| title      | VARCHAR(192) NOT NULL                 | Term title |
+| slug       | VARCHAR(192) NOT NULL                 | Term slug |
+| description| LONGTEXT NULL                         | Term description |
+| settings   | LONGTEXT NULL                         | Term settings |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
 
-## fct\_atts\_relations Table
+Indexes:
+- group_id
+
+
+## fct_atts_relations Table
 
 This table stores relationships between attributes and objects
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| group_id | bigint unsigned | Reference to attribute group |
-| term_id | bigint unsigned | Reference to attribute term |
-| object_id | bigint unsigned | Related object ID |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| group_id   | BIGINT(20) UNSIGNED NOT NULL           | Reference to attribute group |
+| term_id    | BIGINT(20) UNSIGNED NOT NULL           | Reference to attribute term |
+| object_id  | BIGINT(20) UNSIGNED NOT NULL           | Related object ID |
+| created_at | DATETIME NULL                          | |
+| updated_at | DATETIME NULL                          | |
+
+Indexes:
+- group_id
+- term_id
+- object_id
 
 
-## fct\_label\_relationships Table
+
+## fct_label_relationships Table
 
 This table stores polymorphic relationships between labels and objects
 
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| label_id | bigint | Reference to label |
-| labelable_id | bigint | Related object ID |
-| labelable_type | varchar(192) | Object type |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
+| Column           | Type                                  | Comment |
+|------------------|---------------------------------------|---------|
+| id               | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| label_id         | BIGINT(20) NOT NULL                   | Reference to label |
+| labelable_id     | BIGINT(20) NOT NULL                   | Related object ID |
+| labelable_type   | VARCHAR(192) NOT NULL                 | Object type |
+| created_at       | DATETIME NULL                         | |
+| updated_at       | DATETIME NULL                         | |
+
+Indexes:
+- label_id
+- labelable_id
 
 ## fct\_scheduled\_actions Table
 
