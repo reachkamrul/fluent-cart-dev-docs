@@ -77,8 +77,6 @@ This filter is applied during coupon validation for each cart item, allowing you
             'image',
             'options',
             'cart_item_id',
-            'other_info',
-        ],
         'coupon' => [
             'id',
             'parent',
@@ -126,7 +124,6 @@ add_filter('fluent_cart/coupon/will_skip_item', function($willSkip, $data) {
 <summary><strong>`fluent_cart_form_disable_stripe_connect`</strong> &mdash; Filter whether to disable Stripe Connect</summary>
 
 **When it runs:**
-This filter is applied when determining whether to enable or disable Stripe Connect as a payment method in the checkout or settings UI.
 
 **Parameters:**
 
@@ -137,15 +134,41 @@ This filter is applied when determining whether to enable or disable Stripe Conn
         'user' => [
             'ID',
             'user_login',
+            'user_pass',
+            'user_nicename',
             'user_email',
+            'user_url',
+            'user_registered',
+            'user_activation_key',
+            'user_status',
+            'display_name',
             'roles',
-            // ...other WP_User fields
+            'allcaps',
+            'filter',
         ],
-        'cart' => [ /* Cart object, see Cart model for keys */ ],
+        'cart' => [
+            'id',
+            'items',
+            'total',
+            'subtotal',
+            'tax',
+            'discount',
+            'fees',
+            'shipping_total',
+            'currency',
+            'customer_id',
+            'created_at',
+            'updated_at',
+            'meta',
+        ],
         'environment' => [
             'is_admin',
+            'is_ajax',
             'site_url',
-            // ...other environment info
+            'home_url',
+            'current_user_id',
+            'request_ip',
+            'user_agent',
         ]
     ];
     ```
@@ -180,9 +203,25 @@ This filter is applied when FluentCart determines the PayPal plan ID to use for 
     ```php
     $data = [
         'subscription' => [
-            'billing_cycle' => 'yearly',
-            'product_id'    => 123,
-            // ...
+            'id',
+            'status',
+            'user_id',
+            'product_id',
+            'billing_cycle',
+            'interval',
+            'interval_count',
+            'trial_days',
+            'start_date',
+            'end_date',
+            'next_payment_date',
+            'total_cycles',
+            'completed_cycles',
+            'amount',
+            'currency',
+            'payment_method',
+            'meta',
+            'created_at',
+            'updated_at',
         ]
     ];
     ```
@@ -214,10 +253,39 @@ This filter is applied when FluentCart enqueues the PayPal SDK script, allowing 
 **Parameters:**
 
 - `$sdkSrc` (string): The current PayPal SDK source URL
-- `$data` (array): Contextual data (may include environment, payment method, etc.)
+- `$data` (array): Contextual data. Example structure:
+    ```php
+    $data = [
+        'payment_method' => 'paypal',
+        'environment' => [
+            'is_admin',
+            'is_ajax',
+            'site_url',
+            'home_url',
+            'current_user_id',
+            'request_ip',
+            'user_agent',
+        ],
+        'cart' => [
+            'id',
+            'items',
+            'total',
+            'subtotal',
+            'tax',
+            'discount',
+            'fees',
+            'shipping_total',
+            'currency',
+            'customer_id',
+            'created_at',
+            'updated_at',
+            'meta',
+        ]
+    ];
+    ```
 
 **Returns:**
-- (string): The modified SDK source URL
+- `$sdkSrc` (string): The modified SDK source URL
 
 **Usage:**
 ```php
@@ -245,13 +313,31 @@ This filter is applied when generating the management or view URL for a subscrip
     ```php
     $data = [
         'subscription' => [
-            'id'             => 123,
-            'status'         => 'active',
-            'payment_method' => 'stripe',
-            // ...
+            'id',
+            'status',
+            'user_id',
+            'product_id',
+            'billing_cycle',
+            'interval',
+            'interval_count',
+            'trial_days',
+            'start_date',
+            'end_date',
+            'next_payment_date',
+            'total_cycles',
+            'completed_cycles',
+            'amount',
+            'currency',
+            'payment_method',
+            'meta',
+            'created_at',
+            'updated_at',
         ]
     ];
     ```
+
+**Returns:**
+- `$url` (string): The modified subscription URL
 
 **Returns:**
 - (string): The modified subscription URL
@@ -281,12 +367,32 @@ This filter is applied when checking if a cancelled subscription is eligible for
     ```php
     $data = [
         'subscription' => [
-            'status'       => 'cancelled',
-            'cancelled_at' => 1696200000,
-            // ...
+            'id',
+            'status',
+            'user_id',
+            'product_id',
+            'billing_cycle',
+            'interval',
+            'interval_count',
+            'trial_days',
+            'start_date',
+            'end_date',
+            'next_payment_date',
+            'total_cycles',
+            'completed_cycles',
+            'amount',
+            'currency',
+            'payment_method',
+            'cancelled_at',
+            'meta',
+            'created_at',
+            'updated_at',
         ]
     ];
     ```
+
+**Returns:**
+- `$canReactivate` (bool): Whether to allow reactivation
 
 **Returns:**
 - (bool): Whether to allow reactivation
@@ -319,7 +425,7 @@ This filter is applied when a new order is created, allowing you to control whet
 - `$create` (bool): Whether to create a receipt number (default logic result)
 
 **Returns:**
-- (bool): Whether to create a receipt number for the order
+- `$create` (bool): Whether to create a receipt number for the order
 
 **Usage:**
 ```php
@@ -338,26 +444,46 @@ add_filter('fluent_cart/create_receipt_number_on_order_create', function($create
 This filter is applied when preparing the downloadable files for a specific order, allowing you to add, remove, or modify download data for the order.
 
 
+
 **Parameters:**
 
 - `$downloadData` (array): The current download data for the order
     ```php
     $downloadData = [
         'file_id' => [
-            'name' => 'File Name',
-            'url'  => 'https://...'
+            'name',
+            'url',
+            'size',
+            'type',
+            'expires_at',
+            'download_count',
+            'max_downloads',
         ]
     ];
     ```
 - `$data` (array): Contextual data
     ```php
     $data = [
-        'order' => [ /* order object or array */ ]
+        'order' => [
+            'id',
+            'customer_id',
+            'status',
+            'total',
+            'subtotal',
+            'tax',
+            'discount',
+            'shipping_total',
+            'currency',
+            'created_at',
+            'updated_at',
+            'items',
+            'meta',
+        ]
     ];
     ```
 
 **Returns:**
-- (array): The modified download data array
+- `$downloadData` (array): The modified download data array
 
 **Usage:**
 ```php
@@ -383,6 +509,7 @@ add_filter('fluent_cart/single_order_downloads', function($downloadData, $data) 
 This filter is applied when generating the management or view URL for a transaction, allowing you to customize the URL for each payment method (e.g., Stripe, PayPal).
 
 
+
 **Parameters:**
 
 - `$url` (string): The current transaction URL
@@ -390,12 +517,22 @@ This filter is applied when generating the management or view URL for a transact
     ```php
     $data = [
         'transaction' => [
-            'transaction_id' => 'txn_123',
-            'payment_method' => 'stripe',
-            // ...
+            'id',
+            'transaction_id',
+            'order_id',
+            'payment_method',
+            'status',
+            'amount',
+            'currency',
+            'created_at',
+            'updated_at',
+            'meta',
         ]
     ];
     ```
+
+**Returns:**
+- `$url` (string): The modified transaction URL
 
 **Returns:**
 - (string): The modified transaction URL
@@ -418,6 +555,7 @@ add_filter('fluent_cart/transaction/url_stripe', function($url, $data) {
 This filter is applied when generating the URL for the transaction receipt page, allowing you to customize the receipt page URL for a transaction.
 
 
+
 **Parameters:**
 
 - `$url` (string): The current receipt page URL
@@ -425,12 +563,22 @@ This filter is applied when generating the URL for the transaction receipt page,
     ```php
     $data = [
         'transaction' => [
-            'id'       => 123,
-            'order_id' => 456,
-            // ...
+            'id',
+            'transaction_id',
+            'order_id',
+            'payment_method',
+            'status',
+            'amount',
+            'currency',
+            'created_at',
+            'updated_at',
+            'meta',
         ]
     ];
     ```
+
+**Returns:**
+- `$url` (string): The modified receipt page URL
 
 **Returns:**
 - (string): The modified receipt page URL
@@ -458,10 +606,38 @@ This filter is applied when generating the FluentCart admin menu title, allowing
 **Parameters:**
 
 - `$title` (string): The current admin menu title
-- `$data` (array): Contextual data (may include user, settings, etc.)
+- `$data` (array): Contextual data. Example structure:
+    ```php
+    $data = [
+        'user' => [
+            'ID',
+            'user_login',
+            'user_pass',
+            'user_nicename',
+            'user_email',
+            'user_url',
+            'user_registered',
+            'user_activation_key',
+            'user_status',
+            'display_name',
+            'roles',
+            'allcaps',
+            'filter',
+        ],
+        'settings' => [
+            'currency',
+            'tax_enabled',
+            'shipping_enabled',
+            'store_name',
+            'store_email',
+            'store_address',
+            'meta',
+        ]
+    ];
+    ```
 
 **Returns:**
-- (string): The modified admin menu title
+- `$title` (string): The modified admin menu title
 
 **Usage:**
 ```php
@@ -483,10 +659,38 @@ This filter is applied when generating the base URL for FluentCart admin pages, 
 **Parameters:**
 
 - `$url` (string): The current admin base URL
-- `$data` (array): Contextual data (may include user, settings, etc.)
+- `$data` (array): Contextual data. Example structure:
+    ```php
+    $data = [
+        'user' => [
+            'ID',
+            'user_login',
+            'user_pass',
+            'user_nicename',
+            'user_email',
+            'user_url',
+            'user_registered',
+            'user_activation_key',
+            'user_status',
+            'display_name',
+            'roles',
+            'allcaps',
+            'filter',
+        ],
+        'settings' => [
+            'currency',
+            'tax_enabled',
+            'shipping_enabled',
+            'store_name',
+            'store_email',
+            'store_address',
+            'meta',
+        ]
+    ];
+    ```
 
 **Returns:**
-- (string): The modified admin base URL
+- `$url` (string): The modified admin base URL
 
 **Usage:**
 ```php
@@ -511,15 +715,42 @@ This filter is applied when generating the available filter options in the Fluen
     ```php
     $options = [
         'filter_key' => [
-            'label'   => 'Label',
-            'options' => ['option1', 'option2']
+            'label',
+            'options',
+            'default',
+            'description',
+            'type',
         ]
     ];
     ```
-- `$data` (array): Contextual data (may include user, context, etc.)
+- `$data` (array): Contextual data. Example structure:
+    ```php
+    $data = [
+        'user' => [
+            'ID',
+            'user_login',
+            'user_pass',
+            'user_nicename',
+            'user_email',
+            'user_url',
+            'user_registered',
+            'user_activation_key',
+            'user_status',
+            'display_name',
+            'roles',
+            'allcaps',
+            'filter',
+        ],
+        'context' => [
+            'screen',
+            'section',
+            'meta',
+        ]
+    ];
+    ```
 
 **Returns:**
-- (array): The modified filter options array
+- `$options` (array): The modified filter options array
 
 **Usage:**
 ```php
@@ -544,19 +775,38 @@ add_filter('fluent_cart/admin_filter_options', function($options, $data) {
 This filter is applied when determining the maximum quantity allowed for a cart item, allowing you to set custom quantity limits per product or variation.
 
 
+
 **Parameters:**
 
 - `$quantity` (int): The current maximum quantity allowed
 - `$data` (array): Contextual data
     ```php
     $data = [
-        'variation' => [ /* variation data */ ],
-        'product'   => [ 'id' => 123, 'name' => 'Product Name' ]
+        'variation' => [
+            'id',
+            'sku',
+            'price',
+            'stock',
+            'attributes',
+            'image',
+            'meta',
+        ],
+        'product' => [
+            'id',
+            'name',
+            'sku',
+            'price',
+            'stock',
+            'type',
+            'categories',
+            'image',
+            'meta',
+        ]
     ];
     ```
 
 **Returns:**
-- (int): The modified maximum quantity
+- `$quantity` (int): The modified maximum quantity
 
 **Usage:**
 ```php
@@ -765,17 +1015,19 @@ This filter is applied when retrieving the list of available order statuses, all
 
 **Parameters:**
 
-- `$statuses` (array): The current order statuses array
+- `$statuses` (array): The current order statuses array. Example structure:
     ```php
     $statuses = [
-        'pending' => 'Pending',
-        'custom_status' => 'Custom Status',
-        // ...
+        'processing' => 'Processing',
+        'completed'  => 'Completed',
+        'on-hold'    => 'On Hold',
+        'canceled'   => 'Canceled',
+        'failed'     => 'Failed',
     ];
     ```
 
 **Returns:**
-- (array): The modified order statuses array
+- `$statuses` (array): The modified order statuses array
 
 **Usage:**
 ```php
@@ -797,10 +1049,18 @@ This filter is applied when retrieving the list of order statuses that can be ed
 
 **Parameters:**
 
-- `$statuses` (array): The current editable order statuses array
+- `$statuses` (array): The current editable order statuses array. Example structure:
+    ```php
+    $statuses = [
+        'on-hold'    => 'On Hold',
+        'processing' => 'Processing',
+        'completed'  => 'Completed',
+        'canceled'   => 'Canceled',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified editable order statuses array
+- `$statuses` (array): The modified editable order statuses array
 
 **Usage:**
 ```php
@@ -822,10 +1082,16 @@ This filter is applied when retrieving the list of customer statuses that can be
 
 **Parameters:**
 
-- `$statuses` (array): The current editable customer statuses array
+- `$statuses` (array): The current editable customer statuses array. Example structure:
+    ```php
+    $statuses = [
+        'active'   => 'Active',
+        'inactive' => 'Inactive',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified editable customer statuses array
+- `$statuses` (array): The modified editable customer statuses array
 
 **Usage:**
 ```php
@@ -847,10 +1113,18 @@ This filter is applied when retrieving the list of available shipping statuses, 
 
 **Parameters:**
 
-- `$statuses` (array): The current shipping statuses array
+- `$statuses` (array): The current shipping statuses array. Example structure:
+    ```php
+    $statuses = [
+        'unshipped'   => 'Unhipped',
+        'shipped'     => 'Shipped',
+        'delivered'   => 'Delivered',
+        'unshippable' => 'Unshippable',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified shipping statuses array
+- `$statuses` (array): The modified shipping statuses array
 
 **Usage:**
 ```php
@@ -872,10 +1146,20 @@ This filter is applied when retrieving the list of available transaction statuse
 
 **Parameters:**
 
-- `$statuses` (array): The current transaction statuses array
+- `$statuses` (array): The current transaction statuses array. Example structure:
+    ```php
+    $statuses = [
+        'pending'         => 'Pending',
+        'paid'            => 'Paid',
+        'require_capture' => 'Authorized (Require Capture)',
+        'failed'          => 'Failed',
+        'refunded'        => 'Refunded',
+        'active'          => 'Active',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified transaction statuses array
+- `$statuses` (array): The modified transaction statuses array
 
 **Usage:**
 ```php
@@ -897,10 +1181,18 @@ This filter is applied when retrieving the list of transaction statuses that can
 
 **Parameters:**
 
-- `$statuses` (array): The current editable transaction statuses array
+- `$statuses` (array): The current editable transaction statuses array. Example structure:
+    ```php
+    $statuses = [
+        'pending'   => 'Pending',
+        'succeeded' => 'Succeeded',
+        'failed'    => 'Failed',
+        'refunded'  => 'Refunded',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified editable transaction statuses array
+- `$statuses` (array): The modified editable transaction statuses array
 
 **Usage:**
 ```php
@@ -922,10 +1214,17 @@ This filter is applied when retrieving the list of available coupon statuses, al
 
 **Parameters:**
 
-- `$statuses` (array): The current coupon statuses array
+- `$statuses` (array): The current coupon statuses array. Example structure:
+    ```php
+    $statuses = [
+        'active'   => 'Active',
+        'expired'  => 'Expired',
+        'disabled' => 'Disabled',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified coupon statuses array
+- `$statuses` (array): The modified coupon statuses array
 
 **Usage:**
 ```php
@@ -949,17 +1248,29 @@ This filter is applied when retrieving the list of available currencies, allowin
 
 **Parameters:**
 
-- `$currencies` (array): The current available currencies array
+- `$currencies` (array): The current available currencies array. Example structure:
     ```php
     $currencies = [
-        'USD' => 'US Dollar',
-        'BTC' => 'Bitcoin',
-        // ...
+        'BDT' => [
+            'label'  => 'Bangladeshi Taka',
+            'value'  => 'BDT',
+            'symbol' => '৳',
+        ],
+        'USD' => [
+            'label'  => 'United State Dollar',
+            'value'  => 'USD',
+            'symbol' => '$',
+        ],
+        'GBP' => [
+            'label'  => 'United Kingdom',
+            'value'  => 'GBP',
+            'symbol' => '£',
+        ],
     ];
     ```
 
 **Returns:**
-- (array): The modified available currencies array
+- `$currencies` (array): The modified available currencies array
 
 **Usage:**
 ```php
@@ -981,17 +1292,19 @@ This filter is applied when retrieving the list of available countries, allowing
 
 **Parameters:**
 
-- `$countries` (array): The current available countries array
+- `$countries` (array): The current available countries array. Example structure:
     ```php
     $countries = [
-        'US' => 'United States',
-        'XX' => 'Custom Country',
+        'AF' => 'Afghanistan',
+        'AX' => 'Åland Islands',
+        'AL' => 'Albania',
+        'DZ' => 'Algeria',
         // ...
     ];
     ```
 
 **Returns:**
-- (array): The modified available countries array
+- `$countries` (array): The modified available countries array
 
 **Usage:**
 ```php
