@@ -7,352 +7,721 @@ description: FluentCart action hooks documentation with complete reference and u
 
 Action hooks allow you to execute custom code at specific points in FluentCart's execution flow. They are perfect for triggering side effects, sending notifications, logging events, or performing custom business logic.
 
+
 ## Core Action Hooks
 
 ### Order Lifecycle Hooks
 
-#### `fluent_cart/order/invoice_number_added`
-**Description:** Fired when an invoice number is added to an order  
-**Parameters:** `$data` (array) - Contains order information  
-**Priority:** 10  
-**Use Case:** Track invoice generation, send notifications
+
+<details>
+<summary><strong>fluent_cart/order_fully_refunded</strong></summary>
+
+This action runs when an order is fully refunded.
+
+**Parameters**
+
+- <code>$data</code> (array): Order and refund information
+
+**Usage:**
 
 ```php
-add_action('fluent_cart/order/invoice_number_added', function($data) {
-    $order = $data['order'];
-    // Send invoice notification
-    wp_mail($order->customer->email, 'Invoice Generated', 'Your invoice #' . $order->invoice_no . ' has been generated');
+add_action('fluent_cart/order_fully_refunded', function($data) {
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/order_partially_refunded</strong></summary>
+
+This action runs when an order is partially refunded.
+
+**Parameters**
+
+- <code>$data</code> (array): Order and refund information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/order_partially_refunded', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/order_paid</strong></summary>
+
+This action runs when an order is paid.
+
+**Parameters**
+
+- <code>$data</code> (array): Order and payment information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/order_paid', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/order_refunded</strong></summary>
+
+This action runs when an order is refunded (full or partial).
+
+**Parameters**
+
+- <code>$data</code> (array): Order and refund information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/order_refunded', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/order/upgraded</strong></summary>
+
+This action runs when an order is upgraded.
+
+**Parameters**
+
+- <code>$data</code> (array): Order upgrade information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/order/upgraded', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/cart_completed</strong></summary>
+
+This action runs when a cart is completed (order placed).
+
+**Parameters**
+
+- <code>$data</code> (array): Cart and order information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/cart_completed', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
 
 ### Payment Hooks
 
-#### `fluent_cart/payment_success`
-**Description:** Fired when a payment is successfully processed  
-**Parameters:** `$data` (array) - Payment and order information  
-**Priority:** 10  
-**Use Case:** Send confirmation emails, update external systems
+
+<details>
+<summary><strong>fluent_cart/payment_success</strong></summary>
+
+This action runs when a payment is successfully processed.
+
+**Parameters**
+
+- <code>$data</code> (array): Payment and order information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/payment_success', function($data) {
-    $order = $data['order'];
-    $transaction = $data['transaction'];
-    
-    // Send payment confirmation
-    wp_mail($order->customer->email, 'Payment Confirmed', 'Your payment has been processed successfully');
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/payment_failed`
-**Description:** Fired when a payment fails  
-**Parameters:** `$data` (array) - Payment failure information  
-**Priority:** 10  
-**Use Case:** Log failures, send failure notifications
+
+<details>
+<summary><strong>fluent_cart/payment_failed</strong></summary>
+
+This action runs when a payment fails.
+
+**Parameters**
+
+- <code>$data</code> (array): Payment failure information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/payment_failed', function($data) {
-    $order = $data['order'];
-    $error = $data['error'];
-    
-    // Log payment failure
-    error_log('Payment failed for order #' . $order->id . ': ' . $error);
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/payments/after_payment_{status}`
-**Description:** Fired after payment processing with specific status  
-**Parameters:** `$data` (array) - Payment information  
-**Priority:** 10  
-**Use Case:** Handle specific payment statuses
+
+<details>
+<summary><strong>fluent_cart/payments/after_payment_{status}</strong></summary>
+
+This action runs after payment processing with a specific status.
+
+**Parameters**
+
+- <code>$data</code> (array): Payment information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/payments/after_payment_pending', function($data) {
-    // Handle pending payment
-    $order = $data['order'];
-    // Send pending payment notification
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/payment_{status}</strong></summary>
+
+This action runs for a specific payment status (e.g., payment_pending, payment_completed).
+
+**Parameters**
+
+- <code>$data</code> (array): Payment and order information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/payment_pending', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/payment_{type}_{status}</strong></summary>
+
+This action runs for a specific payment type and status (e.g., payment_stripe_completed).
+
+**Parameters**
+
+- <code>$data</code> (array): Payment and order information
+
+**Usage:**
+
+```php
+add_action('fluent_cart/payment_stripe_completed', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
 
 ### Subscription Hooks
 
-#### `fluent_cart/subscription/data_updated`
-**Description:** Fired when subscription data is updated  
-**Parameters:** `$data` (array) - Subscription information  
-**Priority:** 10  
-**Use Case:** Sync subscription data with external systems
+
+<details>
+<summary><strong>fluent_cart/subscription/data_updated</strong></summary>
+
+This action runs when subscription data is updated.
+
+**Parameters**
+
+- <code>$data</code> (array): Subscription information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/subscription/data_updated', function($data) {
-    $subscription = $data['subscription'];
-    // Update external CRM
-    update_crm_subscription($subscription);
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/payments/subscription_status_changed`
-**Description:** Fired when subscription status changes  
-**Parameters:** `$data` (array) - Subscription and status information  
-**Priority:** 10  
-**Use Case:** Handle subscription status changes
+
+<details>
+<summary><strong>fluent_cart/payments/subscription_status_changed</strong></summary>
+
+This action runs when subscription status changes.
+
+**Parameters**
+
+- <code>$data</code> (array): Subscription and status information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/payments/subscription_status_changed', function($data) {
-    $subscription = $data['subscription'];
-    $oldStatus = $data['old_status'];
-    $newStatus = $data['new_status'];
-    
-    // Handle status change
-    if ($newStatus === 'cancelled') {
-        // Cancel external services
-        cancel_external_subscription($subscription);
-    }
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/payments/subscription_{status}`
-**Description:** Fired when subscription reaches specific status  
-**Parameters:** `$data` (array) - Subscription information  
-**Priority:** 10  
-**Use Case:** Handle specific subscription statuses
+
+<details>
+<summary><strong>fluent_cart/payments/subscription_{status}</strong></summary>
+
+This action runs when subscription reaches a specific status.
+
+**Parameters**
+
+- <code>$data</code> (array): Subscription information
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/payments/subscription_active', function($data) {
-    $subscription = $data['subscription'];
-    // Activate external services
-    activate_external_subscription($subscription);
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
+
 
 ### Cart Hooks
 
-#### `fluent_cart/cart/item_added`
-**Description:** Fired when an item is added to the cart  
-**Parameters:** `$data` (array) - Cart and item information  
-**Priority:** 10  
-**Use Case:** Track cart additions, update inventory
 
-```php
-add_action('fluent_cart/cart/item_added', function($data) {
-    $cart = $data['cart'];
-    $item = $data['item'];
-    
-    // Track cart addition
-    track_cart_addition($cart, $item);
-}, 10, 1);
-```
+<details>
+<summary><strong>fluent_cart/cart/line_item/line_meta</strong></summary>
 
-#### `fluent_cart/cart/item_removed`
-**Description:** Fired when an item is removed from the cart  
-**Parameters:** `$data` (array) - Cart and item information  
-**Priority:** 10  
-**Use Case:** Track cart removals, update inventory
+This action runs for cart line item metadata.
 
-```php
-add_action('fluent_cart/cart/item_removed', function($data) {
-    $cart = $data['cart'];
-    $item = $data['item'];
-    
-    // Track cart removal
-    track_cart_removal($cart, $item);
-}, 10, 1);
-```
+**Parameters**
 
-### Product Hooks
+- <code>$data</code> (array): Line item data
 
-#### `fluent_cart/product_updated`
-**Description:** Fired when a product is updated  
-**Parameters:** `$data` (array) - Product information  
-**Priority:** 10  
-**Use Case:** Sync product data, update external catalogs
-
-```php
-add_action('fluent_cart/product_updated', function($data) {
-    $product = $data['product'];
-    // Sync with external catalog
-    sync_external_catalog($product);
-}, 10, 1);
-```
-
-### Module Hooks
-
-#### `fluent_cart/module/activated/{module_key}`
-**Description:** Fired when a module is activated  
-**Parameters:** `$moduleData` (array), `$prevSettings` (array) - Module information  
-**Priority:** 10  
-**Use Case:** Initialize module-specific functionality
-
-```php
-add_action('fluent_cart/module/activated/payment_methods', function($moduleData, $prevSettings) {
-    // Initialize payment method module
-    initialize_payment_methods();
-}, 10, 2);
-```
-
-#### `fluent_cart/module/deactivated/{module_key}`
-**Description:** Fired when a module is deactivated  
-**Parameters:** `$moduleData` (array), `$prevSettings` (array) - Module information  
-**Priority:** 10  
-**Use Case:** Clean up module-specific functionality
-
-```php
-add_action('fluent_cart/module/deactivated/payment_methods', function($moduleData, $prevSettings) {
-    // Clean up payment method module
-    cleanup_payment_methods();
-}, 10, 2);
-```
-
-### Admin Hooks
-
-#### `fluent_cart/loading_app`
-**Description:** Fired when FluentCart admin app is loading  
-**Parameters:** `$app` (object) - Application instance  
-**Priority:** 10  
-**Use Case:** Add custom admin functionality
-
-```php
-add_action('fluent_cart/loading_app', function($app) {
-    // Add custom admin functionality
-    add_custom_admin_features($app);
-}, 10, 1);
-```
-
-#### `fluent_cart/admin_js_loaded`
-**Description:** Fired when admin JavaScript is loaded  
-**Parameters:** `$app` (object) - Application instance  
-**Priority:** 10  
-**Use Case:** Add custom admin JavaScript
-
-```php
-add_action('fluent_cart/admin_js_loaded', function($app) {
-    // Add custom admin JavaScript
-    enqueue_custom_admin_scripts();
-}, 10, 1);
-```
-
-### View/Template Hooks
-
-#### `fluent_cart/views/single_product_page`
-**Description:** Fired on single product page  
-**Parameters:** `$data` (array) - Product and page data  
-**Priority:** 10  
-**Use Case:** Add custom content to product pages
-
-```php
-add_action('fluent_cart/views/single_product_page', function($data) {
-    $product = $data['product'];
-    // Add custom product page content
-    echo '<div class="custom-product-info">Custom content here</div>';
-}, 10, 1);
-```
-
-#### `fluent_cart/views/shop_app_wrapper`
-**Description:** Fired in shop app wrapper  
-**Parameters:** `$data` (array) - Shop data  
-**Priority:** 10  
-**Use Case:** Add custom shop functionality
-
-```php
-add_action('fluent_cart/views/shop_app_wrapper', function($data) {
-    // Add custom shop functionality
-    add_custom_shop_features($data);
-}, 10, 1);
-```
-
-#### `fluent_cart/views/checkout_page`
-**Description:** Fired on checkout page  
-**Parameters:** `$data` (array) - Checkout data  
-**Priority:** 10  
-**Use Case:** Add custom checkout functionality
-
-```php
-add_action('fluent_cart/views/checkout_page', function($data) {
-    $checkout = $data['checkout'];
-    $cart = $data['cart'];
-    // Add custom checkout functionality
-    add_custom_checkout_features($checkout, $cart);
-}, 10, 1);
-```
-
-#### `fluent_cart/views/checkout_page_empty_cart`
-**Description:** Fired when checkout page has empty cart  
-**Parameters:** `$data` (array) - Checkout data  
-**Priority:** 10  
-**Use Case:** Handle empty cart scenarios
-
-```php
-add_action('fluent_cart/views/checkout_page_empty_cart', function($data) {
-    // Handle empty cart
-    redirect_to_shop();
-}, 10, 1);
-```
-
-### Cart Line Item Hooks
-
-#### `fluent_cart/cart/line_item/line_meta`
-**Description:** Fired for cart line item metadata  
-**Parameters:** `$data` (array) - Line item data  
-**Priority:** 10  
-**Use Case:** Add custom line item metadata
+**Usage:**
 
 ```php
 add_action('fluent_cart/cart/line_item/line_meta', function($data) {
-    $item = $data['item'];
-    // Add custom line item metadata
-    echo '<div class="custom-line-meta">Custom metadata</div>';
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/cart/line_item/before_total`
-**Description:** Fired before cart line item total  
-**Parameters:** `$data` (array) - Line item data  
-**Priority:** 10  
-**Use Case:** Add content before line item total
+
+<details>
+<summary><strong>fluent_cart/cart/line_item/before_total</strong></summary>
+
+This action runs before cart line item total.
+
+**Parameters**
+
+- <code>$data</code> (array): Line item data
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/cart/line_item/before_total', function($data) {
-    // Add content before total
-    echo '<div class="before-total">Before total content</div>';
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/cart/line_item/after_total`
-**Description:** Fired after cart line item total  
-**Parameters:** `$data` (array) - Line item data  
-**Priority:** 10  
-**Use Case:** Add content after line item total
+
+<details>
+<summary><strong>fluent_cart/cart/line_item/after_total</strong></summary>
+
+This action runs after cart line item total.
+
+**Parameters**
+
+- <code>$data</code> (array): Line item data
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/cart/line_item/after_total', function($data) {
-    // Add content after total
-    echo '<div class="after-total">After total content</div>';
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
 
-#### `fluent_cart/cart/line_item/before_main_title`
-**Description:** Fired before cart line item main title  
-**Parameters:** `$data` (array) - Line item data  
-**Priority:** 10  
-**Use Case:** Add content before line item title
+
+<details>
+<summary><strong>fluent_cart/cart/line_item/before_main_title</strong></summary>
+
+This action runs before cart line item main title.
+
+**Parameters**
+
+- <code>$data</code> (array): Line item data
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/cart/line_item/before_main_title', function($data) {
-    // Add content before title
-    echo '<div class="before-title">Before title content</div>';
+    // Do whatever you want with here
 }, 10, 1);
-```
 
-#### `fluent_cart/cart/line_item/after_main_title`
-**Description:** Fired after cart line item main title  
-**Parameters:** `$data` (array) - Line item data  
-**Priority:** 10  
-**Use Case:** Add content after line item title
+```
+</details>
+
+
+<details>
+<summary><strong>fluent_cart/cart/line_item/after_main_title</strong></summary>
+
+This action runs after cart line item main title.
+
+**Parameters**
+
+- <code>$data</code> (array): Line item data
+
+**Usage:**
 
 ```php
 add_action('fluent_cart/cart/line_item/after_main_title', function($data) {
-    // Add content after title
-    echo '<div class="after-title">After title content</div>';
+    // Do whatever you want with here
 }, 10, 1);
 ```
+</details>
+
+
+### Product Hooks
+
+<details>
+<summary><strong>fluent_cart/product/render_product_header</strong></summary>
+
+This action runs when rendering a product header.
+
+**Parameters**
+
+- <code>$productId</code> (int): Product ID
+
+**Usage:**
+
+```php
+add_action('fluent_cart/product/render_product_header', function($productId) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+### Module Hooks
+
+<details>
+<summary><strong>fluent_cart/register_payment_methods</strong></summary>
+
+This action runs to register payment methods.
+
+**Parameters**
+
+- None
+
+**Usage:**
+
+```php
+add_action('fluent_cart/register_payment_methods', function() {
+    // Do whatever you want with here
+}, 10);
+```
+</details>
+
+
+### Admin Hooks
+
+<details>
+<summary><strong>fluent_cart/loading_app</strong></summary>
+
+This action runs when FluentCart admin app is loading.
+
+**Parameters**
+
+- <code>$app</code> (object): Application instance
+
+**Usage:**
+
+```php
+add_action('fluent_cart/loading_app', function($app) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/admin_js_loaded</strong></summary>
+
+This action runs when admin JavaScript is loaded.
+
+**Parameters**
+
+- <code>$app</code> (object): Application instance
+
+**Usage:**
+
+```php
+add_action('fluent_cart/admin_js_loaded', function($app) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+### View/Template Hooks
+
+<details>
+<summary><strong>fluent_cart/views/checkout_order_summary</strong></summary>
+
+This action runs when rendering checkout order summary.
+
+**Parameters**
+
+- <code>$data</code> (array): Order summary data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/checkout_order_summary', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/checkout_order_receipt</strong></summary>
+
+This action runs when rendering checkout order receipt.
+
+**Parameters**
+
+- <code>$data</code> (array): Order receipt data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/checkout_order_receipt', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/order_downloads</strong></summary>
+
+This action runs when rendering order downloads.
+
+**Parameters**
+
+- <code>$data</code> (array): Order downloads data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/order_downloads', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/order_licenses</strong></summary>
+
+This action runs when rendering order licenses.
+
+**Parameters**
+
+- <code>$data</code> (array): Order licenses data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/order_licenses', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/order_subscriptions</strong></summary>
+
+This action runs when rendering order subscriptions.
+
+**Parameters**
+
+- <code>$data</code> (array): Order subscriptions data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/order_subscriptions', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/cart_list</strong></summary>
+
+This action runs when rendering cart list.
+
+**Parameters**
+
+- <code>$data</code> (array): Cart list data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/cart_list', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/cart_empty_content</strong></summary>
+
+This action runs when rendering empty cart content.
+
+**Parameters**
+
+- <code>$data</code> (array): Cart data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/cart_empty_content', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/checkout_order_confirmation_page</strong></summary>
+
+This action runs when rendering checkout order confirmation page.
+
+**Parameters**
+
+- <code>$data</code> (array): Confirmation page data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/checkout_order_confirmation_page', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/checkout_order_confirmation_page_error</strong></summary>
+
+This action runs when rendering checkout order confirmation page error.
+
+**Parameters**
+
+- <code>$data</code> (array): Error data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/checkout_order_confirmation_page_error', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+
+### Other Notable Action Hooks
+
+<details>
+<summary><strong>fluent_cart/init</strong></summary>
+
+This action runs when FluentCart initializes.
+
+**Parameters**
+
+- <code>$app</code> (object): Application instance
+
+**Usage:**
+
+```php
+add_action('fluent_cart/init', function($app) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/user/after_register</strong></summary>
+
+This action runs after a user registers.
+
+**Parameters**
+
+- <code>$user_id</code> (int): User ID
+- <code>$data</code> (array): Registration data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/user/after_register', function($user_id, $data) {
+    // Do whatever you want with here
+}, 10, 2);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/user/before_registration</strong></summary>
+
+This action runs before a user registers.
+
+**Parameters**
+
+- <code>$data</code> (array): Registration data
+
+**Usage:**
+
+```php
+add_action('fluent_cart/user/before_registration', function($data) {
+    // Do whatever you want with here
+}, 10, 1);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/shop_app_filter_dollar_icon</strong></summary>
+
+This action runs to render the dollar icon in shop app filter.
+
+**Parameters**
+
+- None
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/shop_app_filter_dollar_icon', function() {
+    // Do whatever you want with here
+}, 10);
+```
+</details>
+
+<details>
+<summary><strong>fluent_cart/views/shop_app_responsive_filter_wrapper</strong></summary>
+
+This action runs to render the responsive filter wrapper in shop app.
+
+**Parameters**
+
+- None
+
+**Usage:**
+
+```php
+add_action('fluent_cart/views/shop_app_responsive_filter_wrapper', function() {
+    // Do whatever you want with here
+}, 10);
+```
+</details>
 
 ## Related Documentation
 
