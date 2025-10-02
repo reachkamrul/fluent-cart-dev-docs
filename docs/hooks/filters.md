@@ -18,15 +18,21 @@ Filter hooks allow you to modify data, settings, and behavior in FluentCart. The
 **When it runs:**
 This filter is applied whenever FluentCart retrieves or prepares the email notification settings, allowing you to customize or override the default notification configuration.
 
+
 **Parameters:**
-- <code>$settings</code> (array): The current email notification settings. Example keys:
-    - <code>enabled</code> (bool): Whether notifications are enabled
-    - <code>recipients</code> (array): List of recipient emails
-    - <code>templates</code> (array): Email template settings
-    - <code>custom_setting</code> (mixed): Any custom settings you add
+
+- `$settings` (array): The current email notification settings
+    ```php
+    $settings = [
+        'enabled'        => true,
+        'recipients'     => ['admin@example.com'],
+        'templates'      => [],
+        'custom_setting' => 'any value',
+    ];
+    ```
 
 **Returns:**
-- (array): The modified email notification settings array
+- $settings (array): The modified email notification settings array
 
 **Usage:**
 ```php
@@ -41,6 +47,7 @@ add_filter('fluent_cart/email_notifications', function($settings) {
 ### Coupon System
 
 
+
 <details>
 <summary><strong>`fluent_cart/coupon/will_skip_item`</strong> &mdash; Filter whether a coupon should skip an item</summary>
 
@@ -48,13 +55,54 @@ add_filter('fluent_cart/email_notifications', function($settings) {
 This filter is applied during coupon validation for each cart item, allowing you to programmatically skip applying a coupon to specific items based on custom logic.
 
 **Parameters:**
-- <code>$willSkip</code> (bool): Whether the item should be skipped (default logic result)
-- <code>$data</code> (array): Contextual data for the item and coupon:
-  - <code>item</code> (array): The cart item data (e.g., <code>product_id</code>, <code>quantity</code>, etc.)
-  - <code>coupon</code> (array): The coupon data (e.g., <code>code</code>, <code>discount_type</code>, etc.)
+
+- `$willSkip` (bool): Whether the item should be skipped (default logic result)
+- `$data` (array): Contextual data for the item and coupon
+    ```php
+    $data = [
+        'item' => [
+            'object_id',
+            'product_id',
+            'variation_id',
+            'name',
+            'quantity',
+            'price',
+            'subtotal',
+            'total',
+            'tax',
+            'discount',
+            'meta',
+            'type',
+            'sku',
+            'image',
+            'options',
+            'cart_item_id',
+            'other_info',
+        ],
+        'coupon' => [
+            'id',
+            'parent',
+            'title',
+            'code',
+            'status',
+            'type',
+            'conditions',
+            'amount',
+            'stackable',
+            'priority',
+            'use_count',
+            'notes',
+            'show_on_checkout',
+            'start_date',
+            'end_date',
+            'max_uses',
+        ],
+        'cart' => [ /* Cart object, see Cart model for keys */ ]
+    ];
+    ```
 
 **Returns:**
-- (bool): Whether to skip applying the coupon to this item
+- `$willSkip` (bool): Whether to skip applying the coupon to this item
 
 **Usage:**
 ```php
@@ -73,6 +121,7 @@ add_filter('fluent_cart/coupon/will_skip_item', function($willSkip, $data) {
 ### Payment Methods
 
 
+
 <details>
 <summary><strong>`fluent_cart_form_disable_stripe_connect`</strong> &mdash; Filter whether to disable Stripe Connect</summary>
 
@@ -80,11 +129,29 @@ add_filter('fluent_cart/coupon/will_skip_item', function($willSkip, $data) {
 This filter is applied when determining whether to enable or disable Stripe Connect as a payment method in the checkout or settings UI.
 
 **Parameters:**
-- <code>$disable</code> (bool): Whether Stripe Connect is disabled (default logic result)
-- <code>$data</code> (array): Contextual data (may include user, cart, or environment info)
+
+- `$disable` (bool): Whether Stripe Connect is disabled (default logic result)
+- `$data` (array): Contextual data. Example structure:
+    ```php
+    $data = [
+        'user' => [
+            'ID',
+            'user_login',
+            'user_email',
+            'roles',
+            // ...other WP_User fields
+        ],
+        'cart' => [ /* Cart object, see Cart model for keys */ ],
+        'environment' => [
+            'is_admin',
+            'site_url',
+            // ...other environment info
+        ]
+    ];
+    ```
 
 **Returns:**
-- (bool): Whether to disable Stripe Connect
+- `$disable` (bool): Whether to disable Stripe Connect
 
 **Usage:**
 ```php
@@ -99,6 +166,7 @@ add_filter('fluent_cart_form_disable_stripe_connect', function($disable, $data) 
 </details>
 
 
+
 <details>
 <summary><strong>`fluent_cart/paypal_plan_id`</strong> &mdash; Filter PayPal plan ID</summary>
 
@@ -106,34 +174,33 @@ add_filter('fluent_cart_form_disable_stripe_connect', function($disable, $data) 
 This filter is applied when FluentCart determines the PayPal plan ID to use for a subscription, allowing you to override the default plan ID based on subscription data.
 
 **Parameters:**
-- <code>$planId</code> (string): The current PayPal plan ID
-- <code>$data</code> (array): Contextual data, including:
-  - <code>subscription</code> (array): Subscription details (e.g., <code>billing_cycle</code>, <code>product_id</code>, etc.)
+
+- `$planId` (string): The current PayPal plan ID
+- `$data` (array): Contextual data:
+    ```php
+    $data = [
+        'subscription' => [
+            'billing_cycle' => 'yearly',
+            'product_id'    => 123,
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
+- `$planId` (string): The modified PayPal plan ID
 
-        <details>
-        <summary><strong>`fluent_cart/checkout_validation_rules`</strong> &mdash; Filter checkout validation rules</summary>
-
-        **When it runs:**
-        This filter is applied when building the validation rules for the checkout form, allowing you to add, remove, or modify validation requirements for checkout fields.
-
-        **Parameters:**
-        - <code>$rules</code> (array): The current validation rules array (e.g., <code>['field_name' => 'required|string']</code>)
-        - <code>$data</code> (array): Contextual data for the checkout (may include cart, user, etc.)
-
-        **Returns:**
-        - (array): The modified validation rules array
-
-        **Usage:**
-        ```php
-        add_filter('fluent_cart/checkout_validation_rules', function($rules, $data) {
-            // Add custom validation rules
-            $rules['custom_field'] = 'required|string|max:255';
-            return $rules;
-        }, 10, 2);
-        ```
-        </details>
+**Usage:**
+```php
+add_filter('fluent_cart/paypal_plan_id', function($planId, $data) {
+    $subscription = $data['subscription'];
+    // Custom logic for PayPal plan ID
+    if ($subscription['billing_cycle'] === 'yearly') {
+        return 'YEARLY_PLAN_ID';
+    }
+    return $planId;
+}, 10, 2);
+```
 </details>
 
 
@@ -143,9 +210,11 @@ This filter is applied when FluentCart determines the PayPal plan ID to use for 
 **When it runs:**
 This filter is applied when FluentCart enqueues the PayPal SDK script, allowing you to override the default SDK source URL.
 
+
 **Parameters:**
-- <code>$sdkSrc</code> (string): The current PayPal SDK source URL
-- <code>$data</code> (array): Contextual data (may include environment, payment method, etc.)
+
+- `$sdkSrc` (string): The current PayPal SDK source URL
+- `$data` (array): Contextual data (may include environment, payment method, etc.)
 
 **Returns:**
 - (string): The modified SDK source URL
@@ -168,10 +237,21 @@ add_filter('fluent_cart/payments/paypal_sdk_src', function($sdkSrc, $data) {
 **When it runs:**
 This filter is applied when generating the management or view URL for a subscription, allowing you to customize the URL for each payment method (e.g., Stripe, PayPal).
 
+
 **Parameters:**
-- <code>$url</code> (string): The current subscription URL
-- <code>$data</code> (array): Contextual data, including:
-    - <code>subscription</code> (object|array): The subscription object or array (e.g., <code>id</code>, <code>status</code>, <code>payment_method</code>, etc.)
+
+- `$url` (string): The current subscription URL
+- `$data` (array): Contextual data:
+    ```php
+    $data = [
+        'subscription' => [
+            'id'             => 123,
+            'status'         => 'active',
+            'payment_method' => 'stripe',
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
 - (string): The modified subscription URL
@@ -193,10 +273,20 @@ add_filter('fluent_cart/subscription/url_stripe', function($url, $data) {
 **When it runs:**
 This filter is applied when checking if a cancelled subscription is eligible for reactivation, allowing you to override the default logic.
 
+
 **Parameters:**
-- <code>$canReactivate</code> (bool): Whether the subscription can be reactivated (default logic result)
-- <code>$data</code> (array): Contextual data, including:
-  - <code>subscription</code> (object|array): The subscription object or array (e.g., <code>status</code>, <code>cancelled_at</code>, etc.)
+
+- `$canReactivate` (bool): Whether the subscription can be reactivated (default logic result)
+- `$data` (array): Contextual data:
+    ```php
+    $data = [
+        'subscription' => [
+            'status'       => 'cancelled',
+            'cancelled_at' => 1696200000,
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
 - (bool): Whether to allow reactivation
@@ -223,8 +313,10 @@ add_filter('fluent_cart/subscription/can_reactivate', function($canReactivate, $
 **When it runs:**
 This filter is applied when a new order is created, allowing you to control whether a receipt number should be generated for the order.
 
+
 **Parameters:**
-- <code>$create</code> (bool): Whether to create a receipt number (default logic result)
+
+- `$create` (bool): Whether to create a receipt number (default logic result)
 
 **Returns:**
 - (bool): Whether to create a receipt number for the order
@@ -245,11 +337,24 @@ add_filter('fluent_cart/create_receipt_number_on_order_create', function($create
 **When it runs:**
 This filter is applied when preparing the downloadable files for a specific order, allowing you to add, remove, or modify download data for the order.
 
+
 **Parameters:**
-- <code>$downloadData</code> (array): The current download data for the order. Example structure:
-    - <code>[ 'file_id' => [ 'name' => 'File Name', 'url' => 'https://...' ] ]</code>
-- <code>$data</code> (array): Contextual data, including:
-    - <code>order</code> (object|array): The order object or array
+
+- `$downloadData` (array): The current download data for the order
+    ```php
+    $downloadData = [
+        'file_id' => [
+            'name' => 'File Name',
+            'url'  => 'https://...'
+        ]
+    ];
+    ```
+- `$data` (array): Contextual data
+    ```php
+    $data = [
+        'order' => [ /* order object or array */ ]
+    ];
+    ```
 
 **Returns:**
 - (array): The modified download data array
@@ -277,10 +382,20 @@ add_filter('fluent_cart/single_order_downloads', function($downloadData, $data) 
 **When it runs:**
 This filter is applied when generating the management or view URL for a transaction, allowing you to customize the URL for each payment method (e.g., Stripe, PayPal).
 
+
 **Parameters:**
-- <code>$url</code> (string): The current transaction URL
-- <code>$data</code> (array): Contextual data, including:
-    - <code>transaction</code> (object|array): The transaction object or array (e.g., <code>transaction_id</code>, <code>payment_method</code>, etc.)
+
+- `$url` (string): The current transaction URL
+- `$data` (array): Contextual data:
+    ```php
+    $data = [
+        'transaction' => [
+            'transaction_id' => 'txn_123',
+            'payment_method' => 'stripe',
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
 - (string): The modified transaction URL
@@ -302,10 +417,20 @@ add_filter('fluent_cart/transaction/url_stripe', function($url, $data) {
 **When it runs:**
 This filter is applied when generating the URL for the transaction receipt page, allowing you to customize the receipt page URL for a transaction.
 
+
 **Parameters:**
-- <code>$url</code> (string): The current receipt page URL
-- <code>$data</code> (array): Contextual data, including:
-    - <code>transaction</code> (object|array): The transaction object or array (e.g., <code>id</code>, <code>order_id</code>, etc.)
+
+- `$url` (string): The current receipt page URL
+- `$data` (array): Contextual data:
+    ```php
+    $data = [
+        'transaction' => [
+            'id'       => 123,
+            'order_id' => 456,
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
 - (string): The modified receipt page URL
@@ -329,9 +454,11 @@ add_filter('fluentcart/transaction/receipt_page_url', function($url, $data) {
 **When it runs:**
 This filter is applied when generating the FluentCart admin menu title, allowing you to customize the menu label in the WordPress dashboard.
 
+
 **Parameters:**
-- <code>$title</code> (string): The current admin menu title
-- <code>$data</code> (array): Contextual data (may include user, settings, etc.)
+
+- `$title` (string): The current admin menu title
+- `$data` (array): Contextual data (may include user, settings, etc.)
 
 **Returns:**
 - (string): The modified admin menu title
@@ -352,9 +479,11 @@ add_filter('fluent_cart/admin_menu_title', function($title, $data) {
 **When it runs:**
 This filter is applied when generating the base URL for FluentCart admin pages, allowing you to customize the admin URL structure.
 
+
 **Parameters:**
-- <code>$url</code> (string): The current admin base URL
-- <code>$data</code> (array): Contextual data (may include user, settings, etc.)
+
+- `$url` (string): The current admin base URL
+- `$data` (array): Contextual data (may include user, settings, etc.)
 
 **Returns:**
 - (string): The modified admin base URL
@@ -375,10 +504,19 @@ add_filter('fluent_cart/admin_base_url', function($url, $data) {
 **When it runs:**
 This filter is applied when generating the available filter options in the FluentCart admin interface, allowing you to add, remove, or modify filter options.
 
+
 **Parameters:**
-- <code>$options</code> (array): The current filter options. Example structure:
-  - <code>[ 'filter_key' => [ 'label' => 'Label', 'options' => [ ... ] ] ]</code>
-- <code>$data</code> (array): Contextual data (may include user, context, etc.)
+
+- `$options` (array): The current filter options
+    ```php
+    $options = [
+        'filter_key' => [
+            'label'   => 'Label',
+            'options' => ['option1', 'option2']
+        ]
+    ];
+    ```
+- `$data` (array): Contextual data (may include user, context, etc.)
 
 **Returns:**
 - (array): The modified filter options array
@@ -405,11 +543,17 @@ add_filter('fluent_cart/admin_filter_options', function($options, $data) {
 **When it runs:**
 This filter is applied when determining the maximum quantity allowed for a cart item, allowing you to set custom quantity limits per product or variation.
 
+
 **Parameters:**
-- <code>$quantity</code> (int): The current maximum quantity allowed
-- <code>$data</code> (array): Contextual data, including:
-  - <code>variation</code> (array|object): The product variation data
-  - <code>product</code> (array|object): The product data (e.g., <code>id</code>, <code>name</code>, etc.)
+
+- `$quantity` (int): The current maximum quantity allowed
+- `$data` (array): Contextual data
+    ```php
+    $data = [
+        'variation' => [ /* variation data */ ],
+        'product'   => [ 'id' => 123, 'name' => 'Product Name' ]
+    ];
+    ```
 
 **Returns:**
 - (int): The modified maximum quantity
@@ -435,11 +579,13 @@ add_filter('fluent_cart/item_max_quantity', function($quantity, $data) {
 **When it runs:**
 This filter is applied when retrieving or updating the product variation for a cart item, allowing you to modify the variation object before it is used in the cart.
 
+
 **Parameters:**
-- <code>$variation</code> (object): The current product variation object
-- <code>$itemId</code> (int): The cart item ID
-- <code>$incrementBy</code> (int): The quantity increment value
-- <code>$existingItems</code> (array): The current cart items array
+
+- `$variation` (object): The current product variation object
+- `$itemId` (int): The cart item ID
+- `$incrementBy` (int): The quantity increment value
+- `$existingItems` (array): The current cart items array
 
 **Returns:**
 - (object): The modified product variation object
@@ -458,20 +604,37 @@ add_filter('fluent_cart/cart_item_product_variation', function($variation, $item
 
 ### Checkout System
 
-#### `fluent_cart/checkout_validation_rules`
-**Description:** Filter checkout validation rules  
-**Parameters:** `$rules` (array), `$data` (array) - Rules and checkout data  
-**Returns:** `array` - Modified rules  
-**Use Case:** Customize checkout validation
 
+<details>
+<summary><strong>`fluent_cart/checkout_validation_rules`</strong> &mdash; Filter checkout validation rules</summary>
+
+**When it runs:**
+This filter is applied when building the validation rules for the checkout form, allowing you to add, remove, or modify validation requirements for checkout fields.
+
+**Parameters:**
+
+- `$rules` (array): The current validation rules array. Example:
+    ```php
+    $rules = [
+        'field_name' => 'required|string',
+        'custom_field' => 'required|string|max:255',
+        // ...
+    ];
+    ```
+- `$data` (array): Contextual data for the checkout (may include cart, user, etc.)
+
+**Returns:**
+- `$rules` (array): The modified validation rules array
+
+**Usage:**
 ```php
 add_filter('fluent_cart/checkout_validation_rules', function($rules, $data) {
     // Add custom validation rules
     $rules['custom_field'] = 'required|string|max:255';
-    
     return $rules;
 }, 10, 2);
 ```
+</details>
 
 
 <details>
@@ -480,10 +643,20 @@ add_filter('fluent_cart/checkout_validation_rules', function($rules, $data) {
 **When it runs:**
 This filter is applied when building the address fields for the checkout form, allowing you to add, remove, or modify address fields.
 
+
 **Parameters:**
-- <code>$fields</code> (array): The current address fields array. Example structure:
-  - <code>[ 'field_key' => [ 'label' => 'Label', 'type' => 'text', 'required' => true ] ]</code>
-- <code>$data</code> (array): Contextual data for the checkout (may include cart, user, etc.)
+
+- `$fields` (array): The current address fields array
+    ```php
+    $fields = [
+        'custom_field' => [
+            'label'    => 'Custom Field',
+            'type'     => 'text',
+            'required' => false
+        ]
+    ];
+    ```
+- `$data` (array): Contextual data for the checkout (may include cart, user, etc.)
 
 **Returns:**
 - (array): The modified address fields array
@@ -509,10 +682,20 @@ add_filter('fluent_cart/checkout_address_fields', function($fields, $data) {
 **When it runs:**
 This filter is applied when building the billing fields for the checkout form, allowing you to add, remove, or modify billing fields.
 
+
 **Parameters:**
-- <code>$fields</code> (array): The current billing fields array. Example structure:
-  - <code>[ 'field_key' => [ 'label' => 'Label', 'type' => 'text', 'required' => true ] ]</code>
-- <code>$data</code> (array): Contextual data for the checkout (may include cart, user, etc.)
+
+- `$fields` (array): The current billing fields array
+    ```php
+    $fields = [
+        'company_name' => [
+            'label'    => 'Company Name',
+            'type'     => 'text',
+            'required' => false
+        ]
+    ];
+    ```
+- `$data` (array): Contextual data for the checkout (may include cart, user, etc.)
 
 **Returns:**
 - (array): The modified billing fields array
@@ -538,10 +721,20 @@ add_filter('fluent_cart/checkout_billing_fields', function($fields, $data) {
 **When it runs:**
 This filter is applied when building the shipping fields for the checkout form, allowing you to add, remove, or modify shipping fields.
 
+
 **Parameters:**
-- <code>$fields</code> (array): The current shipping fields array. Example structure:
-  - <code>[ 'field_key' => [ 'label' => 'Label', 'type' => 'text', 'required' => true ] ]</code>
-- <code>$data</code> (array): Contextual data for the checkout (may include cart, user, etc.)
+
+- `$fields` (array): The current shipping fields array
+    ```php
+    $fields = [
+        'delivery_instructions' => [
+            'label'    => 'Delivery Instructions',
+            'type'     => 'textarea',
+            'required' => false
+        ]
+    ];
+    ```
+- `$data` (array): Contextual data for the checkout (may include cart, user, etc.)
 
 **Returns:**
 - (array): The modified shipping fields array
@@ -569,8 +762,17 @@ add_filter('fluent_cart/checkout_shipping_fields', function($fields, $data) {
 **When it runs:**
 This filter is applied when retrieving the list of available order statuses, allowing you to add, remove, or modify order statuses.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current order statuses array (e.g., <code>['pending' => 'Pending', ...]</code>)
+
+- `$statuses` (array): The current order statuses array
+    ```php
+    $statuses = [
+        'pending' => 'Pending',
+        'custom_status' => 'Custom Status',
+        // ...
+    ];
+    ```
 
 **Returns:**
 - (array): The modified order statuses array
@@ -592,8 +794,10 @@ add_filter('fluent-cart/order_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of order statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current editable order statuses array
+
+- `$statuses` (array): The current editable order statuses array
 
 **Returns:**
 - (array): The modified editable order statuses array
@@ -615,8 +819,10 @@ add_filter('fluent-cart/editable_order_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of customer statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current editable customer statuses array
+
+- `$statuses` (array): The current editable customer statuses array
 
 **Returns:**
 - (array): The modified editable customer statuses array
@@ -638,8 +844,10 @@ add_filter('fluent-cart/editable_customer_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of available shipping statuses, allowing you to add, remove, or modify shipping statuses.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current shipping statuses array
+
+- `$statuses` (array): The current shipping statuses array
 
 **Returns:**
 - (array): The modified shipping statuses array
@@ -661,8 +869,10 @@ add_filter('fluent-cart/shipping_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of available transaction statuses, allowing you to add, remove, or modify transaction statuses.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current transaction statuses array
+
+- `$statuses` (array): The current transaction statuses array
 
 **Returns:**
 - (array): The modified transaction statuses array
@@ -684,8 +894,10 @@ add_filter('fluent-cart/transaction_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of transaction statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current editable transaction statuses array
+
+- `$statuses` (array): The current editable transaction statuses array
 
 **Returns:**
 - (array): The modified editable transaction statuses array
@@ -707,8 +919,10 @@ add_filter('fluent-cart/editable_transaction_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of available coupon statuses, allowing you to add, remove, or modify coupon statuses.
 
+
 **Parameters:**
-- <code>$statuses</code> (array): The current coupon statuses array
+
+- `$statuses` (array): The current coupon statuses array
 
 **Returns:**
 - (array): The modified coupon statuses array
@@ -732,8 +946,17 @@ add_filter('fluent-cart/coupon_statuses', function($statuses) {
 **When it runs:**
 This filter is applied when retrieving the list of available currencies, allowing you to add, remove, or modify currencies.
 
+
 **Parameters:**
-- <code>$currencies</code> (array): The current available currencies array (e.g., <code>['USD' => 'US Dollar', ...]</code>)
+
+- `$currencies` (array): The current available currencies array
+    ```php
+    $currencies = [
+        'USD' => 'US Dollar',
+        'BTC' => 'Bitcoin',
+        // ...
+    ];
+    ```
 
 **Returns:**
 - (array): The modified available currencies array
@@ -755,8 +978,17 @@ add_filter('fluent-cart/available_currencies', function($currencies) {
 **When it runs:**
 This filter is applied when retrieving the list of available countries, allowing you to add, remove, or modify countries.
 
+
 **Parameters:**
-- <code>$countries</code> (array): The current available countries array (e.g., <code>['US' => 'United States', ...]</code>)
+
+- `$countries` (array): The current available countries array
+    ```php
+    $countries = [
+        'US' => 'United States',
+        'XX' => 'Custom Country',
+        // ...
+    ];
+    ```
 
 **Returns:**
 - (array): The modified available countries array
@@ -778,8 +1010,10 @@ add_filter('fluent-cart/util/countries', function($countries) {
 **When it runs:**
 This filter is applied when retrieving the site prefix used for FluentCart data, allowing you to customize the prefix for multi-site or branding purposes.
 
+
 **Parameters:**
-- <code>$prefix</code> (string): The current site prefix
+
+- `$prefix` (string): The current site prefix
 
 **Returns:**
 - (string): The modified site prefix
@@ -802,10 +1036,20 @@ add_filter('fluent-cart/site_prefix', function($prefix) {
 **When it runs:**
 This filter is applied when determining the expiration time (in minutes) for downloadable files, allowing you to set custom expiration times based on file type or other logic.
 
+
 **Parameters:**
-- <code>$minutes</code> (int): The current expiration time in minutes
-- <code>$data</code> (array): Contextual data, including:
-  - <code>file</code> (array|object): The file data (e.g., <code>type</code>, <code>name</code>, etc.)
+
+- `$minutes` (int): The current expiration time in minutes
+- `$data` (array): Contextual data
+    ```php
+    $data = [
+        'file' => [
+            'type' => 'premium',
+            'name' => 'file.pdf',
+            // ...
+        ]
+    ];
+    ```
 
 **Returns:**
 - (int): The modified expiration time in minutes
