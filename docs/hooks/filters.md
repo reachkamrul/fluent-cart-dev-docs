@@ -212,8 +212,6 @@ This filter is applied when FluentCart determines the PayPal plan ID to use for 
             'interval_count',
             'trial_days',
             'start_date',
-            'end_date',
-            'next_payment_date',
             'total_cycles',
             'completed_cycles',
             'amount',
@@ -233,7 +231,6 @@ This filter is applied when FluentCart determines the PayPal plan ID to use for 
 ```php
 add_filter('fluent_cart/paypal_plan_id', function($planId, $data) {
     $subscription = $data['subscription'];
-    // Custom logic for PayPal plan ID
     if ($subscription['billing_cycle'] === 'yearly') {
         return 'YEARLY_PLAN_ID';
     }
@@ -312,8 +309,6 @@ This filter is applied when generating the management or view URL for a subscrip
 - `$data` (array): Contextual data:
     ```php
     $data = [
-        'subscription' => [
-            'id',
             'status',
             'user_id',
             'product_id',
@@ -323,7 +318,6 @@ This filter is applied when generating the management or view URL for a subscrip
             'trial_days',
             'start_date',
             'end_date',
-            'next_payment_date',
             'total_cycles',
             'completed_cycles',
             'amount',
@@ -376,8 +370,6 @@ This filter is applied when checking if a cancelled subscription is eligible for
             'interval_count',
             'trial_days',
             'start_date',
-            'end_date',
-            'next_payment_date',
             'total_cycles',
             'completed_cycles',
             'amount',
@@ -385,7 +377,6 @@ This filter is applied when checking if a cancelled subscription is eligible for
             'payment_method',
             'cancelled_at',
             'meta',
-            'created_at',
             'updated_at',
         ]
     ];
@@ -469,7 +460,6 @@ This filter is applied when preparing the downloadable files for a specific orde
             'customer_id',
             'status',
             'total',
-            'subtotal',
             'tax',
             'discount',
             'shipping_total',
@@ -490,7 +480,6 @@ This filter is applied when preparing the downloadable files for a specific orde
 add_filter('fluent_cart/single_order_downloads', function($downloadData, $data) {
         $order = $data['order'];
         // Add a custom downloadable file
-        $downloadData['custom_download'] = [
                 'name' => 'Custom File',
                 'url' => 'https://example.com/custom-file.pdf'
         ];
@@ -499,7 +488,6 @@ add_filter('fluent_cart/single_order_downloads', function($downloadData, $data) 
 ```
 </details>
 
-### Transaction System
 
 
 <details>
