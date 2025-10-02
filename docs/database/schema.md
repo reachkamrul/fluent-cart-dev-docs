@@ -1045,6 +1045,7 @@ This table stores licensed sites (Pro feature)
 | updated_at | datetime _NULL_ | |
 
 
+
 ### fct_license_meta Table
 
 This table stores license metadata (Pro feature)
@@ -1052,12 +1053,17 @@ This table stores license metadata (Pro feature)
 | Column      | Type                                  | Comment |
 |-------------|---------------------------------------|---------|
 | id          | BIGINT UNSIGNED AUTO_INCREMENT, PRIMARY KEY | |
-| object_id   | BIGINT UNSIGNED                      | Reference to object (license or related) |
-| object_type | VARCHAR(192)                         | Object type |
-| meta_key    | VARCHAR(192)                         | Meta key |
-| meta_value  | LONGTEXT                             | Meta value (JSON or string) |
-| created_at  | DATETIME NULL                        | |
-| updated_at  | DATETIME NULL                        | |
+| object_id   | BIGINT UNSIGNED NULL DEFAULT NULL     | Reference to object (license/activation/site) |
+| object_type | VARCHAR(100) NULL DEFAULT NULL        | Can be: license / activation / site |
+| meta_key    | VARCHAR(255) NULL DEFAULT NULL        | Meta key |
+| meta_value  | LONGTEXT NULL DEFAULT NULL            | Meta value (JSON or string) |
+| created_at  | TIMESTAMP NULL                        | |
+| updated_at  | TIMESTAMP NULL                        | |
+
+Indexes:
+- meta_key
+- object_type
+- object_id
 
 
 ### fct_order_promotions Table
