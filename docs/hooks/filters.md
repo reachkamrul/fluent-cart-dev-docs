@@ -544,6 +544,7 @@ This filter is applied when generating the URL for the transaction receipt page,
 
 
 
+
 **Parameters:**
 
 - `$url` (string): The current receipt page URL
@@ -561,6 +562,41 @@ This filter is applied when generating the URL for the transaction receipt page,
             'created_at',
             'updated_at',
             'meta',
+        ],
+        'order' => [
+            'status',
+            'parent_id',
+            'invoice_no',
+            'receipt_number',
+            'fulfillment_type',
+            'type',
+            'customer_id',
+            'payment_method',
+            'payment_method_title',
+            'payment_status',
+            'currency',
+            'subtotal',
+            'discount_tax',
+            'manual_discount_total',
+            'coupon_discount_total',
+            'shipping_tax',
+            'shipping_total',
+            'tax_total',
+            'tax_behavior',
+            'total_amount',
+            'rate',
+            'note',
+            'ip_address',
+            'completed_at',
+            'refunded_at',
+            'total_refund',
+            'uuid',
+            'created_at',
+            'refunded_at',
+            'total_paid',
+            'mode',
+            'shipping_status',
+            'config',
         ]
     ];
     ```
