@@ -14,7 +14,7 @@ Action hooks allow you to execute custom code at specific points in FluentCart's
 
 
 <details>
-<summary><strong>fluent_cart/order_fully_refunded</strong></summary>
+<summary><code>fluent_cart/order_fully_refunded</code></summary>
 
 This action runs when an order is fully refunded.
 
@@ -33,7 +33,7 @@ add_action('fluent_cart/order_fully_refunded', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/order_partially_refunded</strong></summary>
+<summary><code>fluent_cart/order_partially_refunded</code></summary>
 
 This action runs when an order is partially refunded.
 
@@ -52,7 +52,7 @@ add_action('fluent_cart/order_partially_refunded', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/order_paid</strong></summary>
+<summary><code>fluent_cart/order_paid</code></summary>
 
 This action runs when an order is paid.
 
@@ -71,7 +71,7 @@ add_action('fluent_cart/order_paid', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/order_refunded</strong></summary>
+<summary><code>fluent_cart/order_refunded</code></summary>
 
 This action runs when an order is refunded (full or partial).
 
@@ -90,7 +90,7 @@ add_action('fluent_cart/order_refunded', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/order/upgraded</strong></summary>
+<summary><code>fluent_cart/order/upgraded</code></summary>
 
 This action runs when an order is upgraded.
 
@@ -109,7 +109,7 @@ add_action('fluent_cart/order/upgraded', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart_completed</strong></summary>
+<summary><code>fluent_cart/cart_completed</code></summary>
 
 This action runs when a cart is completed (order placed).
 
@@ -131,7 +131,7 @@ add_action('fluent_cart/cart_completed', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payment_success</strong></summary>
+<summary><code>fluent_cart/payment_success</code></summary>
 
 This action runs when a payment is successfully processed.
 
@@ -150,7 +150,7 @@ add_action('fluent_cart/payment_success', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payment_failed</strong></summary>
+<summary><code>fluent_cart/payment_failed</code></summary>
 
 This action runs when a payment fails.
 
@@ -169,7 +169,7 @@ add_action('fluent_cart/payment_failed', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payments/after_payment_{status}</strong></summary>
+<summary><code>fluent_cart/payments/after_payment_{status}</code></summary>
 
 This action runs after payment processing with a specific status.
 
@@ -188,7 +188,7 @@ add_action('fluent_cart/payments/after_payment_pending', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payment_{status}</strong></summary>
+<summary><code>fluent_cart/payment_{status}</code></summary>
 
 This action runs for a specific payment status (e.g., payment_pending, payment_completed).
 
@@ -207,7 +207,7 @@ add_action('fluent_cart/payment_pending', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payment_{type}_{status}</strong></summary>
+<summary><code>fluent_cart/payment_{type}_{status}</code></summary>
 
 This action runs for a specific payment type and status (e.g., payment_stripe_completed).
 
@@ -229,7 +229,7 @@ add_action('fluent_cart/payment_stripe_completed', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/subscription/data_updated</strong></summary>
+<summary><code>fluent_cart/subscription/data_updated</code></summary>
 
 This action runs when subscription data is updated.
 
@@ -248,7 +248,7 @@ add_action('fluent_cart/subscription/data_updated', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payments/subscription_status_changed</strong></summary>
+<summary><code>fluent_cart/payments/subscription_status_changed</code></summary>
 
 This action runs when subscription status changes.
 
@@ -267,7 +267,7 @@ add_action('fluent_cart/payments/subscription_status_changed', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/payments/subscription_{status}</strong></summary>
+<summary><code>fluent_cart/payments/subscription_{status}</code></summary>
 
 This action runs when subscription reaches a specific status.
 
@@ -289,7 +289,7 @@ add_action('fluent_cart/payments/subscription_active', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart/line_item/line_meta</strong></summary>
+<summary><code>fluent_cart/cart/line_item/line_meta</code></summary>
 
 This action runs for cart line item metadata.
 
@@ -308,7 +308,7 @@ add_action('fluent_cart/cart/line_item/line_meta', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart/line_item/before_total</strong></summary>
+<summary><code>fluent_cart/cart/line_item/before_total</code></summary>
 
 This action runs before cart line item total.
 
@@ -327,7 +327,7 @@ add_action('fluent_cart/cart/line_item/before_total', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart/line_item/after_total</strong></summary>
+<summary><code>fluent_cart/cart/line_item/after_total</code></summary>
 
 This action runs after cart line item total.
 
@@ -346,7 +346,7 @@ add_action('fluent_cart/cart/line_item/after_total', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart/line_item/before_main_title</strong></summary>
+<summary><code>fluent_cart/cart/line_item/before_main_title</code></summary>
 
 This action runs before cart line item main title.
 
@@ -366,7 +366,7 @@ add_action('fluent_cart/cart/line_item/before_main_title', function($data) {
 
 
 <details>
-<summary><strong>fluent_cart/cart/line_item/after_main_title</strong></summary>
+<summary><code>fluent_cart/cart/line_item/after_main_title</code></summary>
 
 This action runs after cart line item main title.
 
@@ -387,7 +387,7 @@ add_action('fluent_cart/cart/line_item/after_main_title', function($data) {
 ### Product Hooks
 
 <details>
-<summary><strong>fluent_cart/product/render_product_header</strong></summary>
+<summary><code>fluent_cart/product/render_product_header</code></summary>
 
 This action runs when rendering a product header.
 
@@ -408,7 +408,7 @@ add_action('fluent_cart/product/render_product_header', function($productId) {
 ### Module Hooks
 
 <details>
-<summary><strong>fluent_cart/register_payment_methods</strong></summary>
+<summary><code>fluent_cart/register_payment_methods</code></summary>
 
 This action runs to register payment methods.
 
@@ -429,7 +429,7 @@ add_action('fluent_cart/register_payment_methods', function() {
 ### Admin Hooks
 
 <details>
-<summary><strong>fluent_cart/loading_app</strong></summary>
+<summary><code>fluent_cart/loading_app</code></summary>
 
 This action runs when FluentCart admin app is loading.
 
@@ -447,7 +447,7 @@ add_action('fluent_cart/loading_app', function($app) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/admin_js_loaded</strong></summary>
+<summary><code>fluent_cart/admin_js_loaded</code></summary>
 
 This action runs when admin JavaScript is loaded.
 
@@ -468,7 +468,7 @@ add_action('fluent_cart/admin_js_loaded', function($app) {
 ### View/Template Hooks
 
 <details>
-<summary><strong>fluent_cart/views/checkout_order_summary</strong></summary>
+<summary><code>fluent_cart/views/checkout_order_summary</code></summary>
 
 This action runs when rendering checkout order summary.
 
@@ -486,7 +486,7 @@ add_action('fluent_cart/views/checkout_order_summary', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/checkout_order_receipt</strong></summary>
+<summary><code>fluent_cart/views/checkout_order_receipt</code></summary>
 
 This action runs when rendering checkout order receipt.
 
@@ -504,7 +504,7 @@ add_action('fluent_cart/views/checkout_order_receipt', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/order_downloads</strong></summary>
+<summary><code>fluent_cart/views/order_downloads</code></summary>
 
 This action runs when rendering order downloads.
 
@@ -522,7 +522,7 @@ add_action('fluent_cart/views/order_downloads', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/order_licenses</strong></summary>
+<summary><code>fluent_cart/views/order_licenses</code></summary>
 
 This action runs when rendering order licenses.
 
@@ -540,7 +540,7 @@ add_action('fluent_cart/views/order_licenses', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/order_subscriptions</strong></summary>
+<summary><code>fluent_cart/views/order_subscriptions</code></summary>
 
 This action runs when rendering order subscriptions.
 
@@ -558,7 +558,7 @@ add_action('fluent_cart/views/order_subscriptions', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/cart_list</strong></summary>
+<summary><code>fluent_cart/views/cart_list</code></summary>
 
 This action runs when rendering cart list.
 
@@ -576,7 +576,7 @@ add_action('fluent_cart/views/cart_list', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/cart_empty_content</strong></summary>
+<summary><code>fluent_cart/views/cart_empty_content</code></summary>
 
 This action runs when rendering empty cart content.
 
@@ -594,7 +594,7 @@ add_action('fluent_cart/views/cart_empty_content', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/checkout_order_confirmation_page</strong></summary>
+<summary><code>fluent_cart/views/checkout_order_confirmation_page</code></summary>
 
 This action runs when rendering checkout order confirmation page.
 
@@ -612,7 +612,7 @@ add_action('fluent_cart/views/checkout_order_confirmation_page', function($data)
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/checkout_order_confirmation_page_error</strong></summary>
+<summary><code>fluent_cart/views/checkout_order_confirmation_page_error</code></summary>
 
 This action runs when rendering checkout order confirmation page error.
 
@@ -633,7 +633,7 @@ add_action('fluent_cart/views/checkout_order_confirmation_page_error', function(
 ### Other Notable Action Hooks
 
 <details>
-<summary><strong>fluent_cart/init</strong></summary>
+<summary><code>fluent_cart/init</code></summary>
 
 This action runs when FluentCart initializes.
 
@@ -651,7 +651,7 @@ add_action('fluent_cart/init', function($app) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/user/after_register</strong></summary>
+<summary><code>fluent_cart/user/after_register</code></summary>
 
 This action runs after a user registers.
 
@@ -670,7 +670,7 @@ add_action('fluent_cart/user/after_register', function($user_id, $data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/user/before_registration</strong></summary>
+<summary><code>fluent_cart/user/before_registration</code></summary>
 
 This action runs before a user registers.
 
@@ -688,7 +688,7 @@ add_action('fluent_cart/user/before_registration', function($data) {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/shop_app_filter_dollar_icon</strong></summary>
+<summary><code>fluent_cart/views/shop_app_filter_dollar_icon</code></summary>
 
 This action runs to render the dollar icon in shop app filter.
 
@@ -706,7 +706,7 @@ add_action('fluent_cart/views/shop_app_filter_dollar_icon', function() {
 </details>
 
 <details>
-<summary><strong>fluent_cart/views/shop_app_responsive_filter_wrapper</strong></summary>
+<summary><code>fluent_cart/views/shop_app_responsive_filter_wrapper</code></summary>
 
 This action runs to render the responsive filter wrapper in shop app.
 

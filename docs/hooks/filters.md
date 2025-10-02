@@ -13,7 +13,7 @@ Filter hooks allow you to modify data, settings, and behavior in FluentCart. The
 
 
 <details>
-<summary><strong>`fluent_cart/email_notifications`</strong> &mdash; Filter email notification settings</summary>
+<summary><code>`fluent_cart/email_notifications`</code> &mdash; Filter email notification settings</summary>
 
 **When it runs:**
 This filter is applied whenever FluentCart retrieves or prepares the email notification settings, allowing you to customize or override the default notification configuration.
@@ -49,7 +49,7 @@ add_filter('fluent_cart/email_notifications', function($settings) {
 
 
 <details>
-<summary><strong>`fluent_cart/coupon/will_skip_item`</strong> &mdash; Filter whether a coupon should skip an item</summary>
+<summary><code>`fluent_cart/coupon/will_skip_item`</code> &mdash; Filter whether a coupon should skip an item</summary>
 
 **When it runs:**
 This filter is applied during coupon validation for each cart item, allowing you to programmatically skip applying a coupon to specific items based on custom logic.
@@ -121,7 +121,7 @@ add_filter('fluent_cart/coupon/will_skip_item', function($willSkip, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart_form_disable_stripe_connect`</strong> &mdash; Filter whether to disable Stripe Connect</summary>
+<summary><code>`fluent_cart_form_disable_stripe_connect`</code> &mdash; Filter whether to disable Stripe Connect</summary>
 
 **When it runs:**
 
@@ -191,7 +191,7 @@ add_filter('fluent_cart_form_disable_stripe_connect', function($disable, $data) 
 
 
 <details>
-<summary><strong>`fluent_cart/paypal_plan_id`</strong> &mdash; Filter PayPal plan ID</summary>
+<summary><code>`fluent_cart/paypal_plan_id`</code> &mdash; Filter PayPal plan ID</summary>
 
 **When it runs:**
 This filter is applied when FluentCart determines the PayPal plan ID to use for a subscription, allowing you to override the default plan ID based on subscription data.
@@ -241,7 +241,7 @@ add_filter('fluent_cart/paypal_plan_id', function($planId, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/payments/paypal_sdk_src`</strong> &mdash; Filter PayPal SDK source URL</summary>
+<summary><code>`fluent_cart/payments/paypal_sdk_src`</code> &mdash; Filter PayPal SDK source URL</summary>
 
 **When it runs:**
 This filter is applied when FluentCart enqueues the PayPal SDK script, allowing you to override the default SDK source URL.
@@ -297,7 +297,7 @@ add_filter('fluent_cart/payments/paypal_sdk_src', function($sdkSrc, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/subscription/url_{payment_method}`</strong> &mdash; Filter subscription URL for a specific payment method</summary>
+<summary><code>`fluent_cart/subscription/url_{payment_method}`</code> &mdash; Filter subscription URL for a specific payment method</summary>
 
 **When it runs:**
 This filter is applied when generating the management or view URL for a subscription, allowing you to customize the URL for each payment method (e.g., Stripe, PayPal).
@@ -348,7 +348,7 @@ add_filter('fluent_cart/subscription/url_stripe', function($url, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/subscription/can_reactivate`</strong> &mdash; Filter whether a subscription can be reactivated</summary>
+<summary><code>`fluent_cart/subscription/can_reactivate`</code> &mdash; Filter whether a subscription can be reactivated</summary>
 
 **When it runs:**
 This filter is applied when checking if a cancelled subscription is eligible for reactivation, allowing you to override the default logic.
@@ -405,7 +405,7 @@ add_filter('fluent_cart/subscription/can_reactivate', function($canReactivate, $
 
 
 <details>
-<summary><strong>`fluent_cart/create_receipt_number_on_order_create`</strong> &mdash; Filter whether to create a receipt number on order creation</summary>
+<summary><code>`fluent_cart/create_receipt_number_on_order_create`</code> &mdash; Filter whether to create a receipt number on order creation</summary>
 
 **When it runs:**
 This filter is applied when a new order is created, allowing you to control whether a receipt number should be generated for the order.
@@ -429,7 +429,7 @@ add_filter('fluent_cart/create_receipt_number_on_order_create', function($create
 
 
 <details>
-<summary><strong>`fluent_cart/single_order_downloads`</strong> &mdash; Filter single order downloads data</summary>
+<summary><code>`fluent_cart/single_order_downloads`</code> &mdash; Filter single order downloads data</summary>
 
 **When it runs:**
 This filter is applied when preparing the downloadable files for a specific order, allowing you to add, remove, or modify download data for the order.
@@ -491,7 +491,7 @@ add_filter('fluent_cart/single_order_downloads', function($downloadData, $data) 
 
 
 <details>
-<summary><strong>`fluent_cart/transaction/url_{payment_method}`</strong> &mdash; Filter transaction URL for a specific payment method</summary>
+<summary><code>`fluent_cart/transaction/url_{payment_method}`</code> &mdash; Filter transaction URL for a specific payment method</summary>
 
 **When it runs:**
 This filter is applied when generating the management or view URL for a transaction, allowing you to customize the URL for each payment method (e.g., Stripe, PayPal).
@@ -537,7 +537,7 @@ add_filter('fluent_cart/transaction/url_stripe', function($url, $data) {
 
 
 <details>
-<summary><strong>`fluentcart/transaction/receipt_page_url`</strong> &mdash; Filter transaction receipt page URL</summary>
+<summary><code>`fluentcart/transaction/receipt_page_url`</code> &mdash; Filter transaction receipt page URL</summary>
 
 **When it runs:**
 This filter is applied when generating the URL for the transaction receipt page, allowing you to customize the receipt page URL for a transaction.
@@ -621,7 +621,7 @@ add_filter('fluentcart/transaction/receipt_page_url', function($url, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/admin_menu_title`</strong> &mdash; Filter admin menu title</summary>
+<summary><code>`fluent_cart/admin_menu_title`</code> &mdash; Filter admin menu title</summary>
 
 **When it runs:**
 This filter is applied when generating the FluentCart admin menu title, allowing you to customize the menu label in the WordPress dashboard.
@@ -674,7 +674,7 @@ add_filter('fluent_cart/admin_menu_title', function($title, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/admin_base_url`</strong> &mdash; Filter admin base URL</summary>
+<summary><code>`fluent_cart/admin_base_url`</code> &mdash; Filter admin base URL</summary>
 
 **When it runs:**
 This filter is applied when generating the base URL for FluentCart admin pages, allowing you to customize the admin URL structure.
@@ -727,7 +727,7 @@ add_filter('fluent_cart/admin_base_url', function($url, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/admin_filter_options`</strong> &mdash; Filter admin filter options</summary>
+<summary><code>`fluent_cart/admin_filter_options`</code> &mdash; Filter admin filter options</summary>
 
 **When it runs:**
 This filter is applied when generating the available filter options in the FluentCart admin interface, allowing you to add, remove, or modify filter options.
@@ -793,7 +793,7 @@ add_filter('fluent_cart/admin_filter_options', function($options, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/item_max_quantity`</strong> &mdash; Filter maximum item quantity</summary>
+<summary><code>`fluent_cart/item_max_quantity`</code> &mdash; Filter maximum item quantity</summary>
 
 **When it runs:**
 This filter is applied when determining the maximum quantity allowed for a cart item, allowing you to set custom quantity limits per product or variation.
@@ -848,7 +848,7 @@ add_filter('fluent_cart/item_max_quantity', function($quantity, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/cart_item_product_variation`</strong> &mdash; Filter cart item product variation</summary>
+<summary><code>`fluent_cart/cart_item_product_variation`</code> &mdash; Filter cart item product variation</summary>
 
 **When it runs:**
 This filter is applied when retrieving or updating the product variation for a cart item, allowing you to modify the variation object before it is used in the cart.
@@ -880,7 +880,7 @@ add_filter('fluent_cart/cart_item_product_variation', function($variation, $item
 
 
 <details>
-<summary><strong>`fluent_cart/checkout_validation_rules`</strong> &mdash; Filter checkout validation rules</summary>
+<summary><code>`fluent_cart/checkout_validation_rules`</code> &mdash; Filter checkout validation rules</summary>
 
 **When it runs:**
 This filter is applied when building the validation rules for the checkout form, allowing you to add, remove, or modify validation requirements for checkout fields.
@@ -912,7 +912,7 @@ add_filter('fluent_cart/checkout_validation_rules', function($rules, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/checkout_address_fields`</strong> &mdash; Filter checkout address fields</summary>
+<summary><code>`fluent_cart/checkout_address_fields`</code> &mdash; Filter checkout address fields</summary>
 
 **When it runs:**
 This filter is applied when building the address fields for the checkout form, allowing you to add, remove, or modify address fields.
@@ -951,7 +951,7 @@ add_filter('fluent_cart/checkout_address_fields', function($fields, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/checkout_billing_fields`</strong> &mdash; Filter checkout billing fields</summary>
+<summary><code>`fluent_cart/checkout_billing_fields`</code> &mdash; Filter checkout billing fields</summary>
 
 **When it runs:**
 This filter is applied when building the billing fields for the checkout form, allowing you to add, remove, or modify billing fields.
@@ -990,7 +990,7 @@ add_filter('fluent_cart/checkout_billing_fields', function($fields, $data) {
 
 
 <details>
-<summary><strong>`fluent_cart/checkout_shipping_fields`</strong> &mdash; Filter checkout shipping fields</summary>
+<summary><code>`fluent_cart/checkout_shipping_fields`</code> &mdash; Filter checkout shipping fields</summary>
 
 **When it runs:**
 This filter is applied when building the shipping fields for the checkout form, allowing you to add, remove, or modify shipping fields.
@@ -1031,7 +1031,7 @@ add_filter('fluent_cart/checkout_shipping_fields', function($fields, $data) {
 
 
 <details>
-<summary><strong>`fluent-cart/order_statuses`</strong> &mdash; Filter available order statuses</summary>
+<summary><code>`fluent-cart/order_statuses`</code> &mdash; Filter available order statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available order statuses, allowing you to add, remove, or modify order statuses.
@@ -1065,7 +1065,7 @@ add_filter('fluent-cart/order_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/editable_order_statuses`</strong> &mdash; Filter editable order statuses</summary>
+<summary><code>`fluent-cart/editable_order_statuses`</code> &mdash; Filter editable order statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of order statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
@@ -1098,7 +1098,7 @@ add_filter('fluent-cart/editable_order_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/editable_customer_statuses`</strong> &mdash; Filter editable customer statuses</summary>
+<summary><code>`fluent-cart/editable_customer_statuses`</code> &mdash; Filter editable customer statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of customer statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
@@ -1129,7 +1129,7 @@ add_filter('fluent-cart/editable_customer_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/shipping_statuses`</strong> &mdash; Filter available shipping statuses</summary>
+<summary><code>`fluent-cart/shipping_statuses`</code> &mdash; Filter available shipping statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available shipping statuses, allowing you to add, remove, or modify shipping statuses.
@@ -1162,7 +1162,7 @@ add_filter('fluent-cart/shipping_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/transaction_statuses`</strong> &mdash; Filter available transaction statuses</summary>
+<summary><code>`fluent-cart/transaction_statuses`</code> &mdash; Filter available transaction statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available transaction statuses, allowing you to add, remove, or modify transaction statuses.
@@ -1197,7 +1197,7 @@ add_filter('fluent-cart/transaction_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/editable_transaction_statuses`</strong> &mdash; Filter editable transaction statuses</summary>
+<summary><code>`fluent-cart/editable_transaction_statuses`</code> &mdash; Filter editable transaction statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of transaction statuses that can be edited, allowing you to control which statuses are editable in the admin UI.
@@ -1230,7 +1230,7 @@ add_filter('fluent-cart/editable_transaction_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/coupon_statuses`</strong> &mdash; Filter available coupon statuses</summary>
+<summary><code>`fluent-cart/coupon_statuses`</code> &mdash; Filter available coupon statuses</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available coupon statuses, allowing you to add, remove, or modify coupon statuses.
@@ -1264,7 +1264,7 @@ add_filter('fluent-cart/coupon_statuses', function($statuses) {
 
 
 <details>
-<summary><strong>`fluent-cart/available_currencies`</strong> &mdash; Filter available currencies</summary>
+<summary><code>`fluent-cart/available_currencies`</code> &mdash; Filter available currencies</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available currencies, allowing you to add, remove, or modify currencies.
@@ -1308,7 +1308,7 @@ add_filter('fluent-cart/available_currencies', function($currencies) {
 
 
 <details>
-<summary><strong>`fluent-cart/util/countries`</strong> &mdash; Filter available countries</summary>
+<summary><code>`fluent-cart/util/countries`</code> &mdash; Filter available countries</summary>
 
 **When it runs:**
 This filter is applied when retrieving the list of available countries, allowing you to add, remove, or modify countries.
@@ -1342,7 +1342,7 @@ add_filter('fluent-cart/util/countries', function($countries) {
 
 
 <details>
-<summary><strong>`fluent-cart/site_prefix`</strong> &mdash; Filter site prefix</summary>
+<summary><code>`fluent-cart/site_prefix`</code> &mdash; Filter site prefix</summary>
 
 **When it runs:**
 This filter is applied when retrieving the site prefix used for FluentCart data, allowing you to customize the prefix for multi-site or branding purposes.
@@ -1368,7 +1368,7 @@ add_filter('fluent-cart/site_prefix', function($prefix) {
 
 
 <details>
-<summary><strong>`fluent_cart/download_expiration_minutes`</strong> &mdash; Filter download expiration minutes</summary>
+<summary><code>`fluent_cart/download_expiration_minutes`</code> &mdash; Filter download expiration minutes</summary>
 
 **When it runs:**
 This filter is applied when determining the expiration time (in minutes) for downloadable files, allowing you to set custom expiration times based on file type or other logic.
