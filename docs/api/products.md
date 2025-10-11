@@ -19,15 +19,14 @@ All endpoints require authentication and appropriate permissions:
 
 - **Authentication**: WordPress Application Password or Cookie
 
-## Endpoints
 
-### List Products
+## List Products
 
 **GET** `/products`
 
 Retrieve a paginated list of products with optional filtering and searching.
 
-#### Parameters
+### Parameters
 
 | Parameter         | Type    | Description                                        | Default    |
 | ----------------- | ------- | -------------------------------------------------- | ---------- |
@@ -55,7 +54,7 @@ Example boolean interpretation:
 <code> [[A, B], [C]] -> (A AND B) OR (C) </code>
 </blockquote>
 
-### Search products by name
+### Search by Name
 
 Use the `search` query parameter to match product title/content. This is the simplest way to find products by name.
 
@@ -65,7 +64,7 @@ Example:
 
 (Use `advanced_filters` only when you need relation-based rules; name search is simpler via `search`.)
 
-### Search by Order / Order Count
+### Search by Order Count
 
 Find products based on related order items count or presence.
 
@@ -87,7 +86,7 @@ Payload example (single rule group — AND group with one rule):
 
 UI mapping: Order Count -> `source[0] = "order"`, `relation = "orderItems"`, operators map from UI labels (e.g. "Doesn't equal" -> `!=`).
 
-### Search by Variations / Variation Count
+### Search by Variation Count
 
 Find products by number of variants.
 
@@ -107,7 +106,7 @@ Example: products with less than 1 variant
 ]
 ```
 
-### Search by Variations / Variation (specific variant items)
+### Search by Variant ID
 
 Check if a product's variants include a specific variation item (by ID).
 
@@ -149,7 +148,7 @@ Example: variation_type equals "simple"
 ]
 ```
 
-### Search by Product Categories (taxonomy)
+### Search by Categories
 
 Check product membership in product categories (use term IDs).
 
@@ -170,26 +169,6 @@ Example: product in category ID 2
 ]
 ```
 
-### Search by Product Types (taxonomy)
-
-Check membership in product types by term ID.
-
-Example: product type ID 7
-
-```json
-[
-  [
-    {
-      "source": ["taxonomy","product-types"],
-      "filter_type": "relation",
-      "relation": "wpTerms",
-      "column": "term_id",
-      "operator": "contains",
-      "value": [7]
-    }
-  ]
-]
-```
 
 ### Combining multiple rules (AND / OR)
 
@@ -288,111 +267,121 @@ Operator quick mapping (UI → payload): Doesn't equal=`!=`, Less Than=`<`, Grea
 }
 ```
 
-#### Response Structure
 
-The Products API returns a paginated response with the following structure:
+## Product Details
 
-**Product Object Fields:**
-- `ID` - WordPress post ID
-- `post_title` - Product title
-- `post_content` - Product description
-- `post_excerpt` - Product short description
-- `post_status` - Product status (publish, draft, etc.)
-- `post_name` - Product slug
-- `post_type` - Always "fluent-products"
-- `post_date` - Creation date
-- `post_modified` - Last modification date
-- `view_url` - Public product URL
-- `edit_url` - Admin edit URL
-
-**Pagination Fields:**
-- `current_page` - Current page number
-- `per_page` - Items per page
-- `total` - Total number of products
-- `last_page` - Last page number
-- `from` - Starting item number
-- `to` - Ending item number
-- `first_page_url` - URL to first page
-- `last_page_url` - URL to last page
-- `next_page_url` - URL to next page
-- `prev_page_url` - URL to previous page
-- `links` - Array of pagination links
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/products?page=1&per_page=20&search=sample" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```json
+{
+    "product": {
+        "ID": 7529385,
+        "post_author": "5",
+        "post_date": "2025-10-11 11:50:31",
+        "post_date_gmt": "2025-10-11 11:50:31",
+        "post_content": "",
+        "post_title": "Sample Digital Product",
+        "post_excerpt": "",
+        "post_status": "draft",
+        "comment_status": "closed",
+        "ping_status": "closed",
+        "post_password": "",
+        "post_name": "sample-digital-product",
+        "to_ping": "",
+        "pinged": "",
+        "post_modified": "2025-10-11 11:50:31",
+        "post_modified_gmt": "2025-10-11 11:50:31",
+        "post_content_filtered": "",
+        "post_parent": "0",
+        "guid": "https://cart.junior.ninja/?post_type=fluent-products&#038;p=7529385",
+        "menu_order": "0",
+        "post_type": "fluent-products",
+        "post_mime_type": "",
+        "comment_count": "0",
+        "thumbnail": "https://cart.junior.ninja/wp-content/uploads/2025/06/white-navy-athletic-shoe-2.jpeg",
+        "detail": {
+            "id": 52,
+            "post_id": 7529385,
+            "fulfillment_type": "digital",
+            "min_price": 2000,
+            "max_price": 3000,
+            "default_variation_id": "0",
+            "default_media": null,
+            "manage_stock": "1",
+            "stock_availability": "in-stock",
+            "variation_type": "simple_variations",
+            "manage_downloadable": "1",
+            "other_info": {
+                "tax_class": null,
+                "active_editor": null,
+                "shipping_class": 3,
+                "group_pricing_by": "payment_type",
+                "sold_individually": "no",
+                "use_pricing_table": "no"
+            },
+            "created_at": "2025-10-11T11:39:14+00:00",
+            "updated_at": "2025-10-11T11:50:31+00:00",
+            "featured_media": {
+                "id": 7529266,
+                "url": "https://cart.junior.ninja/wp-content/uploads/2025/06/white-navy-athletic-shoe-2.jpeg",
+                "title": "white-navy-athletic-shoe-2"
+            },
+            "formatted_min_price": "&#36;20.00",
+            "formatted_max_price": "&#36;30.00",
+            "gallery_image": {
+                "meta_id": "703",
+                "post_id": 7529385,
+                "meta_key": "fluent-products-gallery-image",
+                "meta_value": [
+                    {
+                        "id": 7529266,
+                        "url": "https://cart.junior.ninja/wp-content/uploads/2025/06/white-navy-athletic-shoe-2.jpeg",
+                        "title": "white-navy-athletic-shoe-2"
+                    },
+                    {
+                        "id": 7529265,
+                        "url": "https://cart.junior.ninja/wp-content/uploads/2025/06/white-navy-athletic-shoe-1.jpeg",
+                        "title": "white-navy-athletic-shoe-1"
+                    },
+                    {
+                        "id": 7529260,
+                        "url": "https://cart.junior.ninja/wp-content/uploads/2025/06/unnamed-5.png",
+                        "title": "unnamed (5)"
+                    }
+                ]
+            }
+        }
+    }
+}
 ```
 
-### Create Product
+## Create Product
 
 **POST** `/products`
 
 Create a new product.
+
+#### Parameters
+
+When creating a product, the following parameters can be pass:
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `post_title` | string | Product title | Yes |
+| `post_status` | string | Post status (e.g. `draft`, `publish`) | No (default: `draft`) |
+| `detail.fulfillment_type` | string | Fulfillment type for the product (e.g. `digital`, `physical`) | Yes |
+
 
 #### Request Body
 
 ```json
 {
   "post_title": "Dynamic Product",
-  "post_content": "",
-  "post_excerpt": "",
-  "post_date": "Wed Sep 24 2025 15:44:07 GMT+0600 (Bangladesh Standard Time)",
   "post_status": "draft",
   "detail": {
     "fulfillment_type": "digital",
-    "variation_type": "simple",
-    "manage_stock": "0",
-    "manage_downloadable": "0",
-    "other_info": {
-      "use_pricing_table": "yes",
-      "group_pricing_by": "repeat_interval",
-      "active_editor": "wp-editor",
-      "sold_individually": "no"
-    }
   }
 }
 ```
 
-#### Response
-
-```json
-{
-    "data": {
-        "ID": 7529320,
-        "product_details": null
-    },
-    "message": "Product has been created successfully"
-}
-```
-
-#### Example Request
-
-```bash
-curl --location 'https://yoursite.com/wp-json/fluent-cart/v2/products/' \
---header 'Content-Type: application/json' \
---header 'Authorization: Basic ZgdgeZXZwIHk5TEogV2pPNSBIbWpyIGd4dlUgYnlENQ==' \
---data '{
-  "post_title": "Dynamic Product 2",
-  "post_content": "",
-  "post_excerpt": "",
-  "post_date": "Wed Sep 24 2025 15:44:07 GMT+0600 (Bangladesh Standard Time)",
-  "post_status": "draft",
-  "detail": {
-    "fulfillment_type": "digital",
-    "variation_type": "simple",
-    "manage_stock": "0",
-    "manage_downloadable": "0",
-    "other_info": {
-      "use_pricing_table": "yes",
-      "group_pricing_by": "repeat_interval",
-      "active_editor": "wp-editor",
-      "sold_individually": "no"
-    }
-  }
-}'
-```
 
 ### Create Product Pricing (need update)
 <!-- 
@@ -697,7 +686,7 @@ curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/products/33" \
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
-### Update Product
+## Update Product
 
 **PUT** `/products/{postId}/pricing`
 
@@ -748,7 +737,7 @@ curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v1/products/1/pricing" \
   }'
 ```
 
-### Delete Product
+## Delete Product
 
 **DELETE** `/products/{product}`
 
@@ -992,51 +981,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v1/products/do-bulk-actio
   }'
 ```
 
-### Create Dummy Products
-
-**POST** `/products/create-dummy`
-
-Create dummy products for testing.
-
-#### Request Body
-
-```json
-{
-  "count": 5,
-  "type": "simple"
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "created": 5,
-    "products": [
-      {
-        "id": 1,
-        "title": "Dummy Product 1",
-        "sku": "DUMMY-001"
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X POST "https://yoursite.com/wp-json/fluent-cart/v1/products/create-dummy" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "count": 5,
-    "type": "simple"
-  }'
-```
-
 ## Product Variations
 
 ### List Variations
@@ -1127,29 +1071,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v1/products/variants" \
   }'
 ```
 
-## Error Handling
-
-### Common Error Codes
-
-| Code | Description |
-|------|-------------|
-| `product_not_found` | Product with specified ID not found |
-| `invalid_sku` | SKU is invalid or already exists |
-| `insufficient_permissions` | User lacks required permissions |
-| `validation_error` | Request data validation failed |
-| `variation_not_found` | Variation with specified ID not found |
-
-### Error Response Example
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": "product_not_found",
-    "message": "Product with ID 999 not found"
-  }
-}
-```
 
 ## Rate Limiting
 
@@ -1164,20 +1085,3 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v1/products/variants" \
 - [Customers API](./customers) - Customer management endpoints
 - [Database Models](/database/models) - Product data models
 - [Developer Hooks](/hooks/) - Product-related hooks
-
-## Next Steps
-
-Continue with product management:
-
-1. **[Orders API](./orders)** - Manage product orders
-2. **[Customers API](./customers)** - Manage customer data
-3. **[Database Models](/database/models)** - Understand product data structure
-4. **[Developer Hooks](/hooks/)** - Product-related hooks
-
-## Previous/Next Navigation
-
-- **Previous**: [Customers API](./customers) - Customer management endpoints
-- **Next**: [Subscriptions API](./subscriptions) - Subscription management endpoints
-
----
-
