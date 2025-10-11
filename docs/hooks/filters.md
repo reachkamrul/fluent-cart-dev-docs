@@ -682,22 +682,19 @@ This filter is applied when generating the base URL for FluentCart admin pages, 
 
 **Parameters:**
 
-- `$url` (string): The current admin base URL
-- `$data` (array): Contextual data. Example structure:
-    ```php
-    $data = [
-        'user' => [
-            'ID',
-            'user_login',
-            'user_pass',
-            'user_nicename',
-            'user_email',
-            'user_url',
-            'user_registered',
-            'user_activation_key',
-            'user_status',
-            'display_name',
-            'roles',
+- `$url` (string): The current admin base URL. Default: Result of `admin_url('admin.php?page=fluent-cart#/')`
+- `$data` (array): Empty array for future extensibility. Currently unused.
+
+**Returns:**
+- `$url` (string): The modified admin base URL
+
+**Usage:**
+```php
+add_filter('fluent_cart/admin_base_url', function($url, $data) {
+    // Customize the admin base URL
+    return admin_url('admin.php?page=my-custom-fluent-cart#/');
+}, 10, 2);
+```
             'allcaps',
             'filter',
         ],
@@ -738,40 +735,59 @@ This filter is applied when generating the available filter options in the Fluen
 - `$options` (array): The current filter options
     ```php
     $options = [
-        'filter_key' => [
-            'label',
-            'options',
-            'default',
-            'description',
-            'type',
-        ]
-    ];
-    ```
-- `$data` (array): Contextual data. Example structure:
-    ```php
-    $data = [
-        'user' => [
-            'ID',
-            'user_login',
-            'user_pass',
-            'user_nicename',
-            'user_email',
-            'user_url',
-            'user_registered',
-            'user_activation_key',
-            'user_status',
-            'display_name',
-            'roles',
-            'allcaps',
-            'filter',
+        'order_filter_options' => [
+            'advance' => [
+                'id' => [
+                    'column' => 'id',
+                    'description' => 'Order Id',
+                    'type' => 'numeric',
+                    'examples' => ['id = 1', 'id > 5', 'id :: 1-10']
+                ],
+                'status' => [
+                    'column' => 'status',
+                    'description' => 'Search by order status',
+                    'type' => 'string',
+                    'examples' => ['status = completed']
+                ],
+                'invoice' => [
+                    'column' => 'status',
+                    'description' => 'Invoice Number',
+                    'type' => 'string'
+                ],
+                'payment' => [
+                    'column' => 'payment_status',
+                    'description' => 'Search by payment status',
+                    'type' => 'string',
+                    'examples' => ['payment = paid', 'payment = partially_paid']
+                ],
+                'payment_by' => [
+                    'column' => 'payment_method',
+                    'description' => 'Search by payment method',
+                    'type' => 'string',
+                    'examples' => ['payment_by = stripe', 'payment_by = paypal']
+                ]
+            ],
+            'guide' => [] // Searchable fields guide
         ],
-        'context' => [
-            'screen',
-            'section',
-            'meta',
+        'customer_filter_options' => [
+            'advance' => [], // Customer-specific filter options
+            'guide' => []
+        ],
+        'product_filter_options' => [
+            'advance' => [], // Product-specific filter options
+            'guide' => []
+        ],
+        'license_filter_options' => [
+            'advance' => [], // License-specific filter options
+            'guide' => []
+        ],
+        'tax_filter_options' => [
+            'advance' => [], // Tax-specific filter options
+            'guide' => []
         ]
     ];
     ```
+- `$data` (array): Empty array for future extensibility. Currently unused.
 
 **Returns:**
 - `$options` (array): The modified filter options array

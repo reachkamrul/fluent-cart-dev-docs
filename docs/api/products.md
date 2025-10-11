@@ -18,8 +18,6 @@ https://yoursite.com/wp-json/fluent-cart/v2/products
 All endpoints require authentication and appropriate permissions:
 
 - **Authentication**: WordPress Application Password or Cookie
-- **Policy**: `ProductPolicy`
-- **Permissions**: Various product-related permissions
 
 ## Endpoints
 
@@ -31,26 +29,198 @@ Retrieve a paginated list of products with optional filtering and searching.
 
 #### Parameters
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `page` | integer | Page number | 1 |
-| `per_page` | integer | Items per page (max 100) | 10 |
-| `search` | string | Search query | - |
-| `filters` | object | Filter options | - |
-| `order_by` | string | Sort field | id |
-| `order_type` | string | Sort direction (ASC/DESC) | DESC |
+| Parameter         | Type    | Description                                        | Default    |
+| ----------------- | ------- | -------------------------------------------------- | ---------- |
+| `filter_type`     | string  | Product filter type (simple/advanced)              | simple     |
+| `per_page`        | integer | Number of products per page                        | 10         |
+| `page`            | integer | Current page number                                | 1          |
+| `sort_by`         | string  | Field to sort products by                          | ID         |
+| `sort_type`       | string  | Sort order (ASC/DESC)                              | DESC       |
+| `with[]`          | array   | Related data to include (e.g., detail, variants). <strong>➕ show options</strong>: <ul><li><code>detail</code> — include the product detail object</li><li><code>detail.variants.media</code> — include variant media nested under product detail</li><li><code>variants:post_id,available</code> — include variants but only with the <code>post_id</code> and <code>available</code> fields</li><li><code>categories</code> — include product categories</li></ul><p><strong>Example:</strong> <code>?with[]=detail&amp;with[]=detail.variants.media&amp;with[]=variants:post_id,available&amp;with[]=categories</code></p> | -          |
+| `search`          | string  | Search keyword                                     | -          |
+| `active_view`     | string  | Current active view or context. <strong>➕ options</strong>: <ul><li><code>draft</code> — draft products</li><li><code>physical</code> — physical product view</li><li><code>publish</code> — published products</li><li><code>digital</code> — digital product view</li><li><code>subscribable</code> — subscription-capable products</li></ul><p><strong>Example:</strong> <code>active_view=draft</code></p> | all        |
+| `user_tz`         | string  | User’s timezone for GMT conversion                 | Asia/Dhaka |
+| `advanced_filters`| json    | Advanced relation-based filters. Provide an array of rule objects (see example below). | -          |
 
-#### Filter Options
+
+
+
+
+<blockquote>
+
+`advanced_filters` expects an array of rule-groups. Each inner array is a group of rules combined with AND. Multiple groups are combined with OR.
+
+Example boolean interpretation:
+
+<code> [[A, B], [C]] -> (A AND B) OR (C) </code>
+</blockquote>
+
+### Search products by name
+
+Use the `search` query parameter to match product title/content. This is the simplest way to find products by name.
+
+Example:
+
+`GET /wp-json/fluent-cart/v2/products?search=zipper+hoodie`
+
+(Use `advanced_filters` only when you need relation-based rules; name search is simpler via `search`.)
+
+### Search by Order / Order Count
+
+Find products based on related order items count or presence.
+
+Payload example (single rule group — AND group with one rule):
 
 ```json
-{
-  "status": "publish",
-  "type": "simple",
-  "category": "electronics",
-  "price_min": 1000,
-  "price_max": 5000
-}
+[
+  [
+    {
+      "source": ["order","has"],
+      "filter_type": "relation",
+      "relation": "orderItems",
+      "operator": "!=",
+      "value": 1
+    }
+  ]
+]
 ```
+
+UI mapping: Order Count -> `source[0] = "order"`, `relation = "orderItems"`, operators map from UI labels (e.g. "Doesn't equal" -> `!=`).
+
+### Search by Variations / Variation Count
+
+Find products by number of variants.
+
+Example: products with less than 1 variant
+
+```json
+[
+  [
+    {
+      "source": ["variations","has"],
+      "filter_type": "relation",
+      "relation": "variants",
+      "operator": "<",
+      "value": 1
+    }
+  ]
+]
+```
+
+### Search by Variations / Variation (specific variant items)
+
+Check if a product's variants include a specific variation item (by ID).
+
+Example: variation items includes ID 185
+
+```json
+[
+  [
+    {
+      "source": ["variations","variation_items"],
+      "filter_type": "relation",
+      "relation": "variants",
+      "column": "id",
+      "operator": "contains",
+      "value": [185]
+    }
+  ]
+]
+```
+
+### Search by Variation Type
+
+Filter products by variation type field (e.g. `simple`, `simple_variations`).
+
+Example: variation_type equals "simple"
+
+```json
+[
+  [
+    {
+      "source": ["variations","variation_type"],
+      "filter_type": "relation",
+      "relation": "detail",
+      "column": "variation_type",
+      "operator": "=",
+      "value": "simple"
+    }
+  ]
+]
+```
+
+### Search by Product Categories (taxonomy)
+
+Check product membership in product categories (use term IDs).
+
+Example: product in category ID 2
+
+```json
+[
+  [
+    {
+      "source": ["taxonomy","product-categories"],
+      "filter_type": "relation",
+      "relation": "wpTerms",
+      "column": "term_id",
+      "operator": "contains",
+      "value": [2]
+    }
+  ]
+]
+```
+
+### Search by Product Types (taxonomy)
+
+Check membership in product types by term ID.
+
+Example: product type ID 7
+
+```json
+[
+  [
+    {
+      "source": ["taxonomy","product-types"],
+      "filter_type": "relation",
+      "relation": "wpTerms",
+      "column": "term_id",
+      "operator": "contains",
+      "value": [7]
+    }
+  ]
+]
+```
+
+### Combining multiple rules (AND / OR)
+
+Rules are grouped into inner arrays (AND) and the top-level array groups those with OR. Use multiple rules inside an inner array to require all of them (AND). Use multiple inner arrays to create alternative groups (OR).
+
+Simple example: (A AND B) OR C
+
+```json
+[
+  [ A, B ],
+  [ C ]
+]
+```
+
+Real example (two groups — shown as OR):
+
+```json
+[
+  [
+    {"source":["order","has"],"filter_type":"relation","operator":"!=","value":1,"relation":"orderItems"},
+    {"source":["variations","has"],"filter_type":"relation","operator":"<","value":1,"relation":"variants"}
+  ],
+  [
+    {"source":["taxonomy","product-categories"],"filter_type":"relation","operator":"contains","value":[2],"column":"term_id","relation":"wpTerms"}
+  ]
+]
+```
+
+
+Operator quick mapping (UI → payload): Doesn't equal=`!=`, Less Than=`<`, Greater Than=`>`, Is=`=`, Includes=`contains`.
+
 
 #### Response
 
@@ -606,377 +776,6 @@ curl -X DELETE "https://yoursite.com/wp-json/fluent-cart/v1/products/1" \
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
-### Search Products by Name
-
-**GET** `/products/searchProductByName`
-
-Search for products by name.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `search` | string | Search query |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "products": [
-      {
-        "id": 1,
-        "title": "Sample Product",
-        "sku": "SP-001",
-        "price": 2500
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/searchProductByName?search=sample" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Search Variants by Name
-
-**GET** `/products/searchVariantByName`
-
-Search for product variants by name.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `search` | string | Search query |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "variants": [
-      {
-        "id": 1,
-        "title": "Small",
-        "product_id": 1,
-        "price": 2000,
-        "sku": "SP-001-S"
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/searchVariantByName?search=small" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Search Product Variant Options
-
-**GET** `/products/search-product-variant-options`
-
-Search for product variant options.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `search` | string | Search query |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "options": [
-      {
-        "id": 1,
-        "name": "Size",
-        "values": ["Small", "Medium", "Large"]
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/search-product-variant-options?search=size" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Find Subscription Variants
-
-**GET** `/products/findSubscriptionVariants`
-
-Find variants that support subscriptions.
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "variants": [
-      {
-        "id": 1,
-        "title": "Monthly Subscription",
-        "product_id": 1,
-        "price": 2000,
-        "billing_cycle": "monthly"
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/findSubscriptionVariants" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Fetch Products by IDs
-
-**GET** `/products/fetchProductsByIds`
-
-Fetch multiple products by their IDs.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `ids` | string | Comma-separated product IDs |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "products": [
-      {
-        "id": 1,
-        "title": "Product 1",
-        "price": 2500
-      },
-      {
-        "id": 2,
-        "title": "Product 2",
-        "price": 3000
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/fetchProductsByIds?ids=1,2,3" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Fetch Variations by IDs
-
-**GET** `/products/fetchVariationsByIds`
-
-Fetch multiple product variations by their IDs.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `ids` | string | Comma-separated variation IDs |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "variations": [
-      {
-        "id": 1,
-        "title": "Small",
-        "product_id": 1,
-        "price": 2000
-      },
-      {
-        "id": 2,
-        "title": "Medium",
-        "product_id": 1,
-        "price": 2500
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/fetchVariationsByIds?ids=1,2,3" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Get Product Terms List
-
-**GET** `/products/fetch-term`
-
-Get product terms (categories, tags, etc.).
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "terms": [
-      {
-        "id": 1,
-        "name": "Electronics",
-        "taxonomy": "product_category",
-        "count": 25
-      },
-      {
-        "id": 2,
-        "name": "Clothing",
-        "taxonomy": "product_category",
-        "count": 15
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/fetch-term" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Get Product Terms by Parent
-
-**POST** `/products/fetch-term-by-parent`
-
-Get product terms by parent term.
-
-#### Request Body
-
-```json
-{
-  "parent_id": 1,
-  "taxonomy": "product_category"
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "terms": [
-      {
-        "id": 3,
-        "name": "Smartphones",
-        "parent_id": 1,
-        "taxonomy": "product_category"
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X POST "https://yoursite.com/wp-json/fluent-cart/v1/products/fetch-term-by-parent" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "parent_id": 1,
-    "taxonomy": "product_category"
-  }'
-```
-
-### Get Max Excerpt Word Count
-
-**GET** `/products/get-max-excerpt-word-count`
-
-Get the maximum word count for product excerpts.
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "max_words": 55
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/get-max-excerpt-word-count" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Get Product Pricing Widgets
-
-**GET** `/products/{productId}/pricing-widgets`
-
-Get pricing widgets for a product.
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `productId` | integer | Product ID |
-
-#### Response
-
-```json
-{
-  "success": true,
-  "data": {
-    "widgets": [
-      {
-        "id": "price_display",
-        "type": "price",
-        "settings": {
-          "show_sale_price": true,
-          "show_regular_price": true
-        }
-      }
-    ]
-  }
-}
-```
-
-#### Example Request
-
-```bash
-curl -X GET "https://yoursite.com/wp-json/fluent-cart/v1/products/1/pricing-widgets" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
 
 ### Set Product Image
 
