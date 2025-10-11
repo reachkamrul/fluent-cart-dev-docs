@@ -113,18 +113,21 @@ Check if a product's variants include a specific variation item (by ID).
 Example: variation items includes ID 185
 
 ```json
-[
-  [
-    {
-      "source": ["variations","variation_items"],
-      "filter_type": "relation",
-      "relation": "variants",
-      "column": "id",
-      "operator": "contains",
-      "value": [185]
-    }
+{
+  "filter_type": "advanced",
+  "advanced_filters": [
+    [
+      {
+        "source": ["variations", "variation_items"],
+        "filter_type": "relation",
+        "operator": "contains",
+        "value": [185],
+        "column": "id",
+        "relation": "variants"
+      }
+    ]
   ]
-]
+}
 ```
 
 ### Search by Variation Type
