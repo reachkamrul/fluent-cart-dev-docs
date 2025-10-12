@@ -31,6 +31,7 @@ description: FluentCart CustomerAddresses model documentation with attributes, s
 | country            | String    | Country code |
 | phone              | String    | Phone number |
 | email              | String    | Email address |
+| meta               | json NULL |  |
 | created_at         | Date Time | Creation timestamp |
 | updated_at         | Date Time | Last update timestamp |
 

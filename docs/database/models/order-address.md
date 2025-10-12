@@ -26,6 +26,7 @@ description: FluentCart OrderAddress model documentation with attributes, scopes
 | state              | String    | State/Province |
 | postcode           | String    | Postal/ZIP code |
 | country            | String    | Country code |
+| meta               | json NULL |  |
 | created_at         | Date Time | Creation timestamp |
 | updated_at         | Date Time | Last update timestamp |
 
