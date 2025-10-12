@@ -56,7 +56,7 @@
 - fct_webhook_logger has migration file (WebhookLogger.php)
 
 ### ✅ Schema Documentation: 41 tables
-- All 41 tables documented
+- All 40 tables documented
 - Duplicates removed
 - fct_email_notifications removed (not needed)
 
