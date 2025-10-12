@@ -205,7 +205,7 @@ $order = $orderItem->order; // will return FluentCart\App\Models\Order
 - **[OrderOperation Model](./models/order-operation)** - Order operations
 - **[OrderTaxRate Model](./models/order-tax-rate)** - Tax calculations
 - **[OrderDownloadPermission Model](./models/order-download-permission)** - Download permissions
-- **[OrderDetailsMeta Model](./models/order-details-meta)** - Order details metadata
+<!-- OrderDetailsMeta model removed -->
 
 #### Customer Models
 - **[Customer Model](./models/customer)** - Customer management

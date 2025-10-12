@@ -18,36 +18,35 @@
 12. fct_label_relationships
 13. fct_meta
 14. fct_order_addresses
-15. fct_order_details_meta
-16. fct_order_download_permissions
-17. fct_order_items
-18. fct_order_meta
-19. fct_order_operations
-20. fct_order_tax_rate
-21. fct_order_transactions
-22. fct_orders
-23. fct_product_details
-24. fct_product_downloads
-25. fct_product_meta
-26. fct_product_variations
-27. fct_scheduled_actions
-28. fct_shipping_classes
-29. fct_shipping_methods
-30. fct_shipping_zones
-31. fct_subscription_meta
-32. fct_subscriptions
-33. fct_tax_classes
-34. fct_tax_rates
-35. fct_webhook_logger
+15. fct_order_download_permissions
+16. fct_order_items
+17. fct_order_meta
+18. fct_order_operations
+19. fct_order_tax_rate
+20. fct_order_transactions
+21. fct_orders
+22. fct_product_details
+23. fct_product_downloads
+24. fct_product_meta
+25. fct_product_variations
+26. fct_scheduled_actions
+27. fct_shipping_classes
+28. fct_shipping_methods
+29. fct_shipping_zones
+30. fct_subscription_meta
+31. fct_subscriptions
+32. fct_tax_classes
+33. fct_tax_rates
+34. fct_webhook_logger
 
 ### **Pro Plugin Tables (6 tables)**
 
-36. fct_license_activations
-37. fct_license_meta
-38. fct_license_sites
-39. fct_licenses
-40. fct_order_promotions
-41. fct_order_promotion_stats
+35. fct_license_activations
+36. fct_license_meta
+37. fct_license_sites
+38. fct_licenses
+39. fct_order_promotions
+40. fct_order_promotion_stats
 
 ## **Verification Status**
 

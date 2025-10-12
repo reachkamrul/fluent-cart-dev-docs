@@ -58,7 +58,6 @@ FluentCart creates the following database tables:
 
 ### Additional Tables
 - `fct_order_addresses` - Order billing and shipping addresses
-- `fct_order_details_meta` - Order detail metadata
 - `fct_order_download_permissions` - Digital product download permissions
 - `fct_order_operations` - Order operation logs
 - `fct_labels` - Customer labeling system
@@ -96,7 +95,6 @@ FluentCart uses Eloquent ORM for database operations. Here are the main models:
 - [Order Operation Model](./models/order-operation) - Order operation logs and analytics
 - [Order Tax Rate Model](./models/order-tax-rate) - Tax calculations for orders
 - [Order Download Permission Model](./models/order-download-permission) - Download permissions
-- [Order Details Meta Model](./models/order-details-meta) - Order details metadata
 
 #### Customer Management
 - [Customer Model](./models/customer) - Customer data and management

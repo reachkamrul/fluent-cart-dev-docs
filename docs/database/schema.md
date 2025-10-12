@@ -314,27 +314,6 @@ Indexes:
 
 
 
-## fct_order_details_meta Table
-
-This table stores order details metadata
-
-| Column      | Type                                  | Comment |
-|------------|---------------------------------------|---------|
-| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
-| object_id  | BIGINT UNSIGNED NULL DEFAULT NULL     | Related object ID |
-| object_type| VARCHAR(100) NULL DEFAULT NULL        | Object type |
-| meta_key   | VARCHAR(192) NULL DEFAULT NULL        | Meta key |
-| meta_value | LONGTEXT NULL DEFAULT NULL            | Meta value |
-| created_at | DATETIME NULL                         | |
-| updated_at | DATETIME NULL                         | |
-
-Indexes:
-- meta_key
-- object_id
-
-
-
-
 ## fct_product_variations Table
 
 This table stores product variations with pricing and inventory

@@ -137,7 +137,6 @@ export default defineConfig({
             { text: 'Order Operation', link: '/database/models/order-operation' },
             { text: 'Order Tax Rate', link: '/database/models/order-tax-rate' },
             { text: 'Order Download Permission', link: '/database/models/order-download-permission' },
-            { text: 'Order Details Meta', link: '/database/models/order-details-meta' },
             { text: 'Customer', link: '/database/models/customer' },
             { text: 'Customer Addresses', link: '/database/models/customer-addresses' },
             { text: 'Customer Meta', link: '/database/models/customer-meta' },

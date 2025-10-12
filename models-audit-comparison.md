@@ -18,7 +18,7 @@ This document compares all models that exist in the FluentCart codebase vs. what
 - ✅ **OrderOperation** - `app/Models/OrderOperation.php` → `docs/database/models/order-operation.md`
 - ✅ **OrderTaxRate** - `app/Models/OrderTaxRate.php` → `docs/database/models/order-tax-rate.md`
 - ✅ **OrderDownloadPermission** - `app/Models/OrderDownloadPermission.php` → `docs/database/models/order-download-permission.md`
-- ✅ **OrderDetailsMeta** - `app/Models/OrderDetailsMeta.php` → `docs/database/models/order-details-meta.md`
+<!-- OrderDetailsMeta removed from docs -->
 
 #### Customer Models
 - ✅ **Customer** - `app/Models/Customer.php` → `docs/database/models/customer.md`
