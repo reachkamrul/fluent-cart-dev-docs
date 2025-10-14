@@ -57,8 +57,7 @@ export default defineConfig({
             text: 'Developer Hooks',
             items: [
               { text: 'Action Hooks', link: '/hooks/actions' },
-              { text: 'Filter Hooks', link: '/hooks/filters' },
-              { text: 'Event System', link: '/hooks/events' }
+              { text: 'Filter Hooks', link: '/hooks/filters' }
             ]
           },
           {
@@ -213,7 +212,17 @@ export default defineConfig({
                   { text: 'Admin & Templates', link: '/hooks/actions/admin-and-templates' },
                 ]
               },
-            { text: 'Filter Hooks', link: '/hooks/filters' },
+            { text: 'Filter Hooks', 
+              items: [
+                  { text: 'Filter Hooks Overview', link: '/hooks/filters' },
+                  { text: 'Cart & Checkout', link: '/hooks/filters/cart-and-checkout' },
+                  { text: 'Customers & Subscriptions', link: '/hooks/filters/customers-and-subscriptions' },
+                  { text: 'Integrations & Advanced', link: '/hooks/filters/integrations-and-advanced' },
+                  { text: 'Orders & Payments', link: '/hooks/filters/orders-and-payments' },
+                  { text: 'Products & Pricing', link: '/hooks/filters/products-and-pricing' },
+                  { text: 'Settings & Configuration', link: '/hooks/filters/settings-and-configuration' },
+                ]
+             },
             { text: 'Event System', link: '/hooks/events' }
           ]
         }
