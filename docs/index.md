@@ -11,8 +11,8 @@ hero:
       text: Get Started
       link: /getting-started
     - theme: alt
-      text: View on GitHub
-      link: https://github.com/fluentcart/fluentcart
+      text: View User Docs
+      link: https://docs.fluentcart.com
 
 features:
   - title: Getting Started
@@ -27,23 +27,23 @@ features:
   - title: REST API
     details: Complete REST API documentation including authentication, core endpoints, and FluentCart Pro API for all e-commerce operations.
     link: /api/
-  - title: Payment Methods
-    details: Payment gateway architecture, supported gateways, and custom gateway development guide for payment processing.
-    link: /modules/payment-methods
-  - title: Shipping Module
-    details: Shipping zones, methods, rate calculations, and custom shipping method development for delivery management.
-    link: /modules/shipping
-  - title: Storage Drivers
-    details: File storage abstraction, local storage, S3 integration, and custom storage driver development for digital products.
-    link: /modules/storage
-  - title: Pro Modules
-    details: FluentCart Pro features including licensing management, order bump functionality, and roles & permissions.
-    link: /modules/licensing
-  - title: Module System
-    details: FluentCart's modular architecture, module development guide, and best practices for creating custom modules.
-    link: /modules/
-  - title: Developer Guides
-    details: Comprehensive guides for frontend development, Vue.js integration, and third-party service integrations.
-    link: /guides/
----
+  # - title: Payment Methods
+  #   details: Payment gateway architecture, supported gateways, and custom gateway development guide for payment processing.
+  #   link: /modules/payment-methods
+#   - title: Shipping Module
+#     details: Shipping zones, methods, rate calculations, and custom shipping method development for delivery management.
+#     link: /modules/shipping
+#   - title: Storage Drivers
+#     details: File storage abstraction, local storage, S3 integration, and custom storage driver development for digital products.
+#     link: /modules/storage
+#   - title: Pro Modules
+#     details: FluentCart Pro features including licensing management, order bump functionality, and roles & permissions.
+#     link: /modules/licensing
+#   - title: Module System
+#     details: FluentCart's modular architecture, module development guide, and best practices for creating custom modules.
+#     link: /modules/
+#   - title: Developer Guides
+#     details: Comprehensive guides for frontend development, Vue.js integration, and third-party service integrations.
+#     link: /guides/
+# ---
 

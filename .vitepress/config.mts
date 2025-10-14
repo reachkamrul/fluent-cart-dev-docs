@@ -95,13 +95,13 @@ export default defineConfig({
               }
             ]
           },
-          {
-            text: 'Guides',
-            items: [
-              { text: 'Frontend Development', link: '/guides/frontend' },
-              { text: 'Integration Guide', link: '/guides/integrations' }
-            ]
-          }
+          // {
+          //   text: 'Guides',
+          //   items: [
+          //     { text: 'Frontend Development', link: '/guides/frontend' },
+          //     { text: 'Integration Guide', link: '/guides/integrations' }
+          //   ]
+          // }
         ],
 
     // Sidebar
@@ -198,7 +198,6 @@ export default defineConfig({
         {
           text: 'Developer Hooks',
           items: [
-            { text: 'Overview', link: '/hooks/' },
             {
                 text: 'Action Hooks',
                 items: [

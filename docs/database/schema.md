@@ -92,6 +92,37 @@ The FluentCart database schema is built around these core concepts:
 
 ## Database Tables
 
+## fct_customers Table
+
+This table stores customer information and purchase history
+
+| Column              | Type                | Comment |
+|---------------------|---------------------|---------|
+| id                  | BIGINT UNSIGNED _Auto Increment_ | Primary key |
+| user_id             | BIGINT UNSIGNED NULL | WordPress user ID |
+| contact_id          | BIGINT UNSIGNED NOT NULL DEFAULT '0' | Contact ID |
+| email               | VARCHAR(192) NOT NULL DEFAULT '' | Customer email |
+| first_name          | VARCHAR(192) NOT NULL DEFAULT '' | First name |
+| last_name           | VARCHAR(192) NOT NULL DEFAULT '' | Last name |
+| status              | VARCHAR(45) NULL DEFAULT 'active' | active, inactive, archived |
+| purchase_value      | JSON NULL | Purchase value data |
+| purchase_count      | BIGINT UNSIGNED NOT NULL DEFAULT '0' | Total number of purchases |
+| ltv                 | BIGINT NOT NULL DEFAULT '0' | Lifetime value in cents |
+| first_purchase_date | DATETIME NULL | First purchase date |
+| last_purchase_date  | DATETIME NULL | Last purchase date |
+| aov                 | DECIMAL(18,2) NULL | Average order value |
+| notes               | LONGTEXT NOT NULL | Customer notes |
+| uuid                | VARCHAR(100) NULL DEFAULT '' | Unique identifier |
+| country             | VARCHAR(45) NULL | Country |
+| city                | VARCHAR(45) NULL | City |
+| state               | VARCHAR(45) NULL | State |
+| postcode            | VARCHAR(45) NULL | Postal code |
+| created_at          | DATETIME NULL | |
+| updated_at          | DATETIME NULL | |
+
+Indexes:
+- email
+- user_id
 
 
 ## fct_orders Table
@@ -206,6 +237,50 @@ This table stores individual items within orders
 Indexes:
 - order_id, object_id
 - post_id
+
+
+## fct_subscriptions Table
+
+This table stores subscription information and billing cycles
+
+| Column                  | Type                                  | Comment |
+|------------------------|---------------------------------------|---------|
+| id                     | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| uuid                   | VARCHAR(100) NOT NULL                 | Unique identifier |
+| customer_id            | BIGINT(20) UNSIGNED NOT NULL          | Reference to customer |
+| parent_order_id        | BIGINT(20) UNSIGNED NOT NULL          | Initial order ID |
+| product_id             | BIGINT(20) UNSIGNED NOT NULL          | WordPress post ID |
+| item_name              | TEXT NOT NULL                         | Subscription item name |
+| quantity               | INT NOT NULL DEFAULT '1'              | Subscription quantity |
+| variation_id           | BIGINT(20) UNSIGNED NOT NULL          | Product variation ID |
+| billing_interval       | VARCHAR(45) NULL                      | Billing interval (day, week, month, year) |
+| signup_fee             | BIGINT UNSIGNED NOT NULL DEFAULT 0    | Signup fee in cents |
+| initial_tax_total      | BIGINT UNSIGNED NOT NULL DEFAULT 0    | Initial tax in cents |
+| recurring_amount       | BIGINT UNSIGNED NOT NULL DEFAULT 0    | Recurring amount in cents |
+| recurring_tax_total    | BIGINT UNSIGNED NOT NULL DEFAULT 0    | Recurring tax in cents |
+| recurring_total        | BIGINT UNSIGNED NOT NULL DEFAULT 0    | Total recurring in cents |
+| bill_times             | BIGINT(20) UNSIGNED NOT NULL DEFAULT 0| Total billing cycles |
+| bill_count             | INT UNSIGNED NOT NULL DEFAULT 0       | Current billing count |
+| expire_at              | DATETIME NULL                         | Expiration date |
+| trial_ends_at          | DATETIME NULL                         | Trial end date |
+| canceled_at            | DATETIME NULL                         | Cancellation date |
+| restored_at            | DATETIME NULL                         | Restoration date |
+| collection_method      | ENUM('automatic', 'manual', 'system') NOT NULL DEFAULT 'automatic' | Payment collection method |
+| next_billing_date      | DATETIME NULL                         | Next billing date |
+| trial_days             | INT(10) UNSIGNED NOT NULL DEFAULT 0   | Trial period in days |
+| vendor_customer_id     | VARCHAR(45) NULL                      | Payment gateway customer ID |
+| vendor_plan_id         | VARCHAR(45) NULL                      | Payment gateway plan ID |
+| vendor_subscription_id | VARCHAR(45) NULL                      | Payment gateway subscription ID |
+| status                 | VARCHAR(45) NULL                      | active, canceled, expired, pending, trialing |
+| original_plan          | LONGTEXT NULL                         | Original plan data |
+| vendor_response        | LONGTEXT NULL                         | Payment gateway response |
+| current_payment_method | VARCHAR(45) NULL                      | Current payment method |
+| config                 | JSON DEFAULT NULL                     | Subscription configuration |
+| created_at             | DATETIME NULL                         | |
+| updated_at             | DATETIME NULL                         | |
+
+Indexes:
+- parent_order_id
 
 
 ## fct_order_transactions Table
@@ -352,6 +427,30 @@ Indexes:
 - stock_status
 
 
+## fct_product_details Table
+
+This table stores product configuration and settings
+
+| Column              | Type                                  | Comment |
+|---------------------|---------------------------------------|---------|
+| id                  | BIGINT(20) UNSIGNED _Auto Increment_  | Primary key |
+| post_id             | BIGINT(20) UNSIGNED NOT NULL          | WordPress post ID |
+| fulfillment_type    | VARCHAR(100) NULL DEFAULT 'physical'  | physical, digital, service, mixed |
+| min_price           | double DEFAULT 0 NOT NULL             | Minimum price |
+| max_price           | double DEFAULT 0 NOT NULL             | Maximum price |
+| default_variation_id| BIGINT(20) UNSIGNED NULL              | Default variation ID |
+| default_media       | JSON NULL                             | Default media data |
+| manage_stock        | TINYINT(1) NULL DEFAULT 0             | Stock management enabled |
+| stock_availability  | VARCHAR(100) NULL DEFAULT 'in-stock'  | in-stock, out-of-stock, backorder |
+| variation_type      | VARCHAR(30) NULL DEFAULT 'simple'     | simple, simple_variation, advance_variation |
+| manage_downloadable | TINYINT(1) NULL DEFAULT 0             | Downloadable management enabled |
+| other_info          | JSON NULL                             | Additional product data |
+| created_at          | DATETIME NULL                         | |
+| updated_at          | DATETIME NULL                         | |
+
+Indexes:
+- post_id
+- stock_availability
 
 
 ## fct_product_meta Table
@@ -370,63 +469,6 @@ This table stores product metadata
 
 Indexes:
 - meta_key
-
-## fct\_product\_variations Table
-
-This table stores product variations with pricing and inventory
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| post_id | bigint unsigned | WordPress post ID |
-| media_id | bigint unsigned _NULL_ | Media attachment ID |
-| serial_index | int(5) _NULL_ | Variation order |
-| sold_individually | tinyint(1) unsigned _NULL_ | Sold individually flag |
-| variation_title | varchar(192) | Variation title |
-| variation_identifier | varchar(100) _NULL_ | SKU or identifier |
-| manage_stock | tinyint(1) _NULL_ | Stock management enabled |
-| payment_type | varchar(50) _NULL_ | onetime, subscription |
-| stock_status | varchar(30) _NULL_ | in-stock, out-of-stock, backorder |
-| backorders | tinyint(1) unsigned _NULL_ | Backorders allowed |
-| total_stock | int(11) _NULL_ | Total stock quantity |
-| on_hold | int(11) _NULL_ | Stock on hold |
-| committed | int(11) _NULL_ | Committed stock |
-| available | int(11) _NULL_ | Available stock |
-| fulfillment_type | varchar(100) _NULL_ | physical, digital, service |
-| item_status | varchar(30) _NULL_ | active, inactive |
-| manage_cost | varchar(30) _NULL_ | Cost management enabled |
-| item_price | double | Variation price |
-| item_cost | double | Variation cost |
-| compare_price | double _NULL_ | Compare at price |
-| shipping_class | bigint(20) _NULL_ | Shipping class ID |
-| other_info | longtext _NULL_ | Additional variation data |
-| downloadable | varchar(30) _NULL_ | Downloadable flag |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-
-## fct\_coupons Table
-
-This table stores coupon definitions and rules
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| title | varchar(200) | Coupon title |
-| code | varchar(50) | Coupon code (unique) |
-| priority | int _NULL_ | Coupon priority |
-| type | varchar(20) | Coupon type |
-| conditions | json _NULL_ | Coupon conditions |
-| amount | double | Discount amount |
-| use_count | int _NULL_ | Usage count |
-| status | varchar(20) | Coupon status |
-| notes | longtext | Coupon notes |
-| stackable | varchar(3) | Stackable flag (yes/no) |
-| show_on_checkout | varchar(3) | Show on checkout (yes/no) |
-| start_date | timestamp _NULL_ | Start date |
-| end_date | timestamp _NULL_ | End date |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-
 
 
 ## fct_applied_coupons Table
@@ -479,7 +521,6 @@ Indexes:
 - status
 
 
-
 ## fct_customer_meta Table
 
 This table stores customer metadata
@@ -523,20 +564,6 @@ This table stores shopping cart data
 | created_at    | DATETIME NULL                         | |
 | updated_at    | DATETIME NULL                         | |
 | deleted_at    | TIMESTAMP NULL                        | Soft delete timestamp |
-
-## fct\_product\_meta Table
-
-This table stores product metadata
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| object_id | bigint unsigned | Reference to product |
-| object_type | varchar(192) _NULL_ | Object type |
-| meta_key | varchar(192) | Meta key |
-| meta_value | longtext _NULL_ | Meta value |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
 
 
 ## fct_product_downloads Table
@@ -719,6 +746,20 @@ Indexes:
 - name
 
 
+## fct_tax_classes Table
+
+This table stores tax class definitions
+
+| Column      | Type                                  | Comment |
+|------------|---------------------------------------|---------|
+| id         | BIGINT UNSIGNED _Auto Increment_      | Primary key |
+| title      | VARCHAR(192) NULL                     | Tax class title |
+| slug       | VARCHAR(100) NULL                     | Tax class slug |
+| description| LONGTEXT NULL                         | Tax class description |
+| meta       | JSON DEFAULT NULL                     | Tax class metadata |
+| created_at | DATETIME NULL                         | |
+| updated_at | DATETIME NULL                         | |
+
 
 ## fct_tax_rates Table
 
@@ -762,33 +803,6 @@ This table stores generic metadata for various objects
 Indexes:
 - object_type
 - object_id
-
-
-
-
-### fct_email_notifications Table
-
-This table stores email notification templates and settings (Pro feature)
-
-| Column     | Type                | Comment |
-|------------|---------------------|---------|
-| id         | BIGINT UNSIGNED AUTO_INCREMENT | Primary key |
-| title      | VARCHAR(200)        | Notification title |
-| events     | JSON NULL           | Trigger events |
-| to         | JSON NULL           | Recipient configuration |
-| from       | VARCHAR(255)        | Sender email |
-| cc         | VARCHAR(255) NULL   | CC recipients |
-| subject    | VARCHAR(255)        | Email subject |
-| enabled    | VARCHAR(3)          | yes, no (default: no) |
-| content    | TEXT                | Email content |
-| path       | VARCHAR(200)        | Template path |
-| created_at | TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP | Created at |
-| updated_at | TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP | Updated at |
-| to_email   | LONGTEXT            | Email recipients |
-
-Indexes:
-- PRIMARY (id)
-- from
 
 
 ## fct_label Table
@@ -955,25 +969,6 @@ Indexes:
 - label_id
 - labelable_id
 
-## fct\_scheduled\_actions Table
-
-This table stores background job scheduling and execution
-
-| Column | Type | Comment |
-|--------|------|---------|
-| id | bigint unsigned _Auto Increment_ | |
-| scheduled_at | datetime _NULL_ | When to run the action |
-| action | varchar(192) _NULL_ | Action to perform |
-| status | varchar(20) _NULL_ | pending, processing, completed, failed |
-| group | varchar(100) _NULL_ | order, subscription |
-| object_id | bigint unsigned _NULL_ | Related object ID |
-| object_type | varchar(100) _NULL_ | Object type |
-| completed_at | timestamp _NULL_ | When action was completed |
-| retry_count | int unsigned | Number of retries |
-| data | json _NULL_ | Action data |
-| created_at | datetime _NULL_ | |
-| updated_at | datetime _NULL_ | |
-| response_note | longtext _NULL_ | Response or error message |
 
 ## Pro Plugin Tables
 
