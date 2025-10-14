@@ -1,8 +1,9 @@
-## Customers & Users
+# Customers & Users
 
 All hooks related to user and customer management.
 
-<details>
+### <code> after_register </code>
+<details open>
 <summary><code>fluent_cart/user/after_register</code> &mdash; Fired after user registration</summary>
 
 **When it runs:**
@@ -32,6 +33,7 @@ add_action('fluent_cart/user/after_register', function($data) {
 ```
 </details>
 
+### <code> customer_email_changed </code>
 <details>
 <summary><code>fluent_cart/customer_email_changed</code> &mdash; Fired when customer email is changed</summary>
 
@@ -62,6 +64,7 @@ add_action('fluent_cart/customer_email_changed', function($data) {
 ```
 </details>
 
+### <code> customer_status_updated </code>
 <details>
 <summary><code>fluent_cart/customer_status_updated</code> &mdash; Fired when customer status is updated</summary>
 

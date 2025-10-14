@@ -1,9 +1,9 @@
-## Orders
+# Orders
 
 All hooks related to order lifecycle, payments, shipping, and refunds.
 
 ### <code> order_created </code>
-<details>
+<details open>
 <summary><code>fluent_cart/order_created</code> &mdash; Fired when an order is created</summary>
 
 **When it runs:**

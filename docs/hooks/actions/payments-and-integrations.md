@@ -1,8 +1,9 @@
-## Payments & Integrations
+# Payments & Integrations
 
 All hooks related to payment gateways and third-party integrations.
 
-<details>
+### <code> register_payment_methods </code>
+<details open>
 <summary><code>fluent_cart/register_payment_methods</code> &mdash; Fired to register payment methods</summary>
 
 **When it runs:**
@@ -24,6 +25,7 @@ add_action('fluent_cart/register_payment_methods', function($data) {
 ```
 </details>
 
+### <code> integration/run/{provider} </code>
 <details>
 <summary><code>fluent_cart/integration/run/{provider}</code> &mdash; Fired to run specific integration</summary>
 

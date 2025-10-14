@@ -1,8 +1,9 @@
-## Cart & Checkout
+# Cart & Checkout
 
 All hooks related to the shopping flow from cart to checkout completion.
 
-<details>
+### <code> item_added </code>
+<details open>
 <summary><code>fluent_cart/cart/item_added</code> &mdash; Fired when an item is added to cart</summary>
 
 **When it runs:**
@@ -35,6 +36,7 @@ add_action('fluent_cart/cart/item_added', function($data) {
 ```
 </details>
 
+### <code> item_removed </code>
 <details>
 <summary><code>fluent_cart/cart/item_removed</code> &mdash; Fired when an item is removed from cart</summary>
 
@@ -66,6 +68,7 @@ add_action('fluent_cart/cart/item_removed', function($data) {
 ```
 </details>
 
+### <code> cart_completed </code>
 <details>
 <summary><code>fluent_cart/cart_completed</code> &mdash; Fired when cart is completed</summary>
 
@@ -98,6 +101,7 @@ add_action('fluent_cart/cart_completed', function($data) {
 ```
 </details>
 
+### <code> customer_data_saved </code>
 <details>
 <summary><code>fluent_cart/checkout/customer_data_saved</code> &mdash; Fired when customer data is saved during checkout</summary>
 
@@ -129,6 +133,7 @@ add_action('fluent_cart/checkout/customer_data_saved', function($data) {
 ```
 </details>
 
+### <code> after_receipt </code>
 <details>
 <summary><code>fluent_cart/after_receipt</code> &mdash; Fired after receipt is displayed</summary>
 

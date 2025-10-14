@@ -1,8 +1,9 @@
-## Products & Coupons
+# Products & Coupons
 
 All hooks related to catalog management including products and coupons.
 
-<details>
+### <code> product_updated </code>
+<details open>
 <summary><code>fluent_cart/product_updated</code> &mdash; Fired when a product is updated</summary>
 
 **When it runs:**
@@ -32,6 +33,7 @@ add_action('fluent_cart/product_updated', function($data) {
 ```
 </details>
 
+### <code> product_stock_changed </code>
 <details>
 <summary><code>fluent_cart/product_stock_changed</code> &mdash; Fired when product stock changes</summary>
 
@@ -65,6 +67,7 @@ add_action('fluent_cart/product_stock_changed', function($data) {
 ```
 </details>
 
+### <code> coupon_created </code>
 <details>
 <summary><code>fluent_cart/coupon_created</code> &mdash; Fired when a coupon is created</summary>
 

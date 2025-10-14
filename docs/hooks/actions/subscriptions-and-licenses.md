@@ -1,8 +1,9 @@
-## Subscriptions & Licenses
+# Subscriptions & Licenses
 
 All hooks related to recurring revenue features including subscriptions and license management.
 
-<details>
+### <code> subscription_activated </code>
+<details open>
 <summary><code>fluent_cart/subscription_activated</code> &mdash; Fired when a subscription is activated</summary>
 
 **When it runs:**
@@ -36,6 +37,7 @@ add_action('fluent_cart/subscription_activated', function($data) {
 ```
 </details>
 
+### <code> subscription_canceled </code>
 <details>
 <summary><code>fluent_cart/subscription_canceled</code> &mdash; Fired when a subscription is canceled</summary>
 
@@ -68,6 +70,7 @@ add_action('fluent_cart/subscription_canceled', function($data) {
 ```
 </details>
 
+### <code> subscription_renewed </code>
 <details>
 <summary><code>fluent_cart/subscription_renewed</code> &mdash; Fired when a subscription is renewed</summary>
 
@@ -101,6 +104,7 @@ add_action('fluent_cart/subscription_renewed', function($data) {
 ```
 </details>
 
+### <code> subscription_eot </code>
 <details>
 <summary><code>fluent_cart/subscription_eot</code> &mdash; Fired when a subscription reaches end of term</summary>
 
@@ -132,6 +136,7 @@ add_action('fluent_cart/subscription_eot', function($data) {
 ```
 </details>
 
+### <code> license_renewed </code>
 <details>
 <summary><code>fluent_cart/license_renewed</code> &mdash; Fired when a license is renewed</summary>
 

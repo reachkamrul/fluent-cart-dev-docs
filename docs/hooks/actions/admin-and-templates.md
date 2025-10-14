@@ -1,8 +1,11 @@
-## System & Admin
+# System & Admin
 
+
+## UI & Templates
 All hooks related to system-level and administrative functions.
 
-<details>
+### <code> fluentcart_loaded </code>
+<details open>
 <summary><code>fluentcart_loaded</code> &mdash; Fired when FluentCart is loaded</summary>
 
 **When it runs:**
@@ -21,6 +24,7 @@ add_action('fluentcart_loaded', function($data) {
 ```
 </details>
 
+### <code> module/activated/{module_key} </code>
 <details>
 <summary><code>fluent_cart/module/activated/{module_key}</code> &mdash; Fired when a module is activated</summary>
 
@@ -51,6 +55,7 @@ add_action('fluent_cart/module/activated/subscriptions', function($data) {
 
 All hooks related to frontend rendering and display.
 
+### <code> before_checkout_form </code>
 <details>
 <summary><code>fluent_cart/before_checkout_form</code> &mdash; Fired before checkout form</summary>
 
@@ -70,6 +75,7 @@ add_action('fluent_cart/before_checkout_form', function($data) {
 ```
 </details>
 
+### <code> after_checkout_form </code>
 <details>
 <summary><code>fluent_cart/after_checkout_form</code> &mdash; Fired after checkout form</summary>
 
