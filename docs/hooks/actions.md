@@ -22,6 +22,265 @@ This action runs when an order is fully refunded.
 
 - <code>$data</code> (array): Order and refund information
 
+#### <code> $data </code> sample 
+```json
+{
+  "order": {
+    "id": 123,
+    "status": "completed",
+    "parent_id": null,
+    "receipt_number": "RC-2024-001",
+    "invoice_no": "INV-2024-001",
+    "fulfillment_type": "digital",
+    "type": "payment",
+    "mode": "test",
+    "shipping_status": "",
+    "customer_id": "456",
+    "payment_method": "stripe",
+    "payment_status": "refunded",
+    "payment_method_title": "Credit Card",
+    "currency": "USD",
+    "subtotal": 15000,
+    "discount_tax": 0,
+    "manual_discount_total": 0,
+    "coupon_discount_total": 0,
+    "shipping_tax": 0,
+    "shipping_total": 0,
+    "tax_total": 0,
+    "total_amount": 15000,
+    "total_paid": "15000",
+    "total_refund": 15000,
+    "rate": "1.0000",
+    "tax_behavior": "1",
+    "note": "Customer requested full refund",
+    "ip_address": "192.168.1.100",
+    "completed_at": "2024-01-15 10:30:00",
+    "refunded_at": "2024-01-15 14:45:00",
+    "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "config": {
+      "user_tz": "America/New_York",
+      "create_account_after_paid": "yes"
+    },
+    "created_at": "2024-01-15T10:25:00+00:00",
+    "updated_at": "2024-01-15T14:45:00+00:00",
+    "customer": {}, //Customer object
+    "shipping_address": {
+      "id": 789,
+      "order_id": "123",
+      "type": "shipping",
+      "name": "John Doe",
+      "address_1": "123 Main Street",
+      "address_2": "Apt 4B",
+      "city": "New York",
+      "state": "NY",
+      "postcode": "10001",
+      "country": "US",
+      "meta": {
+        "other_data": {
+          "email": "john.doe@example.com",
+          "last_name": "Doe",
+          "first_name": "John"
+        }
+      },
+      "created_at": "2024-01-15T10:25:00+00:00",
+      "updated_at": "2024-01-15T10:25:00+00:00",
+      "email": "john.doe@example.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "full_name": "John Doe",
+      "formatted_address": {}, // User address formatted
+      "order": {} //Order object
+    }, 
+    "billing_address": {
+      "id": 790,
+      "order_id": "123",
+      "type": "billing",
+      "name": "John Doe",
+      "address_1": "123 Main Street",
+      "address_2": "Apt 4B",
+      "city": "New York",
+      "state": "NY",
+      "postcode": "10001",
+      "country": "US",
+      "meta": {
+        "other_data": {
+          "email": "john.doe@example.com",
+          "last_name": "Doe",
+          "first_name": "John"
+        }
+      },
+      "created_at": "2024-01-15T10:25:00+00:00",
+      "updated_at": "2024-01-15T10:25:00+00:00",
+      "email": "john.doe@example.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "full_name": "John Doe",
+      "formatted_address": {}, // User address formatted
+      "order": {} //Order Object
+    },
+    "order_items": [
+      {
+        "id": 101,
+        "order_id": "123",
+        "post_id": "500",
+        "fulfillment_type": "digital",
+        "payment_type": "onetime",
+        "post_title": "Premium Digital Course",
+        "title": "Premium Digital Course",
+        "object_id": "75",
+        "cart_index": "0",
+        "quantity": "1",
+        "unit_price": "15000",
+        "cost": "0",
+        "subtotal": "15000",
+        "tax_amount": "0",
+        "shipping_charge": "0",
+        "discount_total": "0",
+        "line_total": "15000",
+        "refund_total": "15000",
+        "rate": "1",
+        "other_info": {
+          "times": "",
+          "signup_fee": 0,
+          "trial_days": "",
+          "description": "Complete digital marketing course",
+          "installment": "no",
+          "payment_type": "onetime",
+          "billing_summary": "",
+          "repeat_interval": "",
+          "signup_fee_name": "",
+          "manage_setup_fee": "no",
+          "setup_fee_per_item": "no"
+        },
+        "line_meta": [],
+        "fulfilled_quantity": "0",
+        "referrer": null,
+        "created_at": "2024-01-15T10:25:00+00:00",
+        "updated_at": "2024-01-15T14:45:00+00:00",
+        "payment_info": "",
+        "setup_info": "",
+        "formatted_total": "&#36;150.00"
+      }
+    ],
+    "order_tax_rates": [
+      {
+        "id": 201,
+        "order_id": "123",
+        "tax_rate_id": "0",
+        "shipping_tax": "0",
+        "order_tax": "0",
+        "total_tax": "0",
+        "created_at": "2024-01-15T10:25:00+00:00",
+        "updated_at": "2024-01-15T10:25:00+00:00",
+        "meta": {
+          "tax_country": "US",
+          "store_vat_number": ""
+        },
+        "filed_at": null
+      }
+    ]
+  },
+  "refunded_items": [
+    {
+      "id": 101,
+      "order_id": "123",
+      "post_id": "500",
+      "fulfillment_type": "digital",
+      "payment_type": "onetime",
+      "post_title": "Premium Digital Course",
+      "title": "Premium Digital Course",
+      "object_id": "75",
+      "cart_index": "0",
+      "quantity": "1",
+      "unit_price": "15000",
+      "cost": "0",
+      "subtotal": "15000",
+      "tax_amount": "0",
+      "shipping_charge": "0",
+      "discount_total": "0",
+      "line_total": "15000",
+      "refund_total": "15000",
+      "rate": "1",
+      "other_info": {
+        "times": "",
+        "signup_fee": 0,
+        "trial_days": "",
+        "description": "Complete digital marketing course",
+        "installment": "no",
+        "payment_type": "onetime",
+        "billing_summary": "",
+        "repeat_interval": "",
+        "signup_fee_name": "",
+        "manage_setup_fee": "no",
+        "setup_fee_per_item": "no"
+      },
+      "line_meta": [],
+      "fulfilled_quantity": "0",
+      "referrer": null,
+      "created_at": "2024-01-15T10:25:00+00:00",
+      "updated_at": "2024-01-15T14:45:00+00:00",
+      "payment_info": "",
+      "setup_info": "",
+      "formatted_total": "&#36;150.00"
+    }
+  ],
+  "new_refunded_items": [],
+  "refunded_amount": 15000,
+  "manage_stock": false,
+  "transaction": {
+    "order_id": "123",
+    "order_type": "payment",
+    "payment_method": "stripe",
+    "payment_mode": "test",
+    "payment_method_type": "card",
+    "transaction_type": "refund",
+    "subscription_id": null,
+    "status": "refunded",
+    "currency": "usd",
+    "total": 15000,
+    "meta": {
+      "parent_id": 301,
+      "reason": "Customer requested refund"
+    },
+    "uuid": "b2c3d4e5-f6g7-8901-bcde-f23456789012",
+    "updated_at": "2024-01-15T14:45:00+00:00",
+    "created_at": "2024-01-15T14:44:30+00:00",
+    "id": 302,
+    "vendor_charge_id": "re_3ABC123DEF456GHI789JKL012MNO",
+    "url": "https://dashboard.stripe.com/refunds/re_3ABC123DEF456GHI789JKL012MNO"
+  },
+  "customer": {
+    "id": 456,
+    "user_id": "789",
+    "contact_id": "0",
+    "email": "john.doe@example.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "status": "active",
+    "purchase_value": null,
+    "purchase_count": "1",
+    "ltv": "15000",
+    "first_purchase_date": "2024-01-15 10:25:00",
+    "last_purchase_date": "2024-01-15 10:25:00",
+    "aov": "15000.00",
+    "notes": "",
+    "uuid": "c3d4e5f6-g7h8-9012-cdef-345678901234",
+    "country": "US",
+    "city": "New York",
+    "state": "NY",
+    "postcode": "10001",
+    "created_at": "2024-01-15T10:25:00+00:00",
+    "updated_at": "2024-01-15T14:45:00+00:00",
+    "full_name": "John Doe",
+    "photo": "",
+    "country_name": "United States",
+    "formatted_address": {}, // User address formatted
+    "user_link": "https://example.com/wp-admin/user-edit.php?user_id=789"
+  },
+  "type": "full"
+}
+```
+
 **Usage:**
 
 ```php
