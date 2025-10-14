@@ -79,22 +79,22 @@ export default defineConfig({
               }
             ]
           },
-          {
-            text: 'Modules',
-            items: [
-              { text: 'Module Overview', link: '/modules/' },
-              { text: 'Payment Methods', link: '/modules/payment-methods' },
-              { text: 'Shipping', link: '/modules/shipping' },
-              { text: 'Storage Drivers', link: '/modules/storage' },
-              {
-                text: 'Pro Modules',
-                items: [
-                  { text: 'Licensing Module (Pro)', link: '/modules/licensing' },
-                  { text: 'Order Bump Module (Pro)', link: '/modules/order-bump' }
-                ]
-              }
-            ]
-          },
+          // {
+          //   text: 'Modules',
+          //   items: [
+          //     { text: 'Module Overview', link: '/modules/' },
+          //     { text: 'Payment Methods', link: '/modules/payment-methods' },
+          //     { text: 'Shipping', link: '/modules/shipping' },
+          //     { text: 'Storage Drivers', link: '/modules/storage' },
+          //     {
+          //       text: 'Pro Modules',
+          //       items: [
+          //         { text: 'Licensing Module (Pro)', link: '/modules/licensing' },
+          //         { text: 'Order Bump Module (Pro)', link: '/modules/order-bump' }
+          //       ]
+          //     }
+          //   ]
+          // },
           // {
           //   text: 'Guides',
           //   items: [
@@ -118,7 +118,7 @@ export default defineConfig({
         {
           text: 'Database',
           items: [
-            { text: 'Overview', link: '/database/README' },
+            // { text: 'Overview', link: '/database/README' },
             { text: 'Schema', link: '/database/schema' },
             { text: 'Models', link: '/database/models.md' },
             { text: 'Model Relationships', link: '/database/models/relationships' },

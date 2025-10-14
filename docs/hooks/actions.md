@@ -7,11 +7,6 @@ description: FluentCart action hooks documentation with complete reference and u
 
 Action hooks allow you to execute custom code at specific points in FluentCart's execution flow. They are perfect for triggering side effects, sending notifications, logging events, or performing custom business logic.
 
-
-# FluentCart Action Hooks - Complete Reference with Examples
-
-This document lists all action hooks triggered by the FluentCart plugin with detailed examples and parameter information.
-
 **Categories:**
 1. [Orders](./actions/orders) - Order lifecycle, payments, shipping, refunds
 2. [Subscriptions & Licenses](./actions/subscriptions-and-licenses) - Recurring revenue features

@@ -20,16 +20,16 @@ features:
     link: /getting-started
   - title: Database & Models
     details: Complete database schema documentation with table structures, relationships, and comprehensive model documentation for all FluentCart entities.
-    link: /database/README
+    link: /database/schema
   - title: Developer Hooks
     details: Comprehensive documentation of action hooks, filter hooks, and event system for extending FluentCart functionality.
-    link: /hooks/
-  - title: REST API
+    link: /hooks/actions/
+  - title: REST API (coming soon)
     details: Complete REST API documentation including authentication, core endpoints, and FluentCart Pro API for all e-commerce operations.
-    link: /api/
-  # - title: Payment Methods
-  #   details: Payment gateway architecture, supported gateways, and custom gateway development guide for payment processing.
-  #   link: /modules/payment-methods
+    link: /
+  - title: Payment Methods (coming soon)
+    details: Payment gateway architecture, supported gateways, and custom gateway development guide for payment processing.
+    link: /
 #   - title: Shipping Module
 #     details: Shipping zones, methods, rate calculations, and custom shipping method development for delivery management.
 #     link: /modules/shipping

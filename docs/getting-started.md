@@ -19,7 +19,7 @@ FluentCart is designed to be highly extensible, allowing developers to customize
 
 ### 🔧 **Built for Customization**
 
-- **Extensive hook system** - 380+ action and filter hooks for custom functionality
+- **Extensive hook system** - 315+ action and filter hooks for custom functionality
 - **Modular architecture** - Clean separation allows safe modifications and additions
 - **RESTful API** - Complete programmatic access to all e-commerce data and functions
 - **WordPress-native** - Follows WordPress coding standards and best practices
@@ -78,9 +78,9 @@ FluentCart follows WordPress conventions with a clean, normalized database struc
 - **👥 Customers** (`fct_customers`) - Customer management
   - Customer profiles, addresses, order history
   - Integration with WordPress users
-- **📦 Products** (`fct_products`) - Product catalog
-  - Product information, pricing, inventory
-  - Custom fields and variations
+- **📦 Products** (WordPress `posts` table) - Product catalog
+  - Product information stored as WordPress custom post type
+  - Additional details in `fct_product_details` and `fct_product_variations`
 - **💳 Transactions** (`fct_order_transactions`) - Payment processing
   - Payment records, refunds, transaction history
   - Integration with payment gateways
@@ -100,7 +100,7 @@ The three-component e-commerce system:
 
 Multiple ways to extend FluentCart:
 
-- **WordPress Hooks** - 380+ actions and filters for custom functionality
+- **WordPress Hooks** - 315+ actions and filters for custom functionality
 - **REST API** - Complete programmatic access to all features
 - **Module System** - Add new payment gateways, shipping methods, and features
 - **Custom Fields** - Extend products, orders, and customers with custom data
@@ -113,58 +113,57 @@ Understanding FluentCart's organized codebase:
 ```
 fluent-cart/
 ├── app/                    # Core application logic
-│   ├── FC/                # Core FluentCart classes (336 files)
 │   ├── Hooks/             # WordPress action/filter handlers
-│   │   ├── Handlers/      # Hook handlers (68 files)
+│   │   ├── Handlers/      # Hook handlers
 │   │   ├── actions.php    # Action hooks
 │   │   └── filters.php    # Filter hooks
-│   ├── Http/              # Request handling and routing (108 files)
+│   ├── Http/              # Request handling and routing
 │   │   ├── Controllers/   # API and admin controllers
 │   │   ├── Middleware/    # Request middleware
 │   │   └── Routes/        # API route definitions
-│   ├── Models/            # Database models and relationships (51 files)
+│   ├── Models/            # Database models and relationships (45 files)
 │   │   ├── Order.php      # Order model
 │   │   ├── Customer.php   # Customer model
 │   │   ├── Product.php    # Product model
 │   │   └── ...           # Additional models
-│   ├── Services/          # Business logic and services (374 files)
+│   ├── Services/          # Business logic and services
 │   │   ├── Payment/      # Payment processing services
 │   │   ├── Shipping/     # Shipping calculation services
 │   │   └── Helper.php    # Core helper utilities
-│   ├── Views/            # PHP template files (54 files)
-│   ├── Events/           # Event system (19 files)
-│   ├── Listeners/        # Event listeners (15 files)
-│   └── Modules/          # Module system (104 files)
+│   ├── Views/            # PHP template files
+│   ├── Events/           # Event system
+│   ├── Listeners/        # Event listeners
+│   └── Modules/          # Module system
 │
 ├── api/                   # REST API endpoints and utilities
 │   ├── Orders.php        # Order management API
 │   ├── Customers.php     # Customer management API
 │   ├── Products.php      # Product catalog API
-│   ├── Resource/         # API resource classes (30 files)
+│   ├── Resource/         # API resource classes
 │   └── ...              # Additional API endpoints
 │
 ├── resources/           # Frontend assets and templates
-│   ├── admin/          # Admin interface (Vue.js + React)
-│   │   ├── Components/ # Vue components (337 files)
+│   ├── admin/          # Admin interface (Vue.js) + Gutenberg blocks (React)
+│   │   ├── Components/ # Vue components
 │   │   ├── Modules/    # Feature modules
 │   │   └── BlockEditor/# React Gutenberg blocks
-│   ├── public/         # Public-facing components (169 files)
+│   ├── public/         # Public-facing components
 │   │   ├── cart/       # Cart functionality
 │   │   ├── checkout/   # Checkout process
 │   │   └── customer-profile/ # Customer interface
-│   ├── styles/         # SCSS stylesheets (80 files)
+│   ├── styles/         # SCSS stylesheets
 │   └── images/         # Image resources
 │
 ├── boot/                # Plugin initialization
 ├── config/              # Configuration files
 ├── database/            # Database migrations and schema
-│   ├── Migrations/      # Database migration files (37 files)
-│   ├── Seeder/         # Database seeders (12 files)
+│   ├── Migrations/      # Database migration files (34 files)
+│   ├── Seeder/         # Database seeders
 │   └── DBMigrator.php  # Migration handler
 │
 ├── dev/                 # Development tools and testing
-│   ├── cli/            # CLI commands (31 files)
-│   ├── test/           # Test files (12 files)
+│   ├── cli/            # CLI commands
+│   ├── test/           # Test files
 │   └── factories/      # Model factories
 │
 └── fluent-cart.php     # Plugin entry point
