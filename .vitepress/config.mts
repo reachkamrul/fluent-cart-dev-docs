@@ -200,7 +200,19 @@ export default defineConfig({
           text: 'Developer Hooks',
           items: [
             { text: 'Overview', link: '/hooks/' },
-            { text: 'Action Hooks', link: '/hooks/actions' },
+            {
+                text: 'Action Hooks',
+                items: [
+                  { text: 'Action Hooks Overview', link: '/hooks/actions' },
+                  { text: 'Orders', link: '/hooks/actions/orders' },
+                  { text: 'Subscriptions & Licenses', link: '/hooks/actions/subscriptions-and-licenses' },
+                  { text: 'Cart & Checkout', link: '/hooks/actions/cart-and-checkout' },
+                  { text: 'Customers & Users', link: '/hooks/actions/customers-and-users' },
+                  { text: 'Products & Coupons', link: '/hooks/actions/products-and-coupons' },
+                  { text: 'Payments & Integrations', link: '/hooks/actions/payments-and-integrations' },
+                  { text: 'Admin & Templates', link: '/hooks/actions/admin-and-templates' },
+                ]
+              },
             { text: 'Filter Hooks', link: '/hooks/filters' },
             { text: 'Event System', link: '/hooks/events' }
           ]
