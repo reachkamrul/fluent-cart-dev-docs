@@ -223,9 +223,9 @@ Learn how to extend FluentCart functionality:
 
 - [Action Hooks](/hooks/actions) - Trigger custom code on events
 - [Filter Hooks](/hooks/filters) - Modify data and behavior
-- [Event System](/hooks/events) - Advanced event handling
+<!-- - [Event System](/hooks/events) - Advanced event handling -->
 
-### 3. REST API
+<!-- ### 3. REST API
 
 Access FluentCart programmatically:
 
@@ -249,9 +249,9 @@ Advanced functionality with FluentCart Pro:
 
 - [Licensing Module](/modules/licensing) - Software license management
 - [Order Bump](/modules/order-bump) - Promotional tools
-- [Roles & Permissions](/api/roles-permissions) - User management
+- [Roles & Permissions](/api/roles-permissions) - User management -->
 
-## Development Guides
+<!-- ## Development Guides
 
 ### Frontend Development
 
@@ -264,52 +264,47 @@ Advanced functionality with FluentCart Pro:
 - [CRM Integrations](/guides/integrations) - Customer data sync
 - [Email Marketing](/guides/integrations) - Campaign integration
 - [Analytics](/guides/integrations) - Tracking and reporting
-- [Custom Add-ons](/guides/integrations) - Plugin development
+- [Custom Add-ons](/guides/integrations) - Plugin development -->
 
 ## Community & Support
 
 ### 📚 **Learning Resources**
 
 - **[Official Documentation](https://docs.fluentcart.com)** - Complete user and developer reference
-- **[Database Models](/database/models)** - Detailed model documentation
-- **[REST API Reference](/api/)** - Comprehensive API guide
-- **[Developer Hooks](/hooks/)** - Complete hook documentation
+<!-- - **[Database Models](/database/models)** - Detailed model documentation
+<!-- - **[REST API Reference](/api/)** - Comprehensive API guide -->
+<!-- - **[Developer Hooks](/hooks/)** - Complete hook documentation  -->
 
 ### 💬 **Community**
 
-- **[GitHub Repository](https://github.com/fluentcart/fluentcart)** - Source code and issues
-- **[Developer Community](https://community.fluentcart.com)** - Technical discussions
-- **[Official Support](https://fluentcart.com/support)** - Technical support
+- **[Official Support](https://fluentcart.com/account)** - Technical support
 
-### 🚀 **Next Steps**
+<!-- ### 🚀 **Next Steps**
 
 Ready to start building? Choose your path:
 
 - **Build Payment Gateways** - Create custom payment processors
 - **Extend the API** - Add custom endpoints
 - **Database Deep Dive** - Master the data structure
-- **Hook Integration** - Leverage WordPress hooks
+- **Hook Integration** - Leverage WordPress hooks -->
 
----
 
-## Related Documentation
+<!-- ## Related Documentation
 
 - [Database Schema](/database/schema) - Understanding FluentCart's data structure
-- [Developer Hooks](/hooks/) - Extending FluentCart functionality
-- [REST API](/api/) - Programmatic access to FluentCart
-- [Module System](/modules/) - Building custom modules
-- [Frontend Development](/guides/frontend) - Vue.js and template customization
-- [Integration Guide](/guides/integrations) - Third-party integrations
+- [Developer Hooks](/hooks/) - Extending FluentCart functionality -->
+<!-- - [REST API](/api/) - Programmatic access to FluentCart -->
+<!-- - [Module System](/modules/) - Building custom modules -->
+<!-- - [Frontend Development](/guides/frontend) - Vue.js and template customization -->
+<!-- - [Integration Guide](/guides/integrations) - Third-party integrations -->
 
-## Next Steps
+<!-- ## Next Steps
 
 Ready to dive deeper? Here's the recommended learning path:
 
-1. **[Database & Models](/database/README)** - Start with understanding the data structure
+1. **[Database & Models](/database/schema)** - Start with understanding the data structure
 2. **[Developer Hooks](/hooks/)** - Learn how to extend functionality
 3. **[REST API](/api/)** - Explore programmatic access
-4. **[Modules](/modules/)** - Build custom functionality
-5. **[Guides](/guides/)** - Advanced development topics
-
----
+<!-- 4. **[Modules](/modules/)** - Build custom functionality
+5. **[Guides](/guides/)** - Advanced development topics -->
 

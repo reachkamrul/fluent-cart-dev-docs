@@ -60,25 +60,25 @@ export default defineConfig({
               { text: 'Filter Hooks', link: '/hooks/filters' }
             ]
           },
-          {
-            text: 'REST API',
-            items: [
-              { text: 'API Overview', link: '/api/' },
-              { text: 'Authentication', link: '/api/authentication' },
-              { text: 'Orders API', link: '/api/orders' },
-              { text: 'Customers API', link: '/api/customers' },
-              { text: 'Products API', link: '/api/products' },
-              { text: 'Subscriptions API', link: '/api/subscriptions' },
-              {
-                text: 'Pro API',
-                items: [
-                  { text: 'Licensing API (Pro)', link: '/api/licensing' },
-                  { text: 'Roles & Permissions API (Pro)', link: '/api/roles-permissions' },
-                  { text: 'Order Bump API (Pro)', link: '/api/order-bump' }
-                ]
-              }
-            ]
-          },
+          // {
+          //   text: 'REST API',
+          //   items: [
+          //     { text: 'API Overview', link: '/api/' },
+          //     { text: 'Authentication', link: '/api/authentication' },
+          //     { text: 'Orders API', link: '/api/orders' },
+          //     { text: 'Customers API', link: '/api/customers' },
+          //     { text: 'Products API', link: '/api/products' },
+          //     { text: 'Subscriptions API', link: '/api/subscriptions' },
+          //     {
+          //       text: 'Pro API',
+          //       items: [
+          //         { text: 'Licensing API (Pro)', link: '/api/licensing' },
+          //         { text: 'Roles & Permissions API (Pro)', link: '/api/roles-permissions' },
+          //         { text: 'Order Bump API (Pro)', link: '/api/order-bump' }
+          //       ]
+          //     }
+          //   ]
+          // },
           // {
           //   text: 'Modules',
           //   items: [
@@ -222,59 +222,59 @@ export default defineConfig({
                   { text: 'Settings & Configuration', link: '/hooks/filters/settings-and-configuration' },
                 ]
              },
-            { text: 'Event System', link: '/hooks/events' }
+            // { text: 'Event System', link: '/hooks/events' }
           ]
         }
       ],
-      '/api/': [
-        {
-          text: 'REST API',
-          items: [
-            { text: 'Overview', link: '/api/' },
-            { text: 'Authentication', link: '/api/authentication' },
-            { text: 'Orders API', link: '/api/orders' },
-            { text: 'Customers API', link: '/api/customers' },
-            { text: 'Products API', link: '/api/products' },
-            { text: 'Subscriptions API', link: '/api/subscriptions' }
-          ]
-        },
-        {
-          text: 'Pro API',
-          items: [
-            { text: 'Licensing API (Pro)', link: '/api/licensing' },
-            { text: 'Roles & Permissions API (Pro)', link: '/api/roles-permissions' },
-            { text: 'Order Bump API (Pro)', link: '/api/order-bump' }
-          ]
-        }
-      ],
-      '/modules/': [
-        {
-          text: 'Modules',
-          items: [
-            { text: 'Overview', link: '/modules/' },
-            { text: 'Payment Methods', link: '/modules/payment-methods' },
-            { text: 'Shipping', link: '/modules/shipping' },
-            { text: 'Storage Drivers', link: '/modules/storage' }
-          ]
-        },
-        {
-          text: 'Pro Modules',
-          items: [
-            { text: 'Licensing Module (Pro)', link: '/modules/licensing' },
-            { text: 'Order Bump Module (Pro)', link: '/modules/order-bump' }
-          ]
-        }
-      ],
-      '/guides/': [
-        {
-          text: 'Developer Guides',
-          items: [
-            { text: 'Overview', link: '/guides/' },
-            { text: 'Frontend Development', link: '/guides/frontend' },
-            { text: 'Integration Guide', link: '/guides/integrations' }
-          ]
-        }
-      ]
+      // '/api/': [
+      //   {
+      //     text: 'REST API',
+      //     items: [
+      //       { text: 'Overview', link: '/api/' },
+      //       { text: 'Authentication', link: '/api/authentication' },
+      //       { text: 'Orders API', link: '/api/orders' },
+      //       { text: 'Customers API', link: '/api/customers' },
+      //       { text: 'Products API', link: '/api/products' },
+      //       { text: 'Subscriptions API', link: '/api/subscriptions' }
+      //     ]
+      //   },
+      //   {
+      //     text: 'Pro API',
+      //     items: [
+      //       { text: 'Licensing API (Pro)', link: '/api/licensing' },
+      //       { text: 'Roles & Permissions API (Pro)', link: '/api/roles-permissions' },
+      //       { text: 'Order Bump API (Pro)', link: '/api/order-bump' }
+      //     ]
+      //   }
+      // ],
+      // '/modules/': [
+      //   {
+      //     text: 'Modules',
+      //     items: [
+      //       { text: 'Overview', link: '/modules/' },
+      //       { text: 'Payment Methods', link: '/modules/payment-methods' },
+      //       { text: 'Shipping', link: '/modules/shipping' },
+      //       { text: 'Storage Drivers', link: '/modules/storage' }
+      //     ]
+      //   },
+      //   {
+      //     text: 'Pro Modules',
+      //     items: [
+      //       { text: 'Licensing Module (Pro)', link: '/modules/licensing' },
+      //       { text: 'Order Bump Module (Pro)', link: '/modules/order-bump' }
+      //     ]
+      //   }
+      // ],
+      // '/guides/': [
+      //   {
+      //     text: 'Developer Guides',
+      //     items: [
+      //       { text: 'Overview', link: '/guides/' },
+      //       { text: 'Frontend Development', link: '/guides/frontend' },
+      //       { text: 'Integration Guide', link: '/guides/integrations' }
+      //     ]
+      //   }
+      // ]
     },
 
     
