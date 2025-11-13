@@ -8,9 +8,17 @@ Last Updated: 2024
 MAJOR ENDPOINT GROUPS TO DOCUMENT:
 ==================================
 
-NOTE: Shipping API has been documented in shipping.md
+COMPLETED DOCUMENTATION:
+- Shipping API (shipping.md) ✓
+- Reports API (reports.md) ✓
+- Settings API (settings.md) ✓
+- Tax API (tax.md) ✓
+- Integration API (integration.md) ✓
+- Options/Attributes API (options.md) ✓
+- Email Notification API (email-notification.md) ✓
 
-1. REPORTS API (/reports)
+REMAINING TO DOCUMENT:
+1. REPORTS API (/reports) - COMPLETED ✓
    - Overview reports
    - Revenue reports
    - Order reports
@@ -56,7 +64,7 @@ NOTE: Shipping API has been documented in shipping.md
    - Attribute terms (CRUD)
    - Term serial management
 
-6. EMAIL NOTIFICATION API (/email-notification)
+6. EMAIL NOTIFICATION API (/email-notification) - COMPLETED ✓
    - Notification management
    - Template management
    - Short codes
