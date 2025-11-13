@@ -5,13 +5,7 @@ description: Complete reference for all FluentCart database tables with column s
 
 # FluentCart Database Schema
 
-FluentCart Core Advanced 
-
 FluentCart uses custom database tables to store all the e-commerce data. Here are the list of database tables and their schema to understand overall database design and related data attributes of each model.
-
-## Schema Design
-
-FluentCart uses a comprehensive database schema designed for e-commerce operations. The schema is organized around core entities: Orders, Customers, Products, Subscriptions, and supporting tables for payments, shipping, and licensing.
 
 ### Core Entity Relationships
 
