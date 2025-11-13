@@ -361,32 +361,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/email-notification/sav
   }'
 ```
 
-## Error Handling
-
-### Common Error Responses
-
-#### Notification Not Found
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Notification Details not found"
-  }
-}
-```
-
-#### Failed to Update
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Failed to update notification"
-  }
-}
-```
-
 ## Notes
 
 - Email notifications can be enabled/disabled individually

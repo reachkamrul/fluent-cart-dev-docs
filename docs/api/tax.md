@@ -840,43 +840,6 @@ Delete a One Stop Shop (OSS) shipping tax override.
 }
 ```
 
-## Error Handling
-
-### Common Error Responses
-
-#### Validation Error
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Tax class is required"
-  }
-}
-```
-
-#### Not Found Error
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Tax rate not found"
-  }
-}
-```
-
-#### Failed Operation
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Failed to update tax rate"
-  }
-}
-```
-
 ---
 
 ## Tax Filing
@@ -986,10 +949,4 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/taxes/" \
   }'
 ```
 
----
-
-**Related Documentation:**
-- [Settings API](./settings) - Store settings management
-- [Products API](./products) - Product management
-- [Orders API](./orders) - Order management
 

@@ -773,43 +773,6 @@ curl -X DELETE "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes/1" 
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
-## Error Handling
-
-### Common Error Responses
-
-#### Validation Error
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Shipping name is required."
-  }
-}
-```
-
-#### Not Found Error
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Shipping zone not found"
-  }
-}
-```
-
-#### Duplicate "Whole World" Zone
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Only one \"Whole World\" shipping zone is allowed."
-  }
-}
-```
-
 ## Notes
 
 - Shipping zones define geographic regions where shipping methods are available
@@ -818,11 +781,4 @@ curl -X DELETE "https://yoursite.com/wp-json/fluent-cart/v2/shipping/classes/1" 
 - Deleting a shipping zone also deletes all its associated shipping methods
 - Shipping classes can be assigned to products to apply different shipping costs
 - Shipping method types may vary (e.g., 'flat_rate', 'free_shipping', etc.)
-
----
-
-**Related Documentation:**
-- [Orders API](./orders) - Order management endpoints
-- [Products API](./products) - Product management endpoints
-- [Settings API](./settings) - Store settings management
 

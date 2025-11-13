@@ -755,43 +755,6 @@ Retrieve available shortcodes for confirmation pages.
 - `GET /settings/permissions` - Get permissions
 - `POST /settings/permissions` - Save permissions
 
-## Error Handling
-
-### Common Error Responses
-
-#### Permission Denied
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "You do not have permission to perform this action"
-  }
-}
-```
-
-#### Invalid Payment Method
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "No valid payment method found!"
-  }
-}
-```
-
-#### Invalid Storage Driver
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Invalid driver"
-  }
-}
-```
-
 ---
 
 ## Checkout Fields
@@ -890,10 +853,4 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/checkout-fields/save-f
   }'
 ```
 
----
-
-**Related Documentation:**
-- [Roles & Permissions API](./roles-permissions) - Permission management
-- [Files API](./files) - File management
-- [Orders API](./orders) - Order management
 

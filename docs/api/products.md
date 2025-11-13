@@ -1377,13 +1377,6 @@ Change product integration feed status.
 
 **Permission Required**: `products/manage`
 
-## Rate Limiting
-
-- **List operations**: 100 requests per hour
-- **Create operations**: 50 requests per hour
-- **Update operations**: 200 requests per hour
-- **Delete operations**: 20 requests per hour
-
 ---
 
 ## Variants
@@ -1449,11 +1442,3 @@ curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/variants/" \
 - The `serial_index` determines the display order of variants
 - For more detailed variant management (create, update, delete), see the Products API variant endpoints above
 
----
-
-## Related Documentation
-
-- [Orders API](./orders) - Order management endpoints
-- [Customers API](./customers) - Customer management endpoints
-- [Database Models](/database/models) - Product data models
-- [Developer Hooks](/hooks/) - Product-related hooks

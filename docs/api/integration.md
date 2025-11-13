@@ -620,46 +620,6 @@ curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/products/123/integratio
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
-## Error Handling
-
-### Common Error Responses
-
-#### Integration Not Found
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Integration not found"
-  }
-}
-```
-
-#### Invalid Integration
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "This integration is not available for global scope or not enabled"
-  }
-}
-```
-
-#### Validation Error
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Validation failed",
-    "errors": {
-      "field_name": ["Error message"]
-    }
-  }
-}
-```
-
 ## Notes
 
 - Global integrations apply to all orders
@@ -668,11 +628,4 @@ curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/products/123/integratio
 - Dynamic options are used for fields that require API calls to fetch available values
 - Chained data is used for dependent fields (e.g., tags depend on selected list)
 - Integration settings are validated before saving
-
----
-
-**Related Documentation:**
-- [Products API](./products) - Product management
-- [Orders API](./orders) - Order management
-- [Settings API](./settings) - Store settings
 

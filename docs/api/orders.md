@@ -1002,51 +1002,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/create-custom
   }'
 ```
 
-## Error Handling
-
-### Common Error Codes
-
-| Code | Description |
-|------|-------------|
-| `order_not_found` | Order with specified ID not found |
-| `invalid_customer` | Customer ID is invalid |
-| `invalid_product` | Product ID is invalid |
-| `insufficient_permissions` | User lacks required permissions |
-| `validation_error` | Request data validation failed |
-| `payment_failed` | Payment processing failed |
-| `refund_failed` | Refund processing failed |
-
-### Error Response Example
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Order not found",
-    "errors": [
-      {
-        "code": 404,
-        "message": "Order with ID 999 not found"
-      }
-    ]
-  }
-}
-```
-
-### Common Error Scenarios
-
-- **Subscription orders**: Cannot be edited or created manually
-- **Completed orders**: Cannot have status updated
-- **Invalid customer**: Customer ID must exist
-- **Invalid product**: Product or variation must exist
-
-## Rate Limiting
-
-- **List operations**: 100 requests per hour
-- **Create operations**: 50 requests per hour
-- **Update operations**: 200 requests per hour
-- **Delete operations**: 20 requests per hour
-
 ---
 
 ## Notes
@@ -1357,30 +1312,6 @@ curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v2/templates/print-templat
 - `delivery_slip` - Delivery slip template
 - `shipping_slip` - Shipping slip template
 - `dispatch_slip` - Dispatch slip template
-
----
-
-## Related Documentation
-
-- [Customers API](./customers) - Customer management endpoints
-- [Products API](./products) - Product management endpoints
-- [Subscriptions API](./subscriptions) - Subscription management endpoints
-- [Database Models](/database/models) - Order data models
-- [Developer Hooks](/hooks/) - Order-related hooks
-
-## Next Steps
-
-Continue with order management:
-
-1. **[Customers API](./customers)** - Manage customer data
-2. **[Products API](./products)** - Manage product catalog
-3. **[Subscriptions API](./subscriptions)** - Manage recurring orders
-4. **[Authentication Guide](./authentication)** - API authentication
-
-## Previous/Next Navigation
-
-- **Previous**: [API Overview](./) - FluentCart REST API
-- **Next**: [Customers API](./customers) - Customer management endpoints
 
 ---
 

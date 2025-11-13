@@ -180,36 +180,6 @@ FluentCart also has internal role management through `PermissionManager` (used i
 
 These internal roles are separate from WordPress roles and are managed through user meta (`_fluent_cart_admin_role`).
 
-## Error Handling
-
-### Common Error Responses
-
-#### Permission Denied
-
-If the user doesn't have `manage_options` capability:
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Sorry, You can not update permissions. Only administrators can update permissions"
-  }
-}
-```
-
-#### Invalid Request
-
-If the request body is missing or invalid:
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Error message here"
-  }
-}
-```
-
 ## Available Permissions
 
 FluentCart uses a permission-based system for fine-grained access control. Common permissions include:
@@ -261,10 +231,3 @@ FluentCart uses a permission-based system for fine-grained access control. Commo
 - `dashboard_stats/view` - View dashboard statistics
 
 For more information about permissions, see the [Authentication API documentation](./authentication).
-
----
-
-**Related Documentation:**
-- [Licensing API](./licensing) - Software license management
-- [Order Bump API](./order-bump) - Promotional features
-- [REST API Overview](../api/) - General API information

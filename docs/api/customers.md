@@ -1039,61 +1039,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/customers/do-bulk-acti
   }'
 ```
 
-## Error Handling
-
-### Common Error Codes
-
-| Code | Description |
-|------|-------------|
-| `customer_not_found` | Customer with specified ID not found |
-| `invalid_email` | Email address is invalid or already exists |
-| `email_already_exists` | Email address already exists for another customer |
-| `invalid_user` | WordPress user ID is invalid or user already attached |
-| `insufficient_permissions` | User lacks required permissions |
-| `validation_error` | Request data validation failed |
-| `address_not_found` | Address with specified ID not found |
-| `400` | Bad request - validation failed |
-| `423` | Failed to create WordPress user |
-
-### Error Response Example
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Customer not found",
-    "errors": [
-      {
-        "code": 404,
-        "message": "Customer with ID 999 not found"
-      }
-    ]
-  }
-}
-```
-
-### Validation Error Example
-
-```json
-{
-  "success": false,
-  "data": {
-    "message": "Validation failed",
-    "errors": {
-      "email": ["Email already exists."],
-      "full_name": ["Full Name field is required."]
-    }
-  }
-}
-```
-
-## Rate Limiting
-
-- **List operations**: 100 requests per hour
-- **Create operations**: 50 requests per hour
-- **Update operations**: 200 requests per hour
-- **Delete operations**: 20 requests per hour
-
 ---
 
 ## Address Info
@@ -1198,7 +1143,7 @@ Retrieve all available labels.
 
 **Permission Required**: `labels/view`
 
-#### Response
+##### Response
 
 ```json
 {
@@ -1221,14 +1166,14 @@ Retrieve all available labels.
 }
 ```
 
-#### Example Request
+##### Example Request
 
 ```bash
 curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/labels/" \
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
-### Create Label
+#### Create Label
 
 Create a new label.
 
@@ -1236,7 +1181,7 @@ Create a new label.
 
 **Permission Required**: `labels/manage`
 
-#### Request Body
+##### Request Body
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -1250,7 +1195,7 @@ Create a new label.
 }
 ```
 
-#### Response
+##### Response
 
 ```json
 {
@@ -1265,7 +1210,7 @@ Create a new label.
 }
 ```
 
-#### Example Request
+##### Example Request
 
 ```bash
 curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/" \
@@ -1277,7 +1222,7 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/" \
   }'
 ```
 
-### Update Label Selections
+#### Update Label Selections
 
 Update which labels are assigned to a specific entity (order, customer, etc.).
 
@@ -1285,7 +1230,7 @@ Update which labels are assigned to a specific entity (order, customer, etc.).
 
 **Permission Required**: `labels/manage`
 
-#### Request Body
+##### Request Body
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
@@ -1301,7 +1246,7 @@ Update which labels are assigned to a specific entity (order, customer, etc.).
 }
 ```
 
-#### Response
+##### Response
 
 ```json
 {
@@ -1312,7 +1257,7 @@ Update which labels are assigned to a specific entity (order, customer, etc.).
 }
 ```
 
-#### Example Request
+##### Example Request
 
 ```bash
 curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/update-selections" \
@@ -1324,29 +1269,6 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/update-selectio
     "selectedLabels": [1, 2]
   }'
 ```
-
----
-
-## Related Documentation
-
-- [Orders API](./orders) - Order management endpoints
-- [Products API](./products) - Product management endpoints
-- [Database Models](/database/models) - Customer data models
-- [Developer Hooks](/hooks/) - Customer-related hooks
-
-## Next Steps
-
-Continue with customer management:
-
-1. **[Orders API](./orders)** - Manage customer orders
-2. **[Products API](./products)** - Manage product catalog
-3. **[Database Models](/database/models)** - Understand customer data structure
-4. **[Developer Hooks](/hooks/)** - Customer-related hooks
-
-## Previous/Next Navigation
-
-- **Previous**: [Orders API](./orders) - Order management endpoints
-- **Next**: [Products API](./products) - Product management endpoints
 
 ---
 
