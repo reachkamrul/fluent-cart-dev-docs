@@ -1094,6 +1094,239 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/customers/do-bulk-acti
 - **Update operations**: 200 requests per hour
 - **Delete operations**: 20 requests per hour
 
+---
+
+## Address Info
+
+### Get Countries Options
+
+Retrieve a list of all available countries as options.
+
+**Endpoint:** `GET /address-info/countries`
+
+**Permission Required**: `CustomerPolicy`
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "value": "US",
+      "label": "United States"
+    },
+    {
+      "value": "CA",
+      "label": "Canada"
+    },
+    {
+      "value": "GB",
+      "label": "United Kingdom"
+    }
+  ]
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/address-info/countries" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Get Country Info
+
+Retrieve detailed information about a specific country including states/provinces and address locale.
+
+**Endpoint:** `GET /address-info/get-country-info`
+
+**Permission Required**: `CustomerPolicy`
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `country_code` | string | Yes* | ISO country code (required if timezone not provided) |
+| `timezone` | string | Yes* | Timezone (required if country_code not provided, used to guess country) |
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "country_code": "US",
+    "country_name": "United States",
+    "states": [
+      {
+        "value": "AL",
+        "label": "Alabama"
+      },
+      {
+        "value": "AK",
+        "label": "Alaska"
+      },
+      {
+        "value": "CA",
+        "label": "California"
+      }
+    ],
+    "address_locale": {
+      "format": "{{first_name}} {{last_name}}\n{{address_line_1}}\n{{city}}, {{state}} {{postal_code}}\n{{country}}"
+    }
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/address-info/get-country-info?country_code=US" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+---
+
+## Labels
+
+### List Labels
+
+Retrieve all available labels.
+
+**Endpoint:** `GET /labels/`
+
+**Permission Required**: `labels/view`
+
+#### Response
+
+```json
+{
+  "labels": [
+    {
+      "id": 1,
+      "value": "VIP Customer",
+      "color": "#FF5733",
+      "created_at": "2024-01-01 10:00:00",
+      "updated_at": "2024-01-01 10:00:00"
+    },
+    {
+      "id": 2,
+      "value": "High Priority",
+      "color": "#33FF57",
+      "created_at": "2024-01-01 10:00:00",
+      "updated_at": "2024-01-01 10:00:00"
+    }
+  ]
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/labels/" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Create Label
+
+Create a new label.
+
+**Endpoint:** `POST /labels/`
+
+**Permission Required**: `labels/manage`
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `value` | string | Yes | Label text/value |
+| `color` | string | No | Label color (hex code) |
+
+```json
+{
+  "value": "New Customer",
+  "color": "#3366FF"
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 3,
+    "value": "New Customer",
+    "color": "#3366FF",
+    "created_at": "2024-01-15 11:30:00",
+    "updated_at": "2024-01-15 11:30:00"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "value": "New Customer",
+    "color": "#3366FF"
+  }'
+```
+
+### Update Label Selections
+
+Update which labels are assigned to a specific entity (order, customer, etc.).
+
+**Endpoint:** `POST /labels/update-selections`
+
+**Permission Required**: `labels/manage`
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `bind_to_type` | string | Yes | Model type (e.g., `'Order'`, `'Customer'`) |
+| `bind_to_id` | int | Yes | Entity ID to attach labels to |
+| `selectedLabels` | array | Yes | Array of label IDs to assign |
+
+```json
+{
+  "bind_to_type": "Order",
+  "bind_to_id": 123,
+  "selectedLabels": [1, 2, 3]
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Labels Updated Successfully"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/labels/update-selections" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "bind_to_type": "Order",
+    "bind_to_id": 123,
+    "selectedLabels": [1, 2]
+  }'
+```
+
+---
+
 ## Related Documentation
 
 - [Orders API](./orders) - Order management endpoints

@@ -794,6 +794,104 @@ Retrieve available shortcodes for confirmation pages.
 
 ---
 
+## Checkout Fields
+
+### Get Checkout Fields
+
+Retrieve checkout field schema configuration and settings.
+
+**Endpoint:** `GET /checkout-fields/get-fields`
+
+**Permission Required**: `StoreSensitivePolicy`
+
+#### Response
+
+```json
+{
+  "fields": {
+    "billing": {
+      "first_name": {
+        "label": "First Name",
+        "required": true,
+        "type": "text"
+      },
+      "last_name": {
+        "label": "Last Name",
+        "required": true,
+        "type": "text"
+      }
+    },
+    "shipping": {
+      "first_name": {
+        "label": "First Name",
+        "required": true,
+        "type": "text"
+      }
+    }
+  },
+  "settings": {
+    "enable_shipping_fields": true,
+    "enable_billing_fields": true
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/checkout-fields/get-fields" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Save Checkout Fields
+
+Update checkout field settings.
+
+**Endpoint:** `POST /checkout-fields/save-fields`
+
+**Permission Required**: `StoreSensitivePolicy`
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `settings` | object | Yes | Checkout field settings object |
+
+```json
+{
+  "settings": {
+    "enable_shipping_fields": true,
+    "enable_billing_fields": true,
+    "billing_first_name_required": true,
+    "billing_last_name_required": true
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "message": "Checkout fields has been updated successfully."
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/checkout-fields/save-fields" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "settings": {
+      "enable_shipping_fields": true,
+      "enable_billing_fields": true
+    }
+  }'
+```
+
+---
+
 **Related Documentation:**
 - [Roles & Permissions API](./roles-permissions) - Permission management
 - [Files API](./files) - File management

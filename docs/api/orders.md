@@ -1047,6 +1047,319 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/create-custom
 - **Update operations**: 200 requests per hour
 - **Delete operations**: 20 requests per hour
 
+---
+
+## Notes
+
+### Attach Note to Order
+
+Attach or update a note on an order.
+
+**Endpoint:** `POST /notes/attach`
+
+**Permission Required**: `AdminPolicy`
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `order_id` | int | Yes | Order ID |
+| `note` | string | Yes | Note text content |
+
+```json
+{
+  "order_id": 123,
+  "note": "Customer requested expedited shipping. Contacted via email."
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Order Note Updated successfully."
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/notes/attach" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "order_id": 123,
+    "note": "Customer requested expedited shipping."
+  }'
+```
+
+---
+
+## Activity
+
+### List Activities
+
+Retrieve a paginated list of activity logs.
+
+**Endpoint:** `GET /activity/`
+
+**Permission Required**: `AdminPolicy`
+
+#### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `search` | string | No | Search term for filtering activities |
+| `per_page` | int | No | Number of items per page (default: 10) |
+| `page` | int | No | Page number (default: 1) |
+| `log_type` | string | No | Filter by log type |
+| `module_name` | string | No | Filter by module name |
+| `module_id` | int | No | Filter by module ID |
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "activities": {
+      "data": [
+        {
+          "id": 1,
+          "title": "Order Created",
+          "description": "Order #1234 was created",
+          "log_type": "info",
+          "module_name": "order",
+          "module_id": 1234,
+          "read_status": "unread",
+          "created_at": "2024-01-01 10:00:00"
+        }
+      ],
+      "total": 100,
+      "per_page": 10,
+      "current_page": 1,
+      "last_page": 10
+    }
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/activity/?per_page=20&page=1" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Delete Activity
+
+Delete a specific activity log entry.
+
+**Endpoint:** `DELETE /activity/{id}`
+
+**Permission Required**: `AdminPolicy`
+
+#### Route Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | int | Yes | Activity ID (route parameter) |
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Activity Deleted Successfully"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X DELETE "https://yoursite.com/wp-json/fluent-cart/v2/activity/1" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Mark Activity as Read/Unread
+
+Update the read status of an activity log entry.
+
+**Endpoint:** `PUT /activity/{id}/mark-read`
+
+**Permission Required**: `AdminPolicy`
+
+#### Route Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `id` | int | Yes | Activity ID (route parameter) |
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `status` | string | Yes | Status: `'read'` or `'unread'` |
+
+```json
+{
+  "status": "read"
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Activity Marked as Read"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v2/activity/1/mark-read" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "read"
+  }'
+```
+
+---
+
+## Templates
+
+### Get Print Templates
+
+Retrieve all available print templates.
+
+**Endpoint:** `GET /templates/print-templates`
+
+**Permission Required**: `AdminPolicy`
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "templates": [
+      {
+        "key": "invoice_template",
+        "title": "Invoice Template",
+        "content": "<html>...</html>"
+      },
+      {
+        "key": "packing_slip",
+        "title": "Packing Slip Template",
+        "content": "<html>...</html>"
+      },
+      {
+        "key": "delivery_slip",
+        "title": "Delivery Slip Template",
+        "content": "<html>...</html>"
+      },
+      {
+        "key": "shipping_slip",
+        "title": "Shipping Slip Template",
+        "content": "<html>...</html>"
+      },
+      {
+        "key": "dispatch_slip",
+        "title": "Dispatch Slip Template",
+        "content": "<html>...</html>"
+      }
+    ]
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/templates/print-templates" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
+```
+
+### Save Print Templates
+
+Update print template content.
+
+**Endpoint:** `PUT /templates/print-templates`
+
+**Permission Required**: `AdminPolicy`
+
+#### Request Body
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `templates` | array | Yes | Array of template objects |
+
+Each template object should contain:
+- `key` (string, required): Template key identifier
+- `content` (string, required): HTML content of the template
+
+```json
+{
+  "templates": [
+    {
+      "key": "invoice_template",
+      "content": "<html><body><h1>Invoice</h1>...</body></html>"
+    },
+    {
+      "key": "packing_slip",
+      "content": "<html><body><h1>Packing Slip</h1>...</body></html>"
+    }
+  ]
+}
+```
+
+#### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "message": "Template saved successfully"
+  }
+}
+```
+
+#### Example Request
+
+```bash
+curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v2/templates/print-templates" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "templates": [
+      {
+        "key": "invoice_template",
+        "content": "<html><body><h1>Invoice</h1></body></html>"
+      }
+    ]
+  }'
+```
+
+#### Available Template Keys
+
+- `invoice_template` - Invoice template
+- `packing_slip` - Packing slip template
+- `delivery_slip` - Delivery slip template
+- `shipping_slip` - Shipping slip template
+- `dispatch_slip` - Dispatch slip template
+
+---
+
 ## Related Documentation
 
 - [Customers API](./customers) - Customer management endpoints
