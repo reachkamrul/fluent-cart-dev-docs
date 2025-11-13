@@ -851,6 +851,58 @@ curl -X GET "https://yoursite.com/wp-json/fluent-cart/v2/orders/shipping_methods
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
 ```
 
+### Update Order Address
+
+**PUT** `/orders/{order}/address/{id}`
+
+Update an order address.
+
+**Permission Required**: `orders/manage`
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `order` | integer | Order ID (route parameter) |
+| `id` | integer | Address ID (route parameter) |
+
+#### Example Request
+
+```bash
+curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/address/5" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "address_1": "123 Updated St",
+    "city": "New York"
+  }'
+```
+
+### Create Custom Order
+
+**POST** `/orders/{order}/create-custom`
+
+Create a custom order.
+
+**Permission Required**: `orders/create`
+
+#### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `order` | integer | Order ID (route parameter) |
+
+#### Example Request
+
+```bash
+curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/create-custom" \
+  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "custom_data": "value"
+  }'
+```
+
 ### Get Order Transactions
 
 **GET** `/orders/{order}/transactions`
@@ -948,58 +1000,6 @@ Accept a dispute for a transaction.
 ```bash
 curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/transactions/123/accept-dispute/" \
   -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ="
-```
-
-### Update Order Address
-
-**PUT** `/orders/{order}/address/{id}`
-
-Update an order address.
-
-**Permission Required**: `orders/manage`
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `order` | integer | Order ID (route parameter) |
-| `id` | integer | Address ID (route parameter) |
-
-#### Example Request
-
-```bash
-curl -X PUT "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/address/5" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "address_1": "123 Updated St",
-    "city": "New York"
-  }'
-```
-
-### Create Custom Order
-
-**POST** `/orders/{order}/create-custom`
-
-Create a custom order.
-
-**Permission Required**: `orders/create`
-
-#### Parameters
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `order` | integer | Order ID (route parameter) |
-
-#### Example Request
-
-```bash
-curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/orders/1/create-custom" \
-  -H "Authorization: Basic dXNlcm5hbWU6YXBwbGljYXRpb25fcGFzc3dvcmQ=" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "custom_data": "value"
-  }'
 ```
 
 ---
