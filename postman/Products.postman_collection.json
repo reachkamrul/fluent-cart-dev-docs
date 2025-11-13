@@ -1256,6 +1256,32 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Variants",
+			"item": [
+				{
+					"name": "List Variants",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/variants/",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "variants", ""]
+						},
+						"description": "Retrieve all product variants."
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [

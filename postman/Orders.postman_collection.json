@@ -589,11 +589,214 @@
 				"description": "Accept a dispute for a transaction."
 			},
 			"response": []
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Attach Note to Order",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"order_id\": 123,\n  \"note\": \"Customer requested expedited shipping. Contacted via email.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/notes/attach",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "notes", "attach"]
+						},
+						"description": "Attach or update a note on an order."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Activity",
+			"item": [
+				{
+					"name": "List Activities",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/activity/?per_page=10&page=1",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "activity", ""],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "log_type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "module_name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "module_id",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve a paginated list of activity logs."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Activity",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/activity/{{activity_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "activity", "{{activity_id}}"]
+						},
+						"description": "Delete a specific activity log entry."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Activity as Read/Unread",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"read\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/activity/{{activity_id}}/mark-read",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "activity", "{{activity_id}}", "mark-read"]
+						},
+						"description": "Update the read status of an activity log entry."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "Get Print Templates",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/templates/print-templates",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "templates", "print-templates"]
+						},
+						"description": "Retrieve all available print templates."
+					},
+					"response": []
+				},
+				{
+					"name": "Save Print Templates",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"templates\": [\n    {\n      \"key\": \"invoice_template\",\n      \"content\": \"<html><body><h1>Invoice</h1>...</body></html>\"\n    },\n    {\n      \"key\": \"packing_slip\",\n      \"content\": \"<html><body><h1>Packing Slip</h1>...</body></html>\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/templates/print-templates",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "templates", "print-templates"]
+						},
+						"description": "Update print template content."
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
 		{
 			"key": "order_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "activity_id",
 			"value": "1",
 			"type": "string"
 		},

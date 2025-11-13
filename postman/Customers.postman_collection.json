@@ -494,6 +494,150 @@
 				"description": "Perform bulk actions on multiple customers. Available actions: update_status, delete, export."
 			},
 			"response": []
+		},
+		{
+			"name": "Address Info",
+			"item": [
+				{
+					"name": "Get Countries Options",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/address-info/countries",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "address-info", "countries"]
+						},
+						"description": "Retrieve a list of all available countries as options."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Country Info",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/address-info/get-country-info?country_code=US",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "address-info", "get-country-info"],
+							"query": [
+								{
+									"key": "country_code",
+									"value": "US"
+								},
+								{
+									"key": "timezone",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve detailed information about a specific country including states/provinces and address locale."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Labels",
+			"item": [
+				{
+					"name": "List Labels",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "labels", ""]
+						},
+						"description": "Retrieve all available labels."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Label",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": \"New Customer\",\n  \"color\": \"#3366FF\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "labels", ""]
+						},
+						"description": "Create a new label."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Label Selections",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"password": "{{password}}",
+								"username": "{{username}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bind_to_type\": \"Order\",\n  \"bind_to_id\": 123,\n  \"selectedLabels\": [1, 2, 3]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/update-selections",
+							"host": ["{{base_url}}"],
+							"path": ["wp-json", "fluent-cart", "v2", "labels", "update-selections"]
+						},
+						"description": "Update which labels are assigned to a specific entity (order, customer, etc.)."
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
