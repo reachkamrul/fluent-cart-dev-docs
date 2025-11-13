@@ -5,171 +5,63 @@ This file lists all API endpoint groups that exist in the codebase but are not y
 
 Last Updated: 2024
 
-MAJOR ENDPOINT GROUPS TO DOCUMENT:
-==================================
-
 COMPLETED DOCUMENTATION:
-- Shipping API (shipping.md) ✓
-- Reports API (reports.md) ✓
-- Settings API (settings.md) ✓
-- Tax API (tax.md) ✓
-- Integration API (integration.md) ✓
-- Options/Attributes API (options.md) ✓
-- Email Notification API (email-notification.md) ✓
+========================
 
-REMAINING TO DOCUMENT:
-1. REPORTS API (/reports) - COMPLETED ✓
-   - Overview reports
-   - Revenue reports
-   - Order reports
-   - Refund reports
-   - Subscription reports
-   - Product reports
-   - Customer reports
-   - Source reports
-   - Dashboard stats
-   - Sales growth charts
-   - Cart reports
-   - Note: License reports are already documented in licensing.md
+All major API endpoint groups have been documented:
 
-2. SETTINGS API (/settings)
-   - Payment methods management
-   - Storage drivers
-   - Module settings
-   - Confirmation settings
-   - Store settings (partially covered in roles-permissions.md)
-   - PayPal webhook setup/check
-   - PayPal seller auth token
+1. Shipping API (shipping.md) ✓
+2. Reports API (reports.md) ✓
+3. Settings API (settings.md) ✓
+4. Tax API (tax.md) ✓
+5. Integration API (integration.md) ✓
+6. Options/Attributes API (options.md) ✓
+7. Email Notification API (email-notification.md) ✓
+8. Dashboard API (dashboard.md) ✓
+9. Activity API (activity.md) ✓
+10. Labels API (labels.md) ✓
+11. Templates API (templates.md) ✓
+12. Checkout Fields API (checkout-fields.md) ✓
+13. Address Info API (address-info.md) ✓
+14. Onboarding API (onboarding.md) ✓
+15. App API (app.md) ✓
+16. Notes API (notes.md) ✓
+17. Taxes API (taxes.md) ✓
+18. Variants API (variants.md) ✓
+19. Widgets API (widgets.md) ✓
+20. Welcome API (welcome.md) ✓
 
-3. TAX API (/tax)
-   - Tax classes (CRUD)
-   - Tax rates (CRUD)
-   - Tax configuration
-   - EU VAT settings
-   - OSS (One Stop Shop) settings
-   - Country tax ID management
-   - Shipping overrides
+PREVIOUSLY DOCUMENTED:
+======================
 
-4. INTEGRATION API (/integration)
-   - Addons management
-   - Global settings
-   - Global feeds
-   - Integration feed management
-   - Dynamic options
-   - Chained feeds
-   - Plugin installation
+- Customers API (customers.md) ✓
+- Orders API (orders.md) ✓
+- Products API (products.md) ✓
+- Coupons API (coupons.md) ✓
+- Subscriptions API (subscriptions.md) ✓
+- Files API (files.md) ✓
+- Authentication API (authentication.md) ✓
+- Roles & Permissions API (roles-permissions.md) ✓
+- Licensing API (licensing.md) ✓
+- Order Bump API (order-bump.md) ✓
 
-5. ATTRIBUTES/OPTIONS API (/options)
-   - Attribute groups (CRUD)
-   - Attribute terms (CRUD)
-   - Term serial management
+STATUS:
+=======
 
-6. EMAIL NOTIFICATION API (/email-notification) - COMPLETED ✓
-   - Notification management
-   - Template management
-   - Short codes
-   - Enable/disable notifications
+✅ ALL API DOCUMENTATION COMPLETE
 
-7. DASHBOARD API (/dashboard)
-   - Dashboard stats
-   - Onboarding data
+All identified API endpoint groups have been documented. The documentation includes:
+- Complete endpoint descriptions
+- Request/response examples
+- Parameter documentation
+- Permission requirements
+- Error handling
+- cURL examples
 
-8. ACTIVITY API (/activity)
-   - Activity log listing
-   - Delete activity
-   - Mark as read/unread
+NOTE:
+=====
 
-9. LABELS API (/labels)
-   - Label listing
-   - Label creation
-   - Update label selections
-
-10. TEMPLATES API (/templates)
-    - Print templates (get/save)
-
-11. CHECKOUT FIELDS API (/checkout-fields)
-    - Get fields
-    - Save fields
-
-12. ADDRESS INFO API (/address-info)
-    - Countries option
-    - Get country info
-
-13. ONBOARDING API (/onboarding)
-    - Get onboarding data
-    - Save settings
-    - Create pages
-    - Create single page
-
-14. APP API (/app)
-    - App initialization
-    - Get attachments
-    - Upload attachments
-
-15. NOTES API (/notes)
-    - Attach notes
-
-16. TAXES API (/taxes)
-    - Tax listing
-    - Mark as filed
-
-17. VARIANTS API (/variants)
-    - Variants listing
-
-18. WIDGETS API (/widgets)
-    - Widgets endpoint
-
-19. WELCOME API (/welcome)
-    - Welcome endpoint
-
-20. PRODUCT INTEGRATIONS (under /products)
-    - Get product integration settings
-    - Save product integration
-    - Delete product integration
-    - Change integration status
-    - Get product integration feeds
-
-ROUTE FILES TO CHECK:
-=====================
-
-- fluent-cart/app/Http/Routes/api.php (main routes)
-- fluent-cart/app/Http/Routes/reports.php (reports routes)
-- fluent-cart/app/Http/Routes/frontend_routes.php (frontend routes - already checked)
-- fluent-cart/app/Http/Routes/advance_filter_routes.php (filter routes)
-
-PRIORITY SUGGESTIONS:
-=====================
-
-HIGH PRIORITY:
-1. Reports API - Many endpoints, important for analytics
-2. Settings API - Core functionality for store management
-3. Tax API - Critical for e-commerce operations
-4. Integration API - Important for addons/extensions
-
-MEDIUM PRIORITY:
-5. Attributes/Options API - Product management
-6. Email Notification API - Communication features
-7. Dashboard API - Admin interface
-8. Checkout Fields API - Customization
-
-LOW PRIORITY:
-9. Activity API - Logging
-10. Labels API - Organization
-11. Templates API - Printing
-12. Address Info API - Utility
-13. Onboarding API - Setup flow
-14. App API - Internal
-15. Notes API - Simple feature
-16. Taxes API - Filing (different from Tax API)
-17. Variants API - Simple listing
-18. Widgets API - Single endpoint
-19. Welcome API - Single endpoint
-
-NOTES:
-======
-- Some endpoints may be Pro-only features
-- Check policies and permissions for each endpoint group
-- Some endpoints may be internal/admin-only
+- Some endpoints may be Pro-only features (noted in documentation where applicable)
 - Frontend routes are documented separately
-- Reports routes are in a separate file (reports.php)
-
+- Some endpoints may be internal/admin-only (noted in documentation)
+- Product integration endpoints are documented within the Integration API and Products API
