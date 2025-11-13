@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "dashboard-api-collection-001",
+		"name": "Dashboard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Dashboard API collection for retrieving dashboard statistics and onboarding data"
+	},
+	"item": [
+		{
+			"name": "Get Dashboard Stats",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/dashboard/stats",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "dashboard", "stats"]
+				},
+				"description": "Retrieve dashboard statistics and widgets."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Onboarding Data",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/dashboard/",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "dashboard", ""]
+				},
+				"description": "Retrieve onboarding steps and completion status."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+

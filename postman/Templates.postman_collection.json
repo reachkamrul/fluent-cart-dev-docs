@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "templates-api-collection-001",
+		"name": "Templates",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Templates API collection for managing print templates (invoices, packing slips, etc.)"
+	},
+	"item": [
+		{
+			"name": "Get Print Templates",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/templates/print-templates",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "templates", "print-templates"]
+				},
+				"description": "Retrieve all available print templates."
+			},
+			"response": []
+		},
+		{
+			"name": "Save Print Templates",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"templates\": [\n    {\n      \"key\": \"invoice_template\",\n      \"content\": \"<html><body><h1>Invoice</h1>...</body></html>\"\n    },\n    {\n      \"key\": \"packing_slip\",\n      \"content\": \"<html><body><h1>Packing Slip</h1>...</body></html>\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/templates/print-templates",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "templates", "print-templates"]
+				},
+				"description": "Update print template content."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+

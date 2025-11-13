@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "checkout-fields-api-collection-001",
+		"name": "Checkout Fields",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Checkout Fields API collection for managing custom checkout field configurations"
+	},
+	"item": [
+		{
+			"name": "Get Checkout Fields",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/checkout-fields/get-fields",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "checkout-fields", "get-fields"]
+				},
+				"description": "Retrieve checkout field schema configuration and settings."
+			},
+			"response": []
+		},
+		{
+			"name": "Save Checkout Fields",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"settings\": {\n    \"enable_shipping_fields\": true,\n    \"enable_billing_fields\": true,\n    \"billing_first_name_required\": true,\n    \"billing_last_name_required\": true\n  }\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/checkout-fields/save-fields",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "checkout-fields", "save-fields"]
+				},
+				"description": "Update checkout field settings."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+

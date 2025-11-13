@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "notes-api-collection-001",
+		"name": "Notes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Notes API collection for attaching notes to orders"
+	},
+	"item": [
+		{
+			"name": "Attach Note to Order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"order_id\": 123,\n  \"note\": \"Customer requested expedited shipping. Contacted via email.\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/notes/attach",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "notes", "attach"]
+				},
+				"description": "Attach or update a note on an order."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+

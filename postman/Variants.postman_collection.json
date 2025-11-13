@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "variants-api-collection-001",
+		"name": "Variants",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Variants API collection for listing product variants"
+	},
+	"item": [
+		{
+			"name": "List Variants",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/variants/",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "variants", ""]
+				},
+				"description": "Retrieve all product variants."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+

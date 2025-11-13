@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "labels-api-collection-001",
+		"name": "Labels",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23389172",
+		"description": "FluentCart Labels API collection for managing labels and label assignments"
+	},
+	"item": [
+		{
+			"name": "List Labels",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "labels", ""]
+				},
+				"description": "Retrieve all available labels."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Label",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"value\": \"New Customer\",\n  \"color\": \"#3366FF\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "labels", ""]
+				},
+				"description": "Create a new label."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Label Selections",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"bind_to_type\": \"Order\",\n  \"bind_to_id\": 123,\n  \"selectedLabels\": [1, 2, 3]\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/labels/update-selections",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "labels", "update-selections"]
+				},
+				"description": "Update which labels are assigned to a specific entity (order, customer, etc.)."
+			},
+			"response": []
+		}
+	],
+	"variable": []
+}
+
