@@ -193,25 +193,45 @@ if ($user->can('super_admin')) {
 - `POST /settings/store` - Update store settings
 - `GET /settings/payment-methods` - Payment method settings
 
-#### 7. PublicPolicy
+#### 7. StoreSensitivePolicy
 
-**Purpose**: Public access permissions  
-**Usage**: Public product catalog, cart operations, checkout
+**Purpose**: Store sensitive data access  
+**Usage**: Email notifications, file management, tax settings, checkout fields
+
+**Endpoints Protected**:
+- `GET /email-notification/*` - Email notification settings
+- `GET /files/*` - File management
+- `POST /tax/*` - Tax settings
+- `GET /checkout-fields/*` - Checkout field management
+
+#### 8. PublicPolicy
+
+**Purpose**: Public access (no authentication required)  
+**Usage**: Public product catalog, cart operations, checkout, user login
 
 **Endpoints Protected**:
 - `GET /public/products` - Public product catalog
 - `GET /cart/add_item` - Add to cart
 - `POST /checkout/place-order` - Place order
+- `POST /user/login` - User login
 
-#### 8. CustomerFrontendPolicy
+#### 9. CustomerFrontendPolicy
 
-**Purpose**: Customer frontend access  
-**Usage**: Customer profile, orders, subscriptions
+**Purpose**: Customer frontend access (requires logged-in user)  
+**Usage**: Customer profile, orders, subscriptions, customer addresses
+
+**Verification**: Checks if user is logged in (`is_user_logged_in()`)
 
 **Endpoints Protected**:
 - `GET /customer-profile/` - Customer profile
 - `GET /customer-profile/orders` - Customer orders
 - `GET /customer-profile/subscriptions` - Customer subscriptions
+- `GET /customers/{customerId}` - Get customer details
+- `PUT /customers/{customerId}` - Update customer details
+- `GET /customers/{customerId}/orders` - Get customer orders
+- `PUT /customers/{customerId}/address` - Update customer address
+- `POST /customers/add-address` - Create customer address
+- `DELETE /customers/{customerId}/address` - Delete customer address
 
 ### Permission System
 
@@ -233,8 +253,8 @@ Permissions follow a hierarchical structure:
 #### Special Permissions
 
 - `super_admin` - Full system access
-- `is_super_admin` - Super admin check
-- `is_supper_admin` - Alternative super admin check (typo in codebase)
+- `is_super_admin` - Super admin check (used by AdminPolicy)
+- `is_supper_admin` - Alternative super admin check (typo in codebase, may exist in some legacy code)
 
 ### Policy Implementation
 
@@ -289,43 +309,101 @@ $router->get('/orders', [OrderController::class, 'index'])
 
 **POST** `/user/login`
 
-Authenticate a user for frontend access.
+Authenticate a user for frontend access. This endpoint requires a WordPress nonce for security.
+
+**Policy**: `PublicPolicy` (no authentication required to access this endpoint)
+
+#### Headers
+
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| `X-WP-Nonce` | string | Yes | WordPress REST API nonce for security verification |
+| `Content-Type` | string | Yes | Must be `application/json` |
 
 #### Request Body
 
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `user_login` | string | Yes | User email address or username |
+| `password` | string | Yes | User password |
+| `remember_me` | boolean/string | No | Set to `true` or `"on"` to remember the user session |
+
 ```json
 {
-  "username": "user@example.com",
-  "password": "user_password"
+  "user_login": "user@example.com",
+  "password": "user_password",
+  "remember_me": false
 }
 ```
 
 #### Response
 
+**Success Response** (200):
+
 ```json
 {
   "success": true,
   "data": {
-    "user": {
-      "id": 1,
-      "email": "user@example.com",
-      "display_name": "John Doe"
-    },
-    "auth_cookie": "wordpress_logged_in_abc123"
+    "message": "Login successful",
+    "redirect_url": "https://yoursite.com/customer-profile/#/profile"
   }
 }
 ```
+
+**Error Response** (400/401):
+
+```json
+{
+  "success": false,
+  "data": {
+    "message": "Invalid credentials",
+    "code": "login_failed"
+  }
+}
+```
+
+#### Error Codes
+
+| Code | Description |
+|------|-------------|
+| `invalid_nonce` | Invalid or missing X-WP-Nonce header |
+| `missing_login` | User login (email/username) is required |
+| `missing_password` | Password is required |
+| `login_failed` | Invalid credentials provided |
 
 #### Example Request
 
 ```bash
 curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/user/login" \
   -H "Content-Type: application/json" \
+  -H "X-WP-Nonce: your_wp_nonce_here" \
   -d '{
-    "username": "user@example.com",
-    "password": "user_password"
+    "user_login": "user@example.com",
+    "password": "user_password",
+    "remember_me": false
   }'
 ```
+
+#### Example Request (JavaScript)
+
+```javascript
+const response = await fetch('https://yoursite.com/wp-json/fluent-cart/v2/user/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': wpApiSettings.nonce // WordPress nonce from wp_localize_script
+    },
+    body: JSON.stringify({
+        user_login: 'user@example.com',
+        password: 'user_password',
+        remember_me: false
+    })
+});
+
+const data = await response.json();
+```
+
+**Note**: The register endpoint (`POST /user/register`) is currently commented out in the routes and not available.
 
 ## Error Handling
 
@@ -346,9 +424,9 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/user/login" \
 ```json
 {
   "success": false,
-  "error": {
-    "code": "authentication_required",
-    "message": "Authentication is required to access this endpoint"
+  "data": {
+    "message": "Authentication is required to access this endpoint",
+    "code": "authentication_required"
   }
 }
 ```
@@ -358,12 +436,23 @@ curl -X POST "https://yoursite.com/wp-json/fluent-cart/v2/user/login" \
 ```json
 {
   "success": false,
-  "error": {
-    "code": "insufficient_permissions",
-    "message": "You do not have permission to perform this action"
+  "data": {
+    "message": "You do not have permission to perform this action",
+    "code": "insufficient_permissions"
   }
 }
 ```
+
+#### Invalid Nonce (Login Endpoint)
+
+```json
+{
+  "message": "Invalid security token. Please refresh the page and try again.",
+  "code": "invalid_nonce"
+}
+```
+
+**Note**: Error responses may vary slightly between endpoints. Some endpoints use `wp_send_json_error()` which wraps the error in a `data` property, while others may return errors directly.
 
 ## Security Best Practices
 
@@ -441,4 +530,5 @@ Continue with API development:
 - **Next**: [Orders API](./orders) - Order management endpoints
 
 ---
+
 

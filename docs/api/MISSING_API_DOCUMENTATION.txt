@@ -1,0 +1,167 @@
+MISSING API DOCUMENTATION
+==========================
+
+This file lists all API endpoint groups that exist in the codebase but are not yet documented.
+
+Last Updated: 2024
+
+MAJOR ENDPOINT GROUPS TO DOCUMENT:
+==================================
+
+NOTE: Shipping API has been documented in shipping.md
+
+1. REPORTS API (/reports)
+   - Overview reports
+   - Revenue reports
+   - Order reports
+   - Refund reports
+   - Subscription reports
+   - Product reports
+   - Customer reports
+   - Source reports
+   - Dashboard stats
+   - Sales growth charts
+   - Cart reports
+   - Note: License reports are already documented in licensing.md
+
+2. SETTINGS API (/settings)
+   - Payment methods management
+   - Storage drivers
+   - Module settings
+   - Confirmation settings
+   - Store settings (partially covered in roles-permissions.md)
+   - PayPal webhook setup/check
+   - PayPal seller auth token
+
+3. TAX API (/tax)
+   - Tax classes (CRUD)
+   - Tax rates (CRUD)
+   - Tax configuration
+   - EU VAT settings
+   - OSS (One Stop Shop) settings
+   - Country tax ID management
+   - Shipping overrides
+
+4. INTEGRATION API (/integration)
+   - Addons management
+   - Global settings
+   - Global feeds
+   - Integration feed management
+   - Dynamic options
+   - Chained feeds
+   - Plugin installation
+
+5. ATTRIBUTES/OPTIONS API (/options)
+   - Attribute groups (CRUD)
+   - Attribute terms (CRUD)
+   - Term serial management
+
+6. EMAIL NOTIFICATION API (/email-notification)
+   - Notification management
+   - Template management
+   - Short codes
+   - Enable/disable notifications
+
+7. DASHBOARD API (/dashboard)
+   - Dashboard stats
+   - Onboarding data
+
+8. ACTIVITY API (/activity)
+   - Activity log listing
+   - Delete activity
+   - Mark as read/unread
+
+9. LABELS API (/labels)
+   - Label listing
+   - Label creation
+   - Update label selections
+
+10. TEMPLATES API (/templates)
+    - Print templates (get/save)
+
+11. CHECKOUT FIELDS API (/checkout-fields)
+    - Get fields
+    - Save fields
+
+12. ADDRESS INFO API (/address-info)
+    - Countries option
+    - Get country info
+
+13. ONBOARDING API (/onboarding)
+    - Get onboarding data
+    - Save settings
+    - Create pages
+    - Create single page
+
+14. APP API (/app)
+    - App initialization
+    - Get attachments
+    - Upload attachments
+
+15. NOTES API (/notes)
+    - Attach notes
+
+16. TAXES API (/taxes)
+    - Tax listing
+    - Mark as filed
+
+17. VARIANTS API (/variants)
+    - Variants listing
+
+18. WIDGETS API (/widgets)
+    - Widgets endpoint
+
+19. WELCOME API (/welcome)
+    - Welcome endpoint
+
+20. PRODUCT INTEGRATIONS (under /products)
+    - Get product integration settings
+    - Save product integration
+    - Delete product integration
+    - Change integration status
+    - Get product integration feeds
+
+ROUTE FILES TO CHECK:
+=====================
+
+- fluent-cart/app/Http/Routes/api.php (main routes)
+- fluent-cart/app/Http/Routes/reports.php (reports routes)
+- fluent-cart/app/Http/Routes/frontend_routes.php (frontend routes - already checked)
+- fluent-cart/app/Http/Routes/advance_filter_routes.php (filter routes)
+
+PRIORITY SUGGESTIONS:
+=====================
+
+HIGH PRIORITY:
+1. Reports API - Many endpoints, important for analytics
+2. Settings API - Core functionality for store management
+3. Tax API - Critical for e-commerce operations
+4. Integration API - Important for addons/extensions
+
+MEDIUM PRIORITY:
+5. Attributes/Options API - Product management
+6. Email Notification API - Communication features
+7. Dashboard API - Admin interface
+8. Checkout Fields API - Customization
+
+LOW PRIORITY:
+9. Activity API - Logging
+10. Labels API - Organization
+11. Templates API - Printing
+12. Address Info API - Utility
+13. Onboarding API - Setup flow
+14. App API - Internal
+15. Notes API - Simple feature
+16. Taxes API - Filing (different from Tax API)
+17. Variants API - Simple listing
+18. Widgets API - Single endpoint
+19. Welcome API - Single endpoint
+
+NOTES:
+======
+- Some endpoints may be Pro-only features
+- Check policies and permissions for each endpoint group
+- Some endpoints may be internal/admin-only
+- Frontend routes are documented separately
+- Reports routes are in a separate file (reports.php)
+

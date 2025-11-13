@@ -186,7 +186,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Customer Orders",
+			"name": "Get Customer Orders (Simple)",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -198,11 +198,57 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/wp-json/fluent-cart/v2/customers/{{customer_id}}/orders",
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/customers/{{customer_id}}/order",
 					"host": ["{{base_url}}"],
-					"path": ["wp-json", "fluent-cart", "v2", "customers", "{{customer_id}}", "orders"]
+					"path": ["wp-json", "fluent-cart", "v2", "customers", "{{customer_id}}", "order"]
 				},
-				"description": "Get all orders for a specific customer."
+				"description": "Get customer orders in a simplified format."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Customer Orders (Paginated)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/customers/{{customer_id}}/orders?page=1&per_page=10",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "customers", "{{customer_id}}", "orders"],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "per_page",
+							"value": "10"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "order_by",
+							"value": "id",
+							"disabled": true
+						},
+						{
+							"key": "order_type",
+							"value": "DESC",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get paginated orders for a specific customer with filtering support."
 			},
 			"response": []
 		},

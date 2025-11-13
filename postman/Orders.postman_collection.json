@@ -114,7 +114,7 @@
 						"username": "{{username}}"
 					}
 				},
-				"method": "PUT",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -130,7 +130,7 @@
 					"host": ["{{base_url}}"],
 					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}"]
 				},
-				"description": "Update an existing order's information."
+				"description": "Update an existing order's information. Note: Subscription orders cannot be edited. Completed orders cannot have their status updated."
 			},
 			"response": []
 		},
@@ -385,11 +385,225 @@
 				"description": "Get available shipping methods."
 			},
 			"response": []
+		},
+		{
+			"name": "Generate Missing Licenses",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/generate-missing-licenses",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "generate-missing-licenses"]
+				},
+				"description": "Generate missing licenses for an order."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order Address ID",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"address_id\": 123,\n  \"address_type\": \"billing\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/update-address-id",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "update-address-id"]
+				},
+				"description": "Update the address ID associated with an order."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Order Address",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"address_1\": \"123 Updated St\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"postcode\": \"10001\",\n  \"country\": \"US\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/address/{{address_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "address", "{{address_id}}"]
+				},
+				"description": "Update an order address."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Custom Order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"custom_data\": \"value\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/create-custom",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "create-custom"]
+				},
+				"description": "Create a custom order."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order Transactions",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/transactions",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "transactions"]
+				},
+				"description": "Get transactions for a specific order."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction Details",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/transactions/{{transaction_id}}",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "transactions", "{{transaction_id}}"]
+				},
+				"description": "Get details of a specific transaction."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Transaction Status",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"status\": \"completed\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/transactions/{{transaction_id}}/status",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "transactions", "{{transaction_id}}", "status"]
+				},
+				"description": "Update the status of a transaction."
+			},
+			"response": []
+		},
+		{
+			"name": "Accept Dispute",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"password": "{{password}}",
+						"username": "{{username}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/wp-json/fluent-cart/v2/orders/{{order_id}}/transactions/{{transaction_id}}/accept-dispute/",
+					"host": ["{{base_url}}"],
+					"path": ["wp-json", "fluent-cart", "v2", "orders", "{{order_id}}", "transactions", "{{transaction_id}}", "accept-dispute", ""]
+				},
+				"description": "Accept a dispute for a transaction."
+			},
+			"response": []
 		}
 	],
 	"variable": [
 		{
 			"key": "order_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "transaction_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "address_id",
 			"value": "1",
 			"type": "string"
 		}
